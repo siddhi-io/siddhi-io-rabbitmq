@@ -19,6 +19,9 @@ package org.wso2.carbon.extension.analytics.receiver.rabbitmq.internal.util;
 
 import org.wso2.carbon.event.input.adapter.core.InputEventAdapterConfiguration;
 
+/**
+ * Getting the connection values from the adapter configuration.
+ */
 public class RabbitMQBrokerConnectionConfiguration {
 
     private String username = null;

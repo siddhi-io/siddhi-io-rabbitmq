@@ -17,6 +17,9 @@
 */
 package org.wso2.carbon.extension.analytics.receiver.rabbitmq.internal.util;
 
+/**
+ * This class represents RabbitMQ specific Constants.
+ */
 public final class RabbitMQEventAdapterConstants {
 
     private RabbitMQEventAdapterConstants() {

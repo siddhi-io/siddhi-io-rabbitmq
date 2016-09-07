@@ -34,6 +34,10 @@ import java.io.UnsupportedEncodingException;
 import java.security.*;
 import java.security.cert.CertificateException;
 
+/**
+ * This is the listener which directly interacts with the external RabbitMQ broker and making connection with RabbitMQ
+ * broker and listen messages from Broker.
+ */
 public class RabbitMQAdapterListener implements Runnable {
     private static final Log log = LogFactory.getLog(RabbitMQAdapterListener.class);
     private ConnectionFactory connectionFactory;
@@ -54,7 +58,8 @@ public class RabbitMQAdapterListener implements Runnable {
     private int retryCountMax = RabbitMQEventAdapterConstants.DEFAULT_RETRY_COUNT;
     private InputEventAdapterListener eventAdapterListener = null;
 
-    public RabbitMQAdapterListener(RabbitMQBrokerConnectionConfiguration rabbitmqBrokerConnectionConfiguration, InputEventAdapterConfiguration eventAdapterConfiguration,
+    public RabbitMQAdapterListener(RabbitMQBrokerConnectionConfiguration rabbitmqBrokerConnectionConfiguration,
+                                   InputEventAdapterConfiguration eventAdapterConfiguration,
                                    InputEventAdapterListener inputEventAdapterListener) {
 
         connectionFactory = new ConnectionFactory();
@@ -72,20 +77,30 @@ public class RabbitMQAdapterListener implements Runnable {
         if (routeKey == null) {
             routeKey = queueName;
         }
-        if (!eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_SSL_ENABLED).equals("false")) {
+        if (!eventAdapterConfiguration.getProperties().
+                get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_SSL_ENABLED).equals("false")) {
             try {
-                boolean sslEnabled = Boolean.parseBoolean(eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_SSL_ENABLED));
+                boolean sslEnabled = Boolean.parseBoolean(eventAdapterConfiguration.getProperties().
+                        get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_SSL_ENABLED));
                 if (sslEnabled) {
-                    String keyStoreLocation = eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_SSL_KEYSTORE_LOCATION);
-                    String keyStoreType = eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_SSL_KEYSTORE_TYPE);
-                    String keyStorePassword = eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_SSL_KEYSTORE_PASSWORD);
-                    String trustStoreLocation = eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_SSL_TRUSTSTORE_LOCATION);
-                    String trustStoreType = eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_SSL_TRUSTSTORE_TYPE);
-                    String trustStorePassword = eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_SSL_TRUSTSTORE_PASSWORD);
-                    String sslVersion = eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_SSL_VERSION);
+                    String keyStoreLocation = eventAdapterConfiguration.getProperties().
+                            get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_SSL_KEYSTORE_LOCATION);
+                    String keyStoreType = eventAdapterConfiguration.getProperties().
+                            get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_SSL_KEYSTORE_TYPE);
+                    String keyStorePassword = eventAdapterConfiguration.getProperties().
+                            get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_SSL_KEYSTORE_PASSWORD);
+                    String trustStoreLocation = eventAdapterConfiguration.getProperties().
+                            get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_SSL_TRUSTSTORE_LOCATION);
+                    String trustStoreType = eventAdapterConfiguration.getProperties().
+                            get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_SSL_TRUSTSTORE_TYPE);
+                    String trustStorePassword = eventAdapterConfiguration.getProperties().
+                            get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_SSL_TRUSTSTORE_PASSWORD);
+                    String sslVersion = eventAdapterConfiguration.getProperties().
+                            get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_SSL_VERSION);
 
-                    if (StringUtils.isEmpty(keyStoreLocation) || StringUtils.isEmpty(keyStoreType) || StringUtils.isEmpty(keyStorePassword) ||
-                            StringUtils.isEmpty(trustStoreLocation) || StringUtils.isEmpty(trustStoreType) || StringUtils.isEmpty(trustStorePassword)) {
+                    if (StringUtils.isEmpty(keyStoreLocation) || StringUtils.isEmpty(keyStoreType) ||
+                            StringUtils.isEmpty(keyStorePassword) || StringUtils.isEmpty(trustStoreLocation) ||
+                            StringUtils.isEmpty(trustStoreType) || StringUtils.isEmpty(trustStorePassword)) {
                         log.debug("Truststore and keystore information is not provided");
                         if (StringUtils.isNotEmpty(sslVersion)) {
                             connectionFactory.useSslProtocol(sslVersion);
@@ -108,10 +123,10 @@ public class RabbitMQAdapterListener implements Runnable {
                         TrustManagerFactory tmf = TrustManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
                         tmf.init(tks);
 
-                        SSLContext c = SSLContext.getInstance(sslVersion);
-                        c.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
+                        SSLContext context = SSLContext.getInstance(sslVersion);
+                        context.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
 
-                        connectionFactory.useSslProtocol(c);
+                        connectionFactory.useSslProtocol(context);
                     }
                 }
             } catch (IOException e) {
@@ -131,9 +146,11 @@ public class RabbitMQAdapterListener implements Runnable {
             }
         }
 
-        if (!StringUtils.isEmpty(eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.RABBITMQ_FACTORY_HEARTBEAT))) {
+        if (!StringUtils.isEmpty(eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.
+                RABBITMQ_FACTORY_HEARTBEAT))) {
             try {
-                int heartbeatValue = Integer.parseInt(eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.RABBITMQ_FACTORY_HEARTBEAT));
+                int heartbeatValue = Integer.parseInt(eventAdapterConfiguration.getProperties().
+                        get(RabbitMQEventAdapterConstants.RABBITMQ_FACTORY_HEARTBEAT));
                 connectionFactory.setRequestedHeartbeat(heartbeatValue);
             } catch (NumberFormatException e) {
                 log.warn("Number format error in reading heartbeat value. Proceeding with default");
@@ -150,21 +167,28 @@ public class RabbitMQAdapterListener implements Runnable {
         }
         connectionFactory.setUsername(rabbitmqBrokerConnectionConfiguration.getUsername());
         connectionFactory.setPassword(rabbitmqBrokerConnectionConfiguration.getPassword());
-        if (!StringUtils.isEmpty(eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.RABBITMQ_SERVER_VIRTUAL_HOST))) {
-            connectionFactory.setVirtualHost(eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.RABBITMQ_SERVER_VIRTUAL_HOST));
+        if (!StringUtils.isEmpty(eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.
+                RABBITMQ_SERVER_VIRTUAL_HOST))) {
+            connectionFactory.setVirtualHost(eventAdapterConfiguration.getProperties().
+                    get(RabbitMQEventAdapterConstants.RABBITMQ_SERVER_VIRTUAL_HOST));
         }
-        if (!StringUtils.isEmpty(eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_RETRY_COUNT))) {
+        if (!StringUtils.isEmpty(eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.
+                RABBITMQ_CONNECTION_RETRY_COUNT))) {
             try {
-                retryCountMax = Integer.parseInt(eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_RETRY_COUNT));
+                retryCountMax = Integer.parseInt(eventAdapterConfiguration.getProperties().
+                        get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_RETRY_COUNT));
             } catch (NumberFormatException e) {
                 log.warn("Number format error in reading retry count value. Proceeding with default value (3)", e);
             }
         }
-        if (!StringUtils.isEmpty(eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_RETRY_INTERVAL))) {
+        if (!StringUtils.isEmpty(eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.
+                RABBITMQ_CONNECTION_RETRY_INTERVAL))) {
             try {
-                retryInterval = Integer.parseInt(eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_RETRY_INTERVAL));
+                retryInterval = Integer.parseInt(eventAdapterConfiguration.getProperties().
+                        get(RabbitMQEventAdapterConstants.RABBITMQ_CONNECTION_RETRY_INTERVAL));
             } catch (NumberFormatException e) {
-                log.warn("Number format error in reading retry interval value. Proceeding with default value (30000ms)", e);
+                log.warn("Number format error in reading retry interval value. Proceeding with default value" +
+                        " (30000ms)", e);
             }
         }
     }
@@ -181,9 +205,11 @@ public class RabbitMQAdapterListener implements Runnable {
             channel = openChannel();
             //declaring queue
             RabbitMQUtils.declareQueue(connection, queueName, rabbitmqBrokerConnectionConfiguration.getDurable(),
-                    rabbitmqBrokerConnectionConfiguration.getExclusive(), rabbitmqBrokerConnectionConfiguration.getAutoDelete());
+                    rabbitmqBrokerConnectionConfiguration.getExclusive(), rabbitmqBrokerConnectionConfiguration.
+                            getAutoDelete());
             //declaring exchange
-            RabbitMQUtils.declareExchange(connection, exchangeName, exchangeType, rabbitmqBrokerConnectionConfiguration.getExchangeDurable());
+            RabbitMQUtils.declareExchange(connection, exchangeName, exchangeType, rabbitmqBrokerConnectionConfiguration.
+                    getExchangeDurable());
             channel.queueBind(queueName, exchangeName, routeKey);
             if (log.isDebugEnabled()) {
                 log.debug("Bind queue '" + queueName + "' to exchange '" + exchangeName +
@@ -191,13 +217,15 @@ public class RabbitMQAdapterListener implements Runnable {
             }
             queueingConsumer = new QueueingConsumer(channel);
             if (consumerTagString != null) {
-                channel.basicConsume(queueName, rabbitmqBrokerConnectionConfiguration.getAutoAck(), consumerTagString, queueingConsumer);
+                channel.basicConsume(queueName, rabbitmqBrokerConnectionConfiguration.getAutoAck(), consumerTagString,
+                        queueingConsumer);
                 if (log.isDebugEnabled()) {
                     log.debug("Start consuming queue '" + queueName + "' with consumer tag '" + consumerTagString +
                             "' for receiver " + adapterName);
                 }
             } else {
-                consumerTagString = channel.basicConsume(queueName, rabbitmqBrokerConnectionConfiguration.getAutoAck(), queueingConsumer);
+                consumerTagString = channel.basicConsume(queueName, rabbitmqBrokerConnectionConfiguration.getAutoAck(),
+                        queueingConsumer);
                 if (log.isDebugEnabled()) {
                     log.debug("Start consuming queue '" + queueName + "' with consumer tag '" + consumerTagString +
                             "' for receiver" + adapterName);
@@ -278,6 +306,11 @@ public class RabbitMQAdapterListener implements Runnable {
         }
     }
 
+    /**
+     * Close the connection and channel
+     *
+     * @param adapterName Name of the Adapter
+     */
     public void stopListener(String adapterName) {
 
         if (connection != null && connection.isOpen()) {
@@ -303,6 +336,11 @@ public class RabbitMQAdapterListener implements Runnable {
         }
     }
 
+    /**
+     * Making connection to the rabbitMQ broker
+     *
+     * @throws IOException
+     */
     private Connection makeConnection() throws IOException {
         Connection connection = null;
         try {
@@ -320,16 +358,23 @@ public class RabbitMQAdapterListener implements Runnable {
                     connection = RabbitMQUtils.createConnection(connectionFactory);
                     log.info("Successfully connected to RabbitMQ Broker" + adapterName);
                 } catch (InterruptedException e1) {
-                    handleException("Thread has been interrupted while trying to reconnect to RabbitMQ Broker " + adapterName, e1);
+                    handleException("Thread has been interrupted while trying to reconnect to RabbitMQ Broker " +
+                            adapterName, e1);
                 }
             }
             if (connection == null) {
-                handleException("Could not connect to RabbitMQ Broker" + adapterName + "Error while creating connection", e);
+                handleException("Could not connect to RabbitMQ Broker" + adapterName + "Error while creating " +
+                        "connection", e);
             }
         }
         return connection;
     }
 
+    /**
+     * Check connection is available or not and calling method to create connection
+     *
+     * @throws IOException
+     */
     private Connection getConnection() throws IOException {
         if (connection == null) {
             connection = makeConnection();
@@ -338,10 +383,16 @@ public class RabbitMQAdapterListener implements Runnable {
         return connection;
     }
 
+    /**
+     * Start the thread of adapter
+     */
     public void createConnection() {
         new Thread(this).start();
     }
 
+    /**
+     * Initialize the Adapter
+     */
     @Override
     public void run() {
         while (!connectionSucceeded) {
@@ -360,8 +411,6 @@ public class RabbitMQAdapterListener implements Runnable {
                 }
                 connectionSucceeded = true;
                 log.debug("RabbitMQ Connection successful in " + adapterName);
-            } catch (IOException e) {
-                handleException("Error initializing consumer for receiver" + adapterName, e);
             } finally {
                 stopListener(adapterName);
                 workerState = STATE_STOPPED;
@@ -369,22 +418,37 @@ public class RabbitMQAdapterListener implements Runnable {
         }
     }
 
+    /**
+     * Handle the exception by throwing the exception
+     *
+     * @param msg Error message of the exception.
+     * @param e   Exception Object
+     */
     private void handleException(String msg, Exception e) {
         log.error(msg, e);
         throw new RabbitMQException(msg, e);
     }
 
+    /**
+     * Handle the exception by throwing the exception
+     *
+     * @param msg Error message of the exception.
+     */
     private void handleException(String msg) {
         log.error(msg);
         throw new RabbitMQException(msg);
     }
 
-    private void waitForConnection() throws IOException {
+    /**
+     * Wait For Connection if any connection lost happened
+     */
+    private void waitForConnection() {
         int retryCount = 0;
         while (!connection.isOpen() && (workerState == STATE_STARTED)
                 && ((retryCountMax == -1) || (retryCount < retryCountMax))) {
             retryCount++;
-            log.info("Attempting to reconnect to RabbitMQ Broker for the receiver " + adapterName + " in" + retryInterval + " ms");
+            log.info("Attempting to reconnect to RabbitMQ Broker for the receiver " + adapterName + " in" +
+                    retryInterval + " ms");
             try {
                 Thread.sleep(retryInterval);
             } catch (InterruptedException e) {
@@ -395,10 +459,14 @@ public class RabbitMQAdapterListener implements Runnable {
             log.info("Successfully reconnected to RabbitMQ Broker for the receiver " + adapterName);
             initListener();
         } else {
-            handleException("Could not reconnect to the RabbitMQ Broker for the receiver " + adapterName + ". Connection is closed.");
+            handleException("Could not reconnect to the RabbitMQ Broker for the receiver " + adapterName + ". " +
+                    "Connection is closed.");
         }
     }
 
+    /**
+     * Open the Channel
+     */
     private Channel openChannel() {
         try {
             if (channel == null || !channel.isOpen()) {

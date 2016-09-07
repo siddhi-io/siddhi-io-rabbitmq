@@ -26,26 +26,57 @@ import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
 
+/**
+ * This class represents making connection by specifying queue and exchange to RabbtMQ broker.
+ */
 public class RabbitMQUtils {
 
     private static final Log log = LogFactory.getLog(RabbitMQUtils.class);
 
+    /**
+     * Creating Connection to the rabbitMQ broker
+     *
+     * @param factory Object of connection Factory class.
+     * @throws IOException
+     */
     public static Connection createConnection(ConnectionFactory factory) throws IOException {
         return factory.newConnection();
     }
 
+    /**
+     * This specifies whether the queue should remain declared even if the broker restarts.
+     *
+     * @param isDurable True or false value determining queue is durable or not.
+     */
     public static boolean isDurableQueue(String isDurable) {
         return !(isDurable != null && !isDurable.equals("")) || Boolean.parseBoolean(isDurable);
     }
 
+    /**
+     * This specifies whether the queue should be exclusive to one connection or whether it should be consumable by
+     * other connections.
+     *
+     * @param isExclusive True or false value determining queue is exclusive or not.
+     */
     public static boolean isExclusiveQueue(String isExclusive) {
         return isExclusive != null && !isExclusive.equals("") && Boolean.parseBoolean(isExclusive);
     }
 
+    /**
+     * This specifies whether the queue should be kept even if it is not being consumed anymore.
+     *
+     * @param isAutoDelete True or false value determining queue is auto delete or not.
+     */
     public static boolean isAutoDeleteQueue(String isAutoDelete) {
         return isAutoDelete != null && !isAutoDelete.equals("") && Boolean.parseBoolean(isAutoDelete);
     }
 
+    /**
+     * Check Whether Queue is available
+     *
+     * @param connection Connection to the RabbitMQ
+     * @param queueName Name of the queue
+     */
     public static boolean isQueueAvailable(Connection connection, String queueName) throws IOException {
         Channel channel = connection.createChannel();
         try {
@@ -90,19 +121,25 @@ public class RabbitMQUtils {
         }
     }
 
+    /**
+     *
+     * @param connection Connection to the RabbitMQ
+     * @param exchangeName Name of the exchange
+     * @param exchangeType Type of Exchange
+     * @param exchangeDurable Whether durable or not
+     * @throws IOException
+     */
     public static void declareExchange(Connection connection, String exchangeName, String exchangeType, String exchangeDurable) throws IOException {
         Boolean exchangeAvailable = false;
         Channel channel = connection.createChannel();
         try {
             // check availability of the named exchange.
-            // The server will raise an IOException
-            // if the named exchange already exists.
+            // The server will raise an IOException if the named exchange already exists.
             channel.exchangeDeclarePassive(exchangeName);
             exchangeAvailable = true;
         } catch (IOException e) {
             log.info("Exchange :" + exchangeName + " not found.Declaring exchange.");
         }
-
         if (!exchangeAvailable) {
             // Declare the named exchange if it does not exists.
             if (!channel.isOpen()) {
@@ -130,8 +167,14 @@ public class RabbitMQUtils {
         channel.close();
     }
 
-    public static void handleException(String message, Exception e) {
-        log.error(message, e);
-        throw new RabbitMQException(message, e);
+    /**
+     * Handle the exception by throwing the exception
+     *
+     * @param msg Error message of the exception.
+     * @param e   Exception Object
+     */
+    public static void handleException(String msg, Exception e) {
+        log.error(msg, e);
+        throw new RabbitMQException(msg, e);
     }
 }

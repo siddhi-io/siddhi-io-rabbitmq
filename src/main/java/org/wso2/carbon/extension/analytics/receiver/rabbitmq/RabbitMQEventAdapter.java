@@ -92,15 +92,18 @@ public class RabbitMQEventAdapter implements InputEventAdapter {
     public void destroy() {
     }
 
+    /**
+     * This method is checking object is instance of RabbitMQEventAdapter and adapter id.
+     * 
+     * @param object
+     * @return Boolean value
+     */
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof RabbitMQEventAdapter)) return false;
-
-        RabbitMQEventAdapter that = (RabbitMQEventAdapter) o;
-
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof RabbitMQEventAdapter)) return false;
+        RabbitMQEventAdapter that = (RabbitMQEventAdapter) object;
         return id.equals(that.id);
-
     }
 
     @Override
