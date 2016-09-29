@@ -34,7 +34,6 @@ public class RabbitMQEventAdapter implements InputEventAdapter {
     private final InputEventAdapterConfiguration eventAdapterConfiguration;
     private final String id = UUID.randomUUID().toString();
     private RabbitMQAdapterListener rabbitmqAdapterListener;
-
     public RabbitMQEventAdapter(InputEventAdapterConfiguration eventAdapterConfiguration,
                                 Map<String, String> globalProperties) {
         this.eventAdapterConfiguration = eventAdapterConfiguration;
@@ -49,9 +48,9 @@ public class RabbitMQEventAdapter implements InputEventAdapter {
     @Override
     public void init(InputEventAdapterListener eventAdapterListener) {
         RabbitMQBrokerConnectionConfiguration rabbitmqBrokerConnectionConfiguration;
-            rabbitmqBrokerConnectionConfiguration = new RabbitMQBrokerConnectionConfiguration(eventAdapterConfiguration);
-            rabbitmqAdapterListener = new RabbitMQAdapterListener(rabbitmqBrokerConnectionConfiguration, eventAdapterConfiguration,
-                    eventAdapterListener);
+        rabbitmqBrokerConnectionConfiguration = new RabbitMQBrokerConnectionConfiguration(eventAdapterConfiguration);
+        rabbitmqAdapterListener = new RabbitMQAdapterListener(rabbitmqBrokerConnectionConfiguration, eventAdapterConfiguration,
+                eventAdapterListener);
     }
 
     /**
@@ -94,7 +93,7 @@ public class RabbitMQEventAdapter implements InputEventAdapter {
 
     /**
      * This method is checking object is instance of RabbitMQEventAdapter and adapter id.
-     * 
+     *
      * @param object
      * @return Boolean value
      */

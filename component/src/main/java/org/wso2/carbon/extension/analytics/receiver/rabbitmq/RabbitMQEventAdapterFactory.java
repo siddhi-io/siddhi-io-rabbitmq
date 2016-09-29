@@ -53,7 +53,7 @@ public class RabbitMQEventAdapterFactory extends InputEventAdapterFactory {
     /**
      * Here the properties have to be defined for the receiver.
      * When defining properties you can implement to configure property values from the management console.
-     *TODO add comment what er are returning
+     *
      * @return List of Properties
      */
     @Override
@@ -302,7 +302,7 @@ public class RabbitMQEventAdapterFactory extends InputEventAdapterFactory {
      * and global properties which are common to every adapter type.
      *
      * @param inputEventAdapterConfiguration Configuration of Adapter
-     * @param map Global properties from the map
+     * @param map                            Global properties from the map
      * @return InputEventAdapter
      */
     @Override

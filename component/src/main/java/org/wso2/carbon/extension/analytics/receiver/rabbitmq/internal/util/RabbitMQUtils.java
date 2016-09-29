@@ -75,7 +75,7 @@ public class RabbitMQUtils {
      * Check Whether Queue is available
      *
      * @param connection Connection to the RabbitMQ
-     * @param queueName Name of the queue
+     * @param queueName  Name of the queue
      */
     public static boolean isQueueAvailable(Connection connection, String queueName) throws IOException {
         Channel channel = connection.createChannel();
@@ -91,11 +91,10 @@ public class RabbitMQUtils {
     }
 
     /**
-     *
-     * @param connection Connection to the RabbitMQ
-     * @param queueName Name of the queue
-     * @param isDurable Whether durable or not
-     * @param isExclusive Whether exclusive or not
+     * @param connection   Connection to the RabbitMQ
+     * @param queueName    Name of the queue
+     * @param isDurable    Whether durable or not
+     * @param isExclusive  Whether exclusive or not
      * @param isAutoDelete Whether queue is auto delete or not
      * @throws IOException
      */
@@ -122,10 +121,9 @@ public class RabbitMQUtils {
     }
 
     /**
-     *
-     * @param connection Connection to the RabbitMQ
-     * @param exchangeName Name of the exchange
-     * @param exchangeType Type of Exchange
+     * @param connection      Connection to the RabbitMQ
+     * @param exchangeName    Name of the exchange
+     * @param exchangeType    Type of Exchange
      * @param exchangeDurable Whether durable or not
      * @throws IOException
      */
