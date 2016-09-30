@@ -101,7 +101,9 @@ public class RabbitMQAdapterListener implements Runnable {
                     if (StringUtils.isEmpty(keyStoreLocation) || StringUtils.isEmpty(keyStoreType) ||
                             StringUtils.isEmpty(keyStorePassword) || StringUtils.isEmpty(trustStoreLocation) ||
                             StringUtils.isEmpty(trustStoreType) || StringUtils.isEmpty(trustStorePassword)) {
-                        log.debug("Truststore and keystore information is not provided");
+                        if (log.isDebugEnabled()) {
+                            log.debug("Truststore and keystore information is not provided");
+                        }
                         if (StringUtils.isNotEmpty(sslVersion)) {
                             connectionFactory.useSslProtocol(sslVersion);
                         } else {
@@ -275,7 +277,9 @@ public class RabbitMQAdapterListener implements Runnable {
                         eventAdapterListener.onEvent(msgText);
                         successful = true;
                     } else {
-                        log.debug("Queue delivery item is null for receiver " + adapterName);
+                        if (log.isDebugEnabled()) {
+                            log.debug("Queue delivery item is null for receiver " + adapterName);
+                        }
                     }
                 } catch (UnsupportedEncodingException e) {
                     handleException("Unsupported Encoding method", e);
@@ -410,7 +414,9 @@ public class RabbitMQAdapterListener implements Runnable {
                     }
                 }
                 connectionSucceeded = true;
-                log.debug("RabbitMQ Connection successful in " + adapterName);
+                if (log.isDebugEnabled()) {
+                    log.debug("RabbitMQ Connection successful in " + adapterName);
+                }
             } finally {
                 stopListener(adapterName);
                 workerState = STATE_STOPPED;

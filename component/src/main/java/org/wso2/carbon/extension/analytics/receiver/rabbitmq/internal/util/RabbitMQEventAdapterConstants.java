@@ -75,4 +75,5 @@ public final class RabbitMQEventAdapterConstants {
     public static final String CONSUMER_TAG_HINT = "consumer.tag.hint";
     public static final int DEFAULT_RETRY_INTERVAL = 30000;
     public static final int DEFAULT_RETRY_COUNT = 3;
+    public static final String DEFAULT_EXCHANGE_TYPE = "direct";
 }

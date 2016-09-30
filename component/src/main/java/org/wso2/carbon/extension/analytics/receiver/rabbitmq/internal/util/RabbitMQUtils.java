@@ -156,7 +156,7 @@ public class RabbitMQUtils {
                                 exchangeType, true);
                     }
                 } else {
-                    channel.exchangeDeclare(exchangeName, "direct", true);
+                    channel.exchangeDeclare(exchangeName, RabbitMQEventAdapterConstants.DEFAULT_EXCHANGE_TYPE, true);
                 }
             } catch (IOException e) {
                 handleException("Error occurred while declaring exchange.", e);

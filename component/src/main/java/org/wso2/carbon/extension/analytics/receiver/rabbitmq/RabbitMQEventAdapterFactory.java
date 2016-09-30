@@ -23,6 +23,9 @@ import org.wso2.carbon.extension.analytics.receiver.rabbitmq.internal.util.Rabbi
 
 import java.util.*;
 
+/**
+ * This class represents the properties we need to get from the UI configuration for define Receiver.
+ */
 public class RabbitMQEventAdapterFactory extends InputEventAdapterFactory {
     private ResourceBundle resourceBundle = ResourceBundle.getBundle("Resources", Locale.getDefault());
 
