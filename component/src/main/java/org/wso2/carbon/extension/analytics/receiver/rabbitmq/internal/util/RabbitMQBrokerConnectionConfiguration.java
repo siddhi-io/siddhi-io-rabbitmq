@@ -21,6 +21,7 @@ import org.wso2.carbon.event.input.adapter.core.InputEventAdapterConfiguration;
 
 /**
  * Getting the connection values from the adapter configuration.
+ * @since 1.0.1
  */
 public class RabbitMQBrokerConnectionConfiguration {
 
@@ -107,7 +108,6 @@ public class RabbitMQBrokerConnectionConfiguration {
     }
 
     public RabbitMQBrokerConnectionConfiguration(InputEventAdapterConfiguration eventAdapterConfiguration) {
-
         this.username = eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.RABBITMQ_SERVER_USERNAME);
         this.port = eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.RABBITMQ_SERVER_PORT);
         this.password = eventAdapterConfiguration.getProperties().get(RabbitMQEventAdapterConstants.RABBITMQ_SERVER_PASSWORD);

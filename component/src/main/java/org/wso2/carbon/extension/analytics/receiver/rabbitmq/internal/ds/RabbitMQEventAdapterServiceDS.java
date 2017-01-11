@@ -26,6 +26,7 @@ import org.wso2.carbon.extension.analytics.receiver.rabbitmq.RabbitMQEventAdapte
 
 /**
  * @scr.component name="input.rabbitMQEventAdapterService.component" immediate="true"
+ * @since 1.0.1
  */
 public class RabbitMQEventAdapterServiceDS {
 
@@ -37,17 +38,14 @@ public class RabbitMQEventAdapterServiceDS {
      * @param context
      */
     protected void activate(ComponentContext context) {
-
         try {
             InputEventAdapterFactory rabbitmqEventEventAdapterFactory = new RabbitMQEventAdapterFactory();
             context.getBundleContext().registerService(InputEventAdapterFactory.class.getName(), rabbitmqEventEventAdapterFactory, null);
             if (log.isDebugEnabled()) {
                 log.debug("Successfully deployed the input RabbitMQ adapter service");
             }
-
         } catch (RuntimeException e) {
             log.error("Can not create the input RabbitMQ adapter service ", e);
         }
     }
-
 }

@@ -28,6 +28,7 @@ import java.util.UUID;
 
 /**
  * Input RabbitMQEventAdapter will be used to receive events with AMQP protocol using specified broker and queue.
+ * @since 1.0.1
  */
 public class RabbitMQEventAdapter implements InputEventAdapter {
 
@@ -130,5 +131,4 @@ public class RabbitMQEventAdapter implements InputEventAdapter {
     public boolean isPolling() {
         return true;
     }
-
 }
