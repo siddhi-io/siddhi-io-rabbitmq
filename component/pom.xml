@@ -14,7 +14,6 @@
  ~ See the License for the specific language governing permissions and
  ~ limitations under the License.
 -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.wso2.carbon.extension.analytics.receiver</groupId>
@@ -25,7 +24,6 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.wso2.carbon.extension.analytics.receiver.rabbitmq</artifactId>
     <version>1.0.1-SNAPSHOT</version>
-
     <packaging>bundle</packaging>
     <name>WSO2 Carbon - Analytics Event Receiver Library For RabbitMQ</name>
     <url>http://wso2.org</url>
@@ -105,11 +103,11 @@
                         <Export-Package>
                             !org.wso2.carbon.extension.analytics.receiver.rabbitmq.internal,
                             !org.wso2.carbon.extension.analytics.receiver.rabbitmq.internal.*,
-                            org.wso2.carbon.extension.analytics.receiver.rabbitmq.*,
+                            org.wso2.carbon.extension.analytics.receiver.rabbitmq.*; version="${project.version}",
                         </Export-Package>
                         <Import-Package>
-                            org.wso2.carbon.event.input.adapter.core,
-                            org.wso2.carbon.event.input.adapter.core.*,
+                            org.wso2.carbon.event.input.adapter.core; version=5.0.9,
+                            org.wso2.carbon.event.input.adapter.core.*; version=5.0.9,
                             !javax.xml.namespace,
                             javax.xml.namespace; version=0.0.0,
                             *;resolution:=optional,

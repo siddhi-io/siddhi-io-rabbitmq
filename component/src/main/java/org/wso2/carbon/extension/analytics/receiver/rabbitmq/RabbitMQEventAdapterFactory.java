@@ -15,19 +15,21 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-
 package org.wso2.carbon.extension.analytics.receiver.rabbitmq;
 
 import org.wso2.carbon.event.input.adapter.core.*;
 import org.wso2.carbon.extension.analytics.receiver.rabbitmq.internal.util.RabbitMQEventAdapterConstants;
-
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.Map;
 /**
  * This class represents the properties we need to get from the UI configuration for define Receiver.
+ * @since 1.0.1
  */
 public class RabbitMQEventAdapterFactory extends InputEventAdapterFactory {
-    private ResourceBundle resourceBundle = ResourceBundle.getBundle("Resources", Locale.getDefault());
+    private ResourceBundle resourceBundle = ResourceBundle.getBundle(RabbitMQEventAdapterConstants.RESOURCES, Locale.getDefault());
 
     /**
      * This method returns the receiver type as a String.

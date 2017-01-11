@@ -21,6 +21,7 @@ package org.wso2.carbon.extension.analytics.receiver.rabbitmq.internal.util;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -28,6 +29,7 @@ import java.io.IOException;
 
 /**
  * This class represents making connection by specifying queue and exchange to RabbtMQ broker.
+ * @since 1.0.1
  */
 public class RabbitMQUtils {
 
@@ -49,7 +51,7 @@ public class RabbitMQUtils {
      * @param isDurable True or false value determining queue is durable or not.
      */
     public static boolean isDurableQueue(String isDurable) {
-        return !(isDurable != null && !isDurable.equals("")) || Boolean.parseBoolean(isDurable);
+        return StringUtils.isNotEmpty(isDurable) || Boolean.parseBoolean(isDurable);
     }
 
     /**
@@ -59,7 +61,7 @@ public class RabbitMQUtils {
      * @param isExclusive True or false value determining queue is exclusive or not.
      */
     public static boolean isExclusiveQueue(String isExclusive) {
-        return isExclusive != null && !isExclusive.equals("") && Boolean.parseBoolean(isExclusive);
+        return StringUtils.isNotEmpty(isExclusive) && Boolean.parseBoolean(isExclusive);
     }
 
     /**
@@ -68,7 +70,7 @@ public class RabbitMQUtils {
      * @param isAutoDelete True or false value determining queue is auto delete or not.
      */
     public static boolean isAutoDeleteQueue(String isAutoDelete) {
-        return isAutoDelete != null && !isAutoDelete.equals("") && Boolean.parseBoolean(isAutoDelete);
+        return StringUtils.isNotEmpty(isAutoDelete) && Boolean.parseBoolean(isAutoDelete);
     }
 
     /**
@@ -110,7 +112,9 @@ public class RabbitMQUtils {
             // Declare the named queue if it does not exists.
             if (!channel.isOpen()) {
                 channel = connection.createChannel();
-                log.debug("Channel is not open. Creating a new channel.");
+                if (log.isDebugEnabled()) {
+                    log.debug("Channel is not open. Creating a new channel.");
+                }
             }
             try {
                 channel.queueDeclare(queueName, isDurableQueue(isDurable), isExclusiveQueue(isExclusive), isAutoDeleteQueue(isAutoDelete), null);
@@ -136,18 +140,19 @@ public class RabbitMQUtils {
             channel.exchangeDeclarePassive(exchangeName);
             exchangeAvailable = true;
         } catch (IOException e) {
-            log.info("Exchange :" + exchangeName + " not found.Declaring exchange.");
+            log.error("Exchange :" + exchangeName + " not found.Declaring exchange.");
         }
         if (!exchangeAvailable) {
             // Declare the named exchange if it does not exists.
             if (!channel.isOpen()) {
                 channel = connection.createChannel();
-                log.debug("Channel is not open. Creating a new channel.");
+                if (log.isDebugEnabled()) {
+                    log.debug("Channel is not open. Creating a new channel.");
+                }
             }
             try {
-                if (exchangeType != null
-                        && !exchangeType.equals("")) {
-                    if (exchangeDurable != null && !exchangeDurable.equals("")) {
+                if (StringUtils.isNotEmpty(exchangeType)) {
+                    if (StringUtils.isNotEmpty(exchangeDurable)) {
                         channel.exchangeDeclare(exchangeName,
                                 exchangeType,
                                 Boolean.parseBoolean(exchangeDurable));

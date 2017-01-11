@@ -37,6 +37,7 @@ import java.security.cert.CertificateException;
 /**
  * This is the listener which directly interacts with the external RabbitMQ broker and making connection with RabbitMQ
  * broker and listen messages from Broker.
+ * @since 1.0.1
  */
 public class RabbitMQAdapterListener implements Runnable {
     private static final Log log = LogFactory.getLog(RabbitMQAdapterListener.class);
