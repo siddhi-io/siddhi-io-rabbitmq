@@ -11,7 +11,6 @@ extra:
     accent: teal
 pages:
 - Welcome to WSO2 Siddhi IO RabbitMQ: index.md
-- Api: null
 - License: license.md
 - API Docs:
   - 1.0.0-SNAPSHOT: api/1.0.0-SNAPSHOT.md

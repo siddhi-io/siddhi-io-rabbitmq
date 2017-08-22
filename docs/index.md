@@ -1,4 +1,4 @@
-# analytics-receiver-rabbitmq
+# siddhi-io-rabbitmq
 
 ## API Docs:
 
