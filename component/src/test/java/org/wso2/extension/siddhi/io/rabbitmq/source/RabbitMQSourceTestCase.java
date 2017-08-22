@@ -375,7 +375,7 @@ public class RabbitMQSourceTestCase {
 
                                 "@info(name = 'query2') " +
                                 "@source(type='rabbitmq', uri ='amqp://guest:guest@172.17.0.2:5672', " +
-                                "exchange.name = 'IBM', " +
+                                "exchange.name = 'IBM', queue.name = 'testCase', " +
                                 "@map(type='xml'))" +
                                 "Define stream FooStream2 (symbol string, price float, volume long); " +
 
@@ -425,6 +425,7 @@ public class RabbitMQSourceTestCase {
         AssertJUnit.assertTrue(eventArrived1);
 
         executionPlanRuntime.shutdown();
+        siddhiAppRuntime.shutdown();
 
     }
 

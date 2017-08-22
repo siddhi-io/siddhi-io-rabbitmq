@@ -89,7 +89,7 @@ public class RabbitMQConsumer {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
                                        byte[] body) {
-                try {
+                 try {
                     if (isPaused) { //spurious wakeup condition is deliberately traded off for performance
                         lock.lock();
                         try {
@@ -97,20 +97,18 @@ public class RabbitMQConsumer {
                                 condition.await();
                             }
                         } catch (InterruptedException ie) {
-                            Thread.currentThread().interrupt();
+                        Thread.currentThread().interrupt();
                         } finally {
                             lock.unlock();
                         }
                     }
-                    String message = new String(body, "UTF-8");
-                    sourceEventListener.onEvent(message, null);
+                 String message = new String(body, "UTF-8");
+                 sourceEventListener.onEvent(message, null);
                 } catch (IOException e) {
-                    log.error("Error in receiving the message from the RabbitMQ broker " +
-                            "in " + sourceEventListener, e);
+                    log.error("Error in receiving the message from the RabbitMQ broker in "
+                        + sourceEventListener, e);
                 }
-
             }
-
         };
         channel.basicConsume(queueName, true, consumer);
     }
