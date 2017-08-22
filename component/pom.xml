@@ -62,11 +62,6 @@
             <version>${testing.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.wso2.extension.siddhi.io.file</groupId>
-            <artifactId>siddhi-io-file</artifactId>
-            <version>1.0.0-M1</version>
-        </dependency>
     </dependencies>
     <build>
         <plugins>

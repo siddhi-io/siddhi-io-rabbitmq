@@ -23,7 +23,6 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import org.apache.log4j.Logger;
-import org.wso2.extension.siddhi.io.file.util.Constants;
 import org.wso2.extension.siddhi.io.rabbitmq.util.RabbitMQConstants;
 import org.wso2.extension.siddhi.io.rabbitmq.util.RabbitMQSinkUtil;
 import org.wso2.siddhi.annotation.Example;
@@ -219,7 +218,7 @@ import javax.net.ssl.TrustManagerFactory;
                                 "uses the default client-trustore in the " +
                                 "`${carbon.home}/resources/security` directory.",
                         type = {DataType.STRING},
-                        optional = true,  defaultValue = "${carbon.home}/resources/security/client-truststore.jks"),
+                        optional = true, defaultValue = "${carbon.home}/resources/security/client-truststore.jks"),
                 @Parameter(
                         name = "tls.truststore.password",
                         description = "The password for the client-truststore. A custom password can be specified " +
@@ -341,8 +340,8 @@ public class RabbitMQSink extends Sink {
         this.type = optionHolder.validateAndGetStaticValue(RabbitMQConstants.RABBITMQ_TYPE,
                 RabbitMQConstants.NULL);
         this.tlsEnabled = Boolean.parseBoolean(optionHolder.validateAndGetStaticValue
-                    (RabbitMQConstants.RABBITMQ_CONNECTION_TLS_ENABLED,
-                            RabbitMQConstants.DEFAULT_EXCHANGE_TLS_ENABLED));
+                (RabbitMQConstants.RABBITMQ_CONNECTION_TLS_ENABLED,
+                        RabbitMQConstants.DEFAULT_EXCHANGE_TLS_ENABLED));
 
         this.routingKeyOption = optionHolder.getOrCreateOption
                 (RabbitMQConstants.RABBITMQ_ROUTINGKEY, RabbitMQConstants.EMPTY_STRING);
@@ -442,7 +441,7 @@ public class RabbitMQSink extends Sink {
         }
     }
 
-        @Override
+    @Override
     public Map<String, Object> currentState() {
         return null;
     }
@@ -460,7 +459,7 @@ public class RabbitMQSink extends Sink {
             if (payload instanceof byte[]) {
                 byteArray = (byte[]) payload;
             } else {
-                byteArray = payload.toString().getBytes(Constants.UTF_8);
+                byteArray = payload.toString().getBytes("UTF-8");
             }
             String exchangeName = exchangeNameOption.getValue(dynamicOptions);
             String exchangeType = exchangeTypeOption.getValue(dynamicOptions);
@@ -514,8 +513,8 @@ public class RabbitMQSink extends Sink {
 
             channel.basicPublish(exchangeName, routingKey, props, byteArray);
         } catch (ParseException e) {
-           throw new SiddhiAppCreationException("Invalid timestamp format defined in " + timestampString + " . " +
-                   "Please include as dd/MM/yyyy in " + streamDefinition, e);
+            throw new SiddhiAppCreationException("Invalid timestamp format defined in " + timestampString + " . " +
+                    "Please include as dd/MM/yyyy in " + streamDefinition, e);
         } catch (UnsupportedEncodingException e) {
             throw new SiddhiAppCreationException("Received payload does not support UTF-8 encoding. Hence " +
                     "dropping the event", e);
@@ -557,7 +556,7 @@ public class RabbitMQSink extends Sink {
                         "" + streamDefinition + ".");
             } catch (IOException e) {
                 log.error("Error in disconnecting the uri = " + publisherURI + " in " +
-                    "" + streamDefinition + ".");
+                        "" + streamDefinition + ".");
             }
         }
     }
