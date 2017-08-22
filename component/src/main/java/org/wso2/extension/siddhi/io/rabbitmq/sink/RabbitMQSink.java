@@ -460,9 +460,7 @@ public class RabbitMQSink extends Sink {
             if (payload instanceof byte[]) {
                 byteArray = (byte[]) payload;
             } else {
-                StringBuilder sb = new StringBuilder();
-                sb.append(payload.toString()).append("\n");
-                byteArray = sb.toString().getBytes(Constants.UTF_8);
+                byteArray = payload.toString().getBytes(Constants.UTF_8);
             }
             String exchangeName = exchangeNameOption.getValue(dynamicOptions);
             String exchangeType = exchangeTypeOption.getValue(dynamicOptions);
