@@ -36,6 +36,14 @@
     <version>1.0.0-SNAPSHOT</version>
     <name>Siddhi IO RabbitMQ Extension Parent</name>
 
+    <scm>
+        <connection>scm:git:https://github.com/wso2-extensions/siddhi-io-rabbitmq.git</connection>
+        <url>https://github.com/wso2-extensions/siddhi-io-rabbitmq.git</url>
+        <developerConnection>scm:git:https://github.com/wso2-extensions/siddhi-io-rabbitmq.git
+        </developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
     <properties>
         <siddhi.version>4.0.0-M33</siddhi.version>
         <log4j.version>1.2.17.wso2v1</log4j.version>
