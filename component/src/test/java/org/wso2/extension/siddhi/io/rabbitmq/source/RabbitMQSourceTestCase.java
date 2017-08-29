@@ -2,7 +2,7 @@ package org.wso2.extension.siddhi.io.rabbitmq.source;
 
 
 import org.apache.log4j.Logger;
-import org.testng.Assert;
+import org.testng.AssertJUnit;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;;
 import org.wso2.siddhi.core.SiddhiAppRuntime;
@@ -73,8 +73,8 @@ public class RabbitMQSourceTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
         Thread.sleep(10000);
-        Assert.assertEquals(3, count);
-        Assert.assertTrue(eventArrived);
+        AssertJUnit.assertEquals(3, count);
+        AssertJUnit.assertTrue(eventArrived);
 
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
@@ -128,8 +128,8 @@ public class RabbitMQSourceTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
         Thread.sleep(10000);
-        Assert.assertEquals(3, count);
-        Assert.assertTrue(eventArrived);
+        AssertJUnit.assertEquals(3, count);
+        AssertJUnit.assertTrue(eventArrived);
 
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
@@ -185,8 +185,8 @@ public class RabbitMQSourceTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
         Thread.sleep(10000);
-        Assert.assertEquals(3, count);
-        Assert.assertTrue(eventArrived);
+        AssertJUnit.assertEquals(3, count);
+        AssertJUnit.assertTrue(eventArrived);
 
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
@@ -239,8 +239,8 @@ public class RabbitMQSourceTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
         Thread.sleep(10000);
-        Assert.assertEquals(3, count);
-        Assert.assertTrue(eventArrived);
+        AssertJUnit.assertEquals(3, count);
+        AssertJUnit.assertTrue(eventArrived);
 
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
@@ -294,8 +294,8 @@ public class RabbitMQSourceTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
         Thread.sleep(10000);
-        Assert.assertEquals(3, count);
-        Assert.assertTrue(eventArrived);
+        AssertJUnit.assertEquals(3, count);
+        AssertJUnit.assertTrue(eventArrived);
 
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
@@ -348,8 +348,8 @@ public class RabbitMQSourceTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
         Thread.sleep(10000);
-        Assert.assertEquals(3, count);
-        Assert.assertTrue(eventArrived);
+        AssertJUnit.assertEquals(3, count);
+        AssertJUnit.assertTrue(eventArrived);
 
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
@@ -419,10 +419,10 @@ public class RabbitMQSourceTestCase {
         fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
         fooStream.send(new Object[]{"IBM", 75.6f, 100L});
         Thread.sleep(10000);
-        Assert.assertEquals(1, count);
-        Assert.assertTrue(eventArrived);
-        Assert.assertEquals(1, count1);
-        Assert.assertTrue(eventArrived1);
+        AssertJUnit.assertEquals(1, count);
+        AssertJUnit.assertTrue(eventArrived);
+        AssertJUnit.assertEquals(1, count1);
+        AssertJUnit.assertTrue(eventArrived1);
 
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();

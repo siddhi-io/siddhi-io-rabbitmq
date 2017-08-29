@@ -2,7 +2,7 @@ package org.wso2.extension.siddhi.io.rabbitmq.source;
 
 
 import org.apache.log4j.Logger;
-import org.testng.Assert;
+import org.testng.AssertJUnit;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;;
 import org.wso2.siddhi.core.SiddhiAppRuntime;
@@ -72,8 +72,8 @@ public class RabbitMQExchangeTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
         Thread.sleep(10000);
-        Assert.assertEquals(3, count);
-        Assert.assertTrue(eventArrived);
+        AssertJUnit.assertEquals(3, count);
+        AssertJUnit.assertTrue(eventArrived);
 
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
@@ -127,8 +127,8 @@ public class RabbitMQExchangeTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
         Thread.sleep(10000);
-        Assert.assertEquals(3, count);
-        Assert.assertTrue(eventArrived);
+        AssertJUnit.assertEquals(3, count);
+        AssertJUnit.assertTrue(eventArrived);
 
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();

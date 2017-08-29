@@ -20,7 +20,7 @@
 package org.wso2.extension.siddhi.io.rabbitmq.sink;
 
 import org.apache.log4j.Logger;
-import org.testng.Assert;
+import org.testng.AssertJUnit;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.wso2.siddhi.core.SiddhiAppRuntime;
@@ -67,8 +67,8 @@ public class RabbitMQSinkTestCase {
         Thread.sleep(10000);
         count = RabbitMQSinkTestUtil.getCount();
         eventArrived = RabbitMQSinkTestUtil.geteventArrived();
-        Assert.assertEquals(3, count);
-        Assert.assertTrue(eventArrived);
+        AssertJUnit.assertEquals(3, count);
+        AssertJUnit.assertTrue(eventArrived);
         executionPlanRuntime.shutdown();
     }
 
@@ -102,8 +102,8 @@ public class RabbitMQSinkTestCase {
         Thread.sleep(10000);
         count = RabbitMQSinkTestUtil.getCount();
         eventArrived = RabbitMQSinkTestUtil.geteventArrived();
-        Assert.assertEquals(3, count);
-        Assert.assertTrue(eventArrived);
+        AssertJUnit.assertEquals(3, count);
+        AssertJUnit.assertTrue(eventArrived);
         executionPlanRuntime.shutdown();
 
     }
@@ -119,14 +119,14 @@ public class RabbitMQSinkTestCase {
                         "define stream FooStream (symbol string, price float, volume long); " +
                         "@info(name = 'query1') " +
                         "@sink(type ='rabbitmq', uri = 'amqp://guest:guest@172.17.0.2:5672', " +
-                        "exchange.name = 'topictest', exchange.type='topic', exchange.durable.enabled= 'true', " +
+                        "exchange.name = 'topicRouting', exchange.type='topic', " +
                         "routing.key= 'topic.test', " +
                         "@map(type='xml'))" +
                         "Define stream BarStream (symbol string, price float, volume long);" +
                         "from FooStream select symbol, price, volume insert into BarStream;");
         InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream");
 
-        RabbitMQSinkTestUtil.consumer("topictest", "topic", true,
+        RabbitMQSinkTestUtil.consumer("topicRouting", "topic", false,
                 false, "topic.*", eventArrived, count);
 
         executionPlanRuntime.start();
@@ -137,8 +137,8 @@ public class RabbitMQSinkTestCase {
 
         count = RabbitMQSinkTestUtil.getCount();
         eventArrived = RabbitMQSinkTestUtil.geteventArrived();
-        Assert.assertEquals(3, count);
-        Assert.assertTrue(eventArrived);
+        AssertJUnit.assertEquals(3, count);
+        AssertJUnit.assertTrue(eventArrived);
 
         executionPlanRuntime.shutdown();
 
@@ -155,13 +155,13 @@ public class RabbitMQSinkTestCase {
                         "define stream FooStream (symbol string, price float, volume long); " +
                         "@info(name = 'query1') " +
                         "@sink(type ='rabbitmq', uri = 'amqp://guest:guest@172.17.0.2:5672', " +
-                        "exchange.name = 'fanout', exchange.type = 'fanout', exchange.durable.enabled = 'true', " +
+                        "exchange.name = 'fanoutTest', exchange.type = 'fanout', " +
                         "@map(type='xml'))" +
                         "Define stream BarStream (symbol string, price float, volume long);" +
                         "from FooStream select symbol, price, volume insert into BarStream;");
         InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream");
 
-        RabbitMQSinkTestUtil.consumer("fanout", "fanout", false,
+        RabbitMQSinkTestUtil.consumer("fanoutTest", "fanout", false,
                 false, "", eventArrived, count);
 
         executionPlanRuntime.start();
@@ -172,8 +172,8 @@ public class RabbitMQSinkTestCase {
 
         count = RabbitMQSinkTestUtil.getCount();
         eventArrived = RabbitMQSinkTestUtil.geteventArrived();
-        Assert.assertEquals(3, count);
-        Assert.assertTrue(eventArrived);
+        AssertJUnit.assertEquals(3, count);
+        AssertJUnit.assertTrue(eventArrived);
 
         executionPlanRuntime.shutdown();
 
@@ -190,14 +190,15 @@ public class RabbitMQSinkTestCase {
                         "define stream FooStream (symbol string, price float, volume long); " +
                         "@info(name = 'query1') " +
                         "@sink(type ='rabbitmq', uri ='amqp://guest:guest@172.17.0.2:5672', " +
-                        "exchange.name = 'headers', exchange.type = 'headers', headers= \"'A:1','B:2'\", " +
+                        "exchange.name = 'headersTest', exchange.type = 'headers', headers= \"'A:1','B:2'\", " +
+                        "exchange.autodelete.enabled = 'true', " +
                         "@map(type='xml'))" +
                         "Define stream BarStream (symbol string, price float, volume long);" +
                         "from FooStream select symbol, price, volume insert into BarStream;");
         InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream");
 
-        RabbitMQSinkTestUtil.consumer("headers", "headers", false,
-                false, "", eventArrived, count);
+        RabbitMQSinkTestUtil.consumer("headersTest", "headers", false,
+                true, "", eventArrived, count);
 
         executionPlanRuntime.start();
         fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
@@ -207,8 +208,8 @@ public class RabbitMQSinkTestCase {
 
         count = RabbitMQSinkTestUtil.getCount();
         eventArrived = RabbitMQSinkTestUtil.geteventArrived();
-        Assert.assertEquals(3, count);
-        Assert.assertTrue(eventArrived);
+        AssertJUnit.assertEquals(3, count);
+        AssertJUnit.assertTrue(eventArrived);
 
         executionPlanRuntime.shutdown();
 
@@ -294,8 +295,8 @@ public class RabbitMQSinkTestCase {
 
      count = RabbitMQSinkTestUtil.getCount();
      eventArrived = RabbitMQSinkTestUtil.geteventArrived();
-     Assert.assertEquals(3, count);
-     Assert.assertTrue(eventArrived);
+     AssertJunit.assertEquals(3, count);
+     AssertJunit.assertTrue(eventArrived);
 
      executionPlanRuntime.shutdown();
 
