@@ -2,7 +2,7 @@ package org.wso2.extension.siddhi.io.rabbitmq.source;
 
 
 import org.apache.log4j.Logger;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;;
 import org.wso2.siddhi.core.SiddhiAppRuntime;
@@ -29,7 +29,7 @@ public class RabbitMQQueueTestCase {
         eventArrived1 = false;
     }
 
-    @Test
+    /*@Test
     public void rabbitmqQueueConsumerTest() throws InterruptedException {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Sink and Source test when queue name is provided");
@@ -78,10 +78,9 @@ public class RabbitMQQueueTestCase {
         expected.add("WSO2");
         expected.add("IBM");
         expected.add("WSO2");
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
-        AssertJUnit.assertEquals("RabbitMQ Source expected input not received",
-                expected, receivedEventNameList);
+        Assert.assertEquals(3, count);
+        Assert.assertTrue(eventArrived);
+        Assert.assertEquals(expected, receivedEventNameList);
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
@@ -138,10 +137,9 @@ public class RabbitMQQueueTestCase {
         expected.add("WSO2");
         expected.add("IBM");
         expected.add("WSO2");
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
-        AssertJUnit.assertEquals("RabbitMQ Source expected input not received",
-                expected, receivedEventNameList);
+        Assert.assertEquals(3, count);
+        Assert.assertTrue(eventArrived);
+        Assert.assertEquals(expected, receivedEventNameList);
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
@@ -198,10 +196,9 @@ public class RabbitMQQueueTestCase {
         expected.add("WSO2");
         expected.add("IBM");
         expected.add("WSO2");
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
-        AssertJUnit.assertEquals("RabbitMQ Source expected input not received",
-                expected, receivedEventNameList);
+        Assert.assertEquals(3, count);
+        Assert.assertTrue(eventArrived);
+        Assert.assertEquals(expected, receivedEventNameList);
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
@@ -254,9 +251,8 @@ public class RabbitMQQueueTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
         Thread.sleep(10000);
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
-
+        Assert.assertEquals(3, count);
+        Assert.assertTrue(eventArrived);
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
@@ -327,14 +323,14 @@ public class RabbitMQQueueTestCase {
         fooStream.send(new Object[]{"IBM", 75.6f, 100L});
         fooStream.send(new Object[]{"WSO2", 57.6f, 100L});
         Thread.sleep(10000);
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
-        AssertJUnit.assertEquals(3, count1);
-        AssertJUnit.assertTrue(eventArrived1);
+        Assert.assertEquals(3, count);
+        Assert.assertTrue(eventArrived);
+        Assert.assertEquals(3, count1);
+        Assert.assertTrue(eventArrived1);
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
-    }
+    }*/
 
     @Test
     public void rabbitmqMultipleSourceWithSameQueueTest() throws InterruptedException {
@@ -401,10 +397,10 @@ public class RabbitMQQueueTestCase {
         fooStream.send(new Object[]{"IBM", 75.6f, 100L});
         fooStream.send(new Object[]{"WSO2", 57.6f, 100L});
         Thread.sleep(10000);
-        AssertJUnit.assertEquals(2, count);
-        AssertJUnit.assertTrue(eventArrived);
-        AssertJUnit.assertEquals(1, count1);
-        AssertJUnit.assertTrue(eventArrived1);
+        Assert.assertEquals(2, count);
+        Assert.assertTrue(eventArrived);
+        Assert.assertEquals(1, count1);
+        Assert.assertTrue(eventArrived1);
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
