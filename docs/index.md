@@ -3,7 +3,15 @@ siddhi-io-rabbitmq
 
 The **siddhi-io-rabbitmq** is an extension to <a target="_blank" href="https://wso2.github.io/siddhi">Siddhi</a> that publish and receive events from rabbitmq broker.
 
+Find some useful links below:
+
+* <a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq">Source code</a>
+* <a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/releases">Releases</a>
+* <a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/issues">Issue tracker</a>
+
 ## Latest API Docs 
+
+Latest API Docs is <a target="_blank" href="./api/1.0.1-SNAPSHOT">1.0.1-SNAPSHOT</a>.
 
 ## How to use 
 
@@ -26,16 +34,23 @@ The **siddhi-io-rabbitmq** is an extension to <a target="_blank" href="https://w
 ```
 
 ## Jenkins Build Status
+---
+
+|  Branch | Build Status |
+| :------ |:------------ | 
+| master  | [![Build Status](https://wso2.org/jenkins/job/siddhi/job/siddhi-io-rabbitmq/badge/icon)](https://wso2.org/jenkins/job/siddhi/job/siddhi-io-rabbitmq/) |
 
 ---
 
 ## Features
 
+* <a target="_blank" href="./api/1.0.1-SNAPSHOT/#rabbitmq-source">rabbitmq</a> *(<a target="_blank" href="https://wso2.github.io/siddhi/documentation/siddhi-4.0/#sources">Source</a>)*<br><div style="padding-left: 1em;"><p>The rabbitmq source receives the events from the rabbitmq broker using the AMQP protocol. </p></div>
+* <a target="_blank" href="./api/1.0.1-SNAPSHOT/#rabbitmq-sink">rabbitmq</a> *(<a target="_blank" href="https://wso2.github.io/siddhi/documentation/siddhi-4.0/#sinks">Sink</a>)*<br><div style="padding-left: 1em;"><p>The rabbitmq sink pushes the events into a rabbitmq broker using the AMQP protocol</p></div>
 
 ## How to Contribute
  
   * Please report issues at <a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/issues">GitHub Issue Tracker</a>.
-  * Send your bug fixes pull requests to <a target="_blank" href="https://github.com/wso2-extensions/siddhi-execution-unique/tree/master">master branch</a>. 
+  * Send your bug fixes pull requests to <a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/tree/master">master branch</a>. 
  
 ## Contact us 
 
@@ -52,8 +67,3 @@ The **siddhi-io-rabbitmq** is an extension to <a target="_blank" href="https://w
 * We are committed to ensuring support for this extension in production. Our unique approach ensures that all support leverages our open development methodology and is provided by the very same engineers who build the technology. 
 
 * For more details and to take advantage of this unique opportunity contact us via <a target="_blank" href="http://wso2.com/support?utm_source=gitanalytics&utm_campaign=gitanalytics_Jul17">http://wso2.com/support/</a>. 
-
-## API Docs:
-
-1. <a href="./api/1.0.0-SNAPSHOT">1.0.0-SNAPSHOT</a>
-1. <a href="./api/1.0.1-SNAPSHOT">1.0.1-SNAPSHOT</a>

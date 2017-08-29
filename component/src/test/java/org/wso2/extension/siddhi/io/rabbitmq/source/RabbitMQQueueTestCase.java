@@ -10,23 +10,25 @@ import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.stream.output.StreamCallback;
+import org.wso2.siddhi.core.util.SiddhiTestHelper;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class RabbitMQQueueTestCase {
     private static final Logger log = Logger.getLogger(RabbitMQQueueTestCase.class);
-    private volatile int count;
-    private volatile int count1;
-    private volatile boolean eventArrived;
-    private volatile boolean eventArrived1;
+    private AtomicInteger eventCount1 = new AtomicInteger(0);
+    private AtomicInteger eventCount2 = new AtomicInteger(0);
+    private int waitTime = 50;
+    private int timeout = 30000;
     private List<String> receivedEventNameList;
+    private List<String> receivedEventNameList1;
 
     @BeforeMethod
     public void init() {
-        count = 0;
-        count1 = 0;
-        eventArrived = false;
-        eventArrived1 = false;
+        eventCount1.set(0);
+        eventCount2.set(0);
     }
 
     @Test
@@ -51,8 +53,7 @@ public class RabbitMQQueueTestCase {
             public void receive(Event[] events) {
                 for (Event event : events) {
                     log.info(event);
-                    eventArrived = true;
-                    count++;
+                    eventCount1.incrementAndGet();
                     receivedEventNameList.add(event.getData(0).toString());
                 }
             }
@@ -73,13 +74,11 @@ public class RabbitMQQueueTestCase {
         fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
         fooStream.send(new Object[]{"IBM", 75.6f, 100L});
         fooStream.send(new Object[]{"WSO2", 57.6f, 100L});
-        Thread.sleep(10000);
         List<String> expected = new ArrayList<>(2);
         expected.add("WSO2");
         expected.add("IBM");
         expected.add("WSO2");
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
+        SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
         AssertJUnit.assertEquals(expected, receivedEventNameList);
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
@@ -109,9 +108,8 @@ public class RabbitMQQueueTestCase {
             public void receive(Event[] events) {
                 for (Event event : events) {
                     log.info(event);
-                    eventArrived = true;
                     receivedEventNameList.add(event.getData(0).toString());
-                    count++;
+                    eventCount1.incrementAndGet();
                 }
             }
         });
@@ -132,13 +130,11 @@ public class RabbitMQQueueTestCase {
         fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
         fooStream.send(new Object[]{"IBM", 75.6f, 100L});
         fooStream.send(new Object[]{"WSO2", 57.6f, 100L});
-        Thread.sleep(10000);
         List<String> expected = new ArrayList<>(2);
         expected.add("WSO2");
         expected.add("IBM");
         expected.add("WSO2");
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
+        SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
         AssertJUnit.assertEquals(expected, receivedEventNameList);
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
@@ -168,9 +164,8 @@ public class RabbitMQQueueTestCase {
             public void receive(Event[] events) {
                 for (Event event : events) {
                     log.info(event);
-                    eventArrived = true;
                     receivedEventNameList.add(event.getData(0).toString());
-                    count++;
+                    eventCount1.incrementAndGet();
                 }
             }
         });
@@ -191,13 +186,11 @@ public class RabbitMQQueueTestCase {
         fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
         fooStream.send(new Object[]{"IBM", 75.6f, 100L});
         fooStream.send(new Object[]{"WSO2", 57.6f, 100L});
-        Thread.sleep(10000);
         List<String> expected = new ArrayList<>(2);
         expected.add("WSO2");
         expected.add("IBM");
         expected.add("WSO2");
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
+        SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
         AssertJUnit.assertEquals(expected, receivedEventNameList);
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
@@ -226,8 +219,7 @@ public class RabbitMQQueueTestCase {
             public void receive(Event[] events) {
                 for (Event event : events) {
                     log.info(event);
-                    eventArrived = true;
-                    count++;
+                    eventCount1.incrementAndGet();
                 }
             }
         });
@@ -250,9 +242,7 @@ public class RabbitMQQueueTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
-        Thread.sleep(10000);
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
+        SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
@@ -289,8 +279,7 @@ public class RabbitMQQueueTestCase {
             public void receive(Event[] events) {
                 for (Event event : events) {
                     log.info(event);
-                    eventArrived = true;
-                    count++;
+                    eventCount1.incrementAndGet();
                 }
             }
         });
@@ -300,8 +289,7 @@ public class RabbitMQQueueTestCase {
             public void receive(Event[] events) {
                 for (Event event : events) {
                     log.info(event);
-                    eventArrived1 = true;
-                    count1++;
+                    eventCount2.incrementAndGet();
                 }
             }
         });
@@ -322,11 +310,8 @@ public class RabbitMQQueueTestCase {
         fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
         fooStream.send(new Object[]{"IBM", 75.6f, 100L});
         fooStream.send(new Object[]{"WSO2", 57.6f, 100L});
-        Thread.sleep(10000);
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
-        AssertJUnit.assertEquals(3, count1);
-        AssertJUnit.assertTrue(eventArrived1);
+        SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
+        SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount2, timeout);
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
@@ -337,6 +322,8 @@ public class RabbitMQQueueTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("Multiple RabbitMQ Source test case with same queue name");
         log.info("---------------------------------------------------------------------------------------------");
+        receivedEventNameList = new ArrayList<>(2);
+        receivedEventNameList1 = new ArrayList<>(2);
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -363,8 +350,8 @@ public class RabbitMQQueueTestCase {
             public void receive(Event[] events) {
                 for (Event event : events) {
                     log.info(event);
-                    eventArrived = true;
-                    count++;
+                    eventCount1.incrementAndGet();
+                    receivedEventNameList.add(event.getData(0).toString());
                 }
             }
         });
@@ -374,8 +361,8 @@ public class RabbitMQQueueTestCase {
             public void receive(Event[] events) {
                 for (Event event : events) {
                     log.info(event);
-                    eventArrived1 = true;
-                    count1++;
+                    eventCount2.incrementAndGet();
+                    receivedEventNameList1.add(event.getData(0).toString());
                 }
             }
         });
@@ -396,14 +383,16 @@ public class RabbitMQQueueTestCase {
         fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
         fooStream.send(new Object[]{"IBM", 75.6f, 100L});
         fooStream.send(new Object[]{"WSO2", 57.6f, 100L});
-        Thread.sleep(10000);
-        AssertJUnit.assertEquals(2, count);
-        AssertJUnit.assertTrue(eventArrived);
-        AssertJUnit.assertEquals(1, count1);
-        AssertJUnit.assertTrue(eventArrived1);
+        List<String> expected = new ArrayList<>(2);
+        List<String> expected1 = new ArrayList<>(2);
+        expected.add("WSO2");
+        expected1.add("IBM");
+        expected.add("WSO2");
+        SiddhiTestHelper.waitForEvents(waitTime, 2, eventCount1, timeout);
+        SiddhiTestHelper.waitForEvents(waitTime, 1, eventCount2, timeout);
+        AssertJUnit.assertEquals(expected, receivedEventNameList);
+        AssertJUnit.assertEquals(expected1, receivedEventNameList1);
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
-
     }
-
 }

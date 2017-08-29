@@ -10,21 +10,26 @@ import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.stream.output.StreamCallback;
+import org.wso2.siddhi.core.util.SiddhiTestHelper;
+
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class RabbitMQSourceTestCase {
     private static final Logger log = Logger.getLogger(RabbitMQSourceTestCase.class);
-    private volatile int count;
-    private volatile boolean eventArrived;
-    private volatile int count1;
-    private volatile boolean eventArrived1;
+    private AtomicInteger eventCount1 = new AtomicInteger(0);
+    private AtomicInteger eventCount2 = new AtomicInteger(0);
+    private int waitTime = 50;
+    private int timeout = 30000;
+    private List<String> receivedEventNameList;
+    private List<String> receivedEventNameList1;
+
 
     @BeforeMethod
     public void init() {
-        count = 0;
-        eventArrived = false;
-        count1 = 0;
-        eventArrived1 = false;
+        eventCount1.set(0);
+        eventCount2.set(0);
     }
 
     @Test
@@ -32,6 +37,7 @@ public class RabbitMQSourceTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Sink and Source test with mandatory fields");
         log.info("---------------------------------------------------------------------------------------------");
+        receivedEventNameList = new ArrayList<>(3);
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -48,8 +54,8 @@ public class RabbitMQSourceTestCase {
             public void receive(Event[] events) {
                 for (Event event : events) {
                     log.info(event);
-                    eventArrived = true;
-                    count++;
+                    eventCount1.incrementAndGet();
+                    receivedEventNameList.add(event.getData(0).toString());
                 }
             }
         });
@@ -72,9 +78,12 @@ public class RabbitMQSourceTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
-        Thread.sleep(10000);
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
+        List<String> expected = new ArrayList<>(2);
+        expected.add("WSO2");
+        expected.add("IBM");
+        expected.add("WSO2");
+        SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
+        AssertJUnit.assertEquals(expected, receivedEventNameList);
 
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
@@ -85,6 +94,7 @@ public class RabbitMQSourceTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Sink and Source test when exchange type direct and headers is provided");
         log.info("---------------------------------------------------------------------------------------------");
+        receivedEventNameList = new ArrayList<>(3);
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -102,8 +112,8 @@ public class RabbitMQSourceTestCase {
             public void receive(Event[] events) {
                 for (Event event : events) {
                     log.info(event);
-                    eventArrived = true;
-                    count++;
+                    receivedEventNameList.add(event.getData(0).toString());
+                    eventCount1.incrementAndGet();
                 }
             }
         });
@@ -127,10 +137,12 @@ public class RabbitMQSourceTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
-        Thread.sleep(10000);
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
-
+        List<String> expected = new ArrayList<>(2);
+        expected.add("WSO2");
+        expected.add("IBM");
+        expected.add("WSO2");
+        SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
+        AssertJUnit.assertEquals(expected, receivedEventNameList);
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
@@ -142,6 +154,7 @@ public class RabbitMQSourceTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Sink and Source test when exchange type topic");
         log.info("---------------------------------------------------------------------------------------------");
+        receivedEventNameList = new ArrayList<>(3);
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -159,8 +172,8 @@ public class RabbitMQSourceTestCase {
             public void receive(Event[] events) {
                 for (Event event : events) {
                     log.info(event);
-                    eventArrived = true;
-                    count++;
+                    receivedEventNameList.add(event.getData(0).toString());
+                    eventCount1.incrementAndGet();
                 }
             }
         });
@@ -184,9 +197,12 @@ public class RabbitMQSourceTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
-        Thread.sleep(10000);
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
+        List<String> expected = new ArrayList<>(2);
+        expected.add("WSO2");
+        expected.add("IBM");
+        expected.add("WSO2");
+        SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
+        AssertJUnit.assertEquals(expected, receivedEventNameList);
 
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
@@ -198,6 +214,7 @@ public class RabbitMQSourceTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Sink and Source test when exchange type fanout");
         log.info("---------------------------------------------------------------------------------------------");
+        receivedEventNameList = new ArrayList<>(3);
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -214,8 +231,8 @@ public class RabbitMQSourceTestCase {
             public void receive(Event[] events) {
                 for (Event event : events) {
                     log.info(event);
-                    eventArrived = true;
-                    count++;
+                    receivedEventNameList.add(event.getData(0).toString());
+                    eventCount1.incrementAndGet();
                 }
             }
         });
@@ -238,9 +255,12 @@ public class RabbitMQSourceTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
-        Thread.sleep(10000);
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
+        List<String> expected = new ArrayList<>(2);
+        expected.add("WSO2");
+        expected.add("IBM");
+        expected.add("WSO2");
+        SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
+        AssertJUnit.assertEquals(expected, receivedEventNameList);
 
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
@@ -252,6 +272,7 @@ public class RabbitMQSourceTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Sink and Source test when exchange type headers");
         log.info("---------------------------------------------------------------------------------------------");
+        receivedEventNameList = new ArrayList<>(3);
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -269,8 +290,8 @@ public class RabbitMQSourceTestCase {
             public void receive(Event[] events) {
                 for (Event event : events) {
                     log.info(event);
-                    eventArrived = true;
-                    count++;
+                    receivedEventNameList.add(event.getData(0).toString());
+                    eventCount1.incrementAndGet();
                 }
             }
         });
@@ -293,9 +314,12 @@ public class RabbitMQSourceTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
-        Thread.sleep(10000);
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
+        List<String> expected = new ArrayList<>(2);
+        expected.add("WSO2");
+        expected.add("IBM");
+        expected.add("WSO2");
+        SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
+        AssertJUnit.assertEquals(expected, receivedEventNameList);
 
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
@@ -307,6 +331,7 @@ public class RabbitMQSourceTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Sink and Source test when exchange type headers and  headers is null");
         log.info("---------------------------------------------------------------------------------------------");
+        receivedEventNameList = new ArrayList<>(3);
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                .createSiddhiAppRuntime(
@@ -323,8 +348,8 @@ public class RabbitMQSourceTestCase {
             public void receive(Event[] events) {
                 for (Event event : events) {
                     log.info(event);
-                    eventArrived = true;
-                    count++;
+                    receivedEventNameList.add(event.getData(0).toString());
+                   eventCount1.incrementAndGet();
                 }
             }
         });
@@ -347,9 +372,12 @@ public class RabbitMQSourceTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
-        Thread.sleep(10000);
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
+        List<String> expected = new ArrayList<>(2);
+        expected.add("WSO2");
+        expected.add("IBM");
+        expected.add("WSO2");
+        SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
+        AssertJUnit.assertEquals(expected, receivedEventNameList);
 
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
@@ -360,6 +388,8 @@ public class RabbitMQSourceTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ test case with multiple exchange name");
         log.info("---------------------------------------------------------------------------------------------");
+        receivedEventNameList = new ArrayList<>(3);
+        receivedEventNameList1 = new ArrayList<>(3);
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -386,8 +416,8 @@ public class RabbitMQSourceTestCase {
             public void receive(Event[] events) {
                 for (Event event : events) {
                     log.info(event);
-                    eventArrived = true;
-                    count++;
+                    receivedEventNameList.add(event.getData(0).toString());
+                    eventCount1.incrementAndGet();
                 }
             }
         });
@@ -397,8 +427,8 @@ public class RabbitMQSourceTestCase {
             public void receive(Event[] events) {
                 for (Event event : events) {
                     log.info(event);
-                    eventArrived1 = true;
-                    count1++;
+                    receivedEventNameList1.add(event.getData(0).toString());
+                    eventCount2.incrementAndGet();
                 }
             }
         });
@@ -418,18 +448,16 @@ public class RabbitMQSourceTestCase {
         executionPlanRuntime.start();
         fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
         fooStream.send(new Object[]{"IBM", 75.6f, 100L});
-        Thread.sleep(10000);
-        AssertJUnit.assertEquals(1, count);
-        AssertJUnit.assertTrue(eventArrived);
-        AssertJUnit.assertEquals(1, count1);
-        AssertJUnit.assertTrue(eventArrived1);
+        List<String> expected = new ArrayList<>(2);
+        expected.add("WSO2");
+        List<String> expected1 = new ArrayList<>(2);
+        expected1.add("IBM");
+        SiddhiTestHelper.waitForEvents(waitTime, 1, eventCount1, timeout);
+        SiddhiTestHelper.waitForEvents(waitTime, 2, eventCount2, timeout);
+        AssertJUnit.assertEquals(expected, receivedEventNameList);
+        AssertJUnit.assertEquals(expected1, receivedEventNameList1);
 
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
-
     }
-
-
-
-
 }
