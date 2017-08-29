@@ -2,7 +2,7 @@ package org.wso2.extension.siddhi.io.rabbitmq.source;
 
 
 import org.apache.log4j.Logger;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;;
 import org.wso2.siddhi.core.SiddhiAppRuntime;
@@ -27,7 +27,7 @@ public class RabbitMQUriTestCase {
     public void rabbitmqWithoutUriTest() throws InterruptedException {
         try {
             log.info("---------------------------------------------------------------------------------------------");
-            log.info("RabbitMQ Sink and Source test without URI");
+            log.info("RabbitMQ Source test without URI");
             log.info("---------------------------------------------------------------------------------------------");
             SiddhiManager siddhiManager = new SiddhiManager();
             SiddhiAppRuntime siddhiAppRuntime = siddhiManager
@@ -50,31 +50,7 @@ public class RabbitMQUriTestCase {
                     }
                 }
             });
-
-
             siddhiAppRuntime.start();
-            SiddhiAppRuntime executionPlanRuntime = siddhiManager.createSiddhiAppRuntime(
-                    "@App:name('TestExecutionPlan') " +
-                            "define stream FooStream1 (symbol string, price float, volume long); " +
-                            "@info(name = 'query1') " +
-                            "@sink(type ='rabbitmq' " +
-                            "exchange.name = 'testUri', routing.key= 'test', " +
-                            "@map(type='xml'))" +
-                            "Define stream BarStream1 (symbol string, price float, volume long);" +
-                            "from FooStream1 select symbol, price, volume insert into BarStream1;");
-            InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream1");
-
-            executionPlanRuntime.start();
-            ArrayList<Event> arrayList = new ArrayList<Event>();
-            arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 55.6f, 100L}));
-            arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
-            arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
-            fooStream.send(arrayList.toArray(new Event[3]));
-            Thread.sleep(10000);
-            AssertJUnit.assertEquals(3, count);
-            AssertJUnit.assertTrue(eventArrived);
-
-            executionPlanRuntime.shutdown();
             siddhiAppRuntime.shutdown();
         } catch (Exception e) {
             log.warn("Error while connecting with the RabbitMQ Server ");
@@ -128,8 +104,8 @@ public class RabbitMQUriTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
         Thread.sleep(10000);
-        AssertJUnit.assertEquals(0, count);
-        AssertJUnit.assertFalse(eventArrived);
+        Assert.assertEquals(0, count);
+        Assert.assertFalse(eventArrived);
 
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
@@ -181,8 +157,8 @@ public class RabbitMQUriTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
         Thread.sleep(10000);
-        AssertJUnit.assertEquals(0, count);
-        AssertJUnit.assertFalse(eventArrived);
+        Assert.assertEquals(0, count);
+        Assert.assertFalse(eventArrived);
 
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
@@ -235,8 +211,8 @@ public class RabbitMQUriTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
         Thread.sleep(10000);
-        AssertJUnit.assertEquals(0, count);
-        AssertJUnit.assertFalse(eventArrived);
+        Assert.assertEquals(0, count);
+        Assert.assertFalse(eventArrived);
 
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();

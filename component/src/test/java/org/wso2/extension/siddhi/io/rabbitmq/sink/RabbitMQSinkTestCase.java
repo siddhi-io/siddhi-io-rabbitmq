@@ -19,15 +19,13 @@
 
 package org.wso2.extension.siddhi.io.rabbitmq.sink;
 
-
 import org.apache.log4j.Logger;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.wso2.siddhi.core.SiddhiAppRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.stream.input.InputHandler;
-
 
 public class RabbitMQSinkTestCase {
     private static final Logger log = Logger.getLogger(RabbitMQSinkTestCase.class);
@@ -69,8 +67,8 @@ public class RabbitMQSinkTestCase {
         Thread.sleep(10000);
         count = RabbitMQSinkTestUtil.getCount();
         eventArrived = RabbitMQSinkTestUtil.geteventArrived();
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
+        Assert.assertEquals(3, count);
+        Assert.assertTrue(eventArrived);
         executionPlanRuntime.shutdown();
     }
 
@@ -104,8 +102,8 @@ public class RabbitMQSinkTestCase {
         Thread.sleep(10000);
         count = RabbitMQSinkTestUtil.getCount();
         eventArrived = RabbitMQSinkTestUtil.geteventArrived();
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
+        Assert.assertEquals(3, count);
+        Assert.assertTrue(eventArrived);
         executionPlanRuntime.shutdown();
 
     }
@@ -139,8 +137,8 @@ public class RabbitMQSinkTestCase {
 
         count = RabbitMQSinkTestUtil.getCount();
         eventArrived = RabbitMQSinkTestUtil.geteventArrived();
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
+        Assert.assertEquals(3, count);
+        Assert.assertTrue(eventArrived);
 
         executionPlanRuntime.shutdown();
 
@@ -174,8 +172,8 @@ public class RabbitMQSinkTestCase {
 
         count = RabbitMQSinkTestUtil.getCount();
         eventArrived = RabbitMQSinkTestUtil.geteventArrived();
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
+        Assert.assertEquals(3, count);
+        Assert.assertTrue(eventArrived);
 
         executionPlanRuntime.shutdown();
 
@@ -209,12 +207,62 @@ public class RabbitMQSinkTestCase {
 
         count = RabbitMQSinkTestUtil.getCount();
         eventArrived = RabbitMQSinkTestUtil.geteventArrived();
-        AssertJUnit.assertEquals(3, count);
-        AssertJUnit.assertTrue(eventArrived);
+        Assert.assertEquals(3, count);
+        Assert.assertTrue(eventArrived);
 
         executionPlanRuntime.shutdown();
 
     }
+    @Test
+    public void rabbitmqWithoutUriSinkTest() throws InterruptedException {
+        try {
+            log.info("---------------------------------------------------------------------------------------------");
+            log.info("RabbitMQ Sink test without URI");
+            log.info("---------------------------------------------------------------------------------------------");
+            SiddhiManager siddhiManager = new SiddhiManager();
+            SiddhiAppRuntime executionPlanRuntime = siddhiManager.createSiddhiAppRuntime(
+                    "@App:name('TestExecutionPlan') " +
+                            "define stream FooStream1 (symbol string, price float, volume long); " +
+                            "@info(name = 'query1') " +
+                            "@sink(type ='rabbitmq' " +
+                            "exchange.name = 'testUri', routing.key= 'test', " +
+                            "@map(type='xml'))" +
+                            "Define stream BarStream1 (symbol string, price float, volume long);" +
+                            "from FooStream1 select symbol, price, volume insert into BarStream1;");
+            executionPlanRuntime.start();
+            executionPlanRuntime.shutdown();
+        } catch (Exception e) {
+            log.warn("Error while connecting with the RabbitMQ Server ");
+        }
+
+    }
+
+
+    @Test
+    public void rabbitmqWithoutExchangeNameSinkTest() throws InterruptedException {
+        try {
+            log.info("---------------------------------------------------------------------------------------------");
+            log.info("RabbitMQ Sink test without exchange name");
+            log.info("---------------------------------------------------------------------------------------------");
+            SiddhiManager siddhiManager = new SiddhiManager();
+            SiddhiAppRuntime executionPlanRuntime = siddhiManager.createSiddhiAppRuntime(
+                    "@App:name('TestExecutionPlan') " +
+                            "define stream FooStream1 (symbol string, price float, volume long); " +
+                            "@info(name = 'query1') " +
+                            "@sink(type ='rabbitmq', uri ='amqp://guest:guest@172.17.0.2:5672', " +
+                            "exchange.type='topic', exchange.durable.enabled= 'true', " +
+                            "routing.key= 'topic.test', " +
+                            "@map(type='xml'))" +
+                            "Define stream BarStream1 (symbol string, price float, volume long);" +
+                            "from FooStream1 select symbol, price, volume insert into BarStream1;");
+            executionPlanRuntime.start();
+            executionPlanRuntime.shutdown();
+        } catch (Exception e) {
+            log.warn("Exchange name is not mentioned");
+        }
+
+    }
+
 
     //TODO test for TLS pubish with default value
 
@@ -246,8 +294,8 @@ public class RabbitMQSinkTestCase {
 
      count = RabbitMQSinkTestUtil.getCount();
      eventArrived = RabbitMQSinkTestUtil.geteventArrived();
-     AssertJUnit.assertEquals(3, count);
-     AssertJUnit.assertTrue(eventArrived);
+     Assert.assertEquals(3, count);
+     Assert.assertTrue(eventArrived);
 
      executionPlanRuntime.shutdown();
 
