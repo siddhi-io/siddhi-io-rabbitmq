@@ -34,7 +34,7 @@ The **siddhi-io-rabbitmq** is an extension to <a target="_blank" href="https://w
 
 ## How to Contribute
  
-  * Please report issues at <a target="_blank" href="https://github.com/wso2-extensions/siddhi-execution-unique/issues">GitHub Issue Tracker</a>.
+  * Please report issues at <a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/issues">GitHub Issue Tracker</a>.
   * Send your bug fixes pull requests to <a target="_blank" href="https://github.com/wso2-extensions/siddhi-execution-unique/tree/master">master branch</a>. 
  
 ## Contact us 

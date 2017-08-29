@@ -80,8 +80,7 @@ public class RabbitMQQueueTestCase {
         expected.add("WSO2");
         AssertJUnit.assertEquals(3, count);
         AssertJUnit.assertTrue(eventArrived);
-        AssertJUnit.assertEquals("RabbitMQ Source expected input not received",
-                expected, receivedEventNameList);
+        AssertJUnit.assertEquals(expected, receivedEventNameList);
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
@@ -140,8 +139,7 @@ public class RabbitMQQueueTestCase {
         expected.add("WSO2");
         AssertJUnit.assertEquals(3, count);
         AssertJUnit.assertTrue(eventArrived);
-        AssertJUnit.assertEquals("RabbitMQ Source expected input not received",
-                expected, receivedEventNameList);
+        AssertJUnit.assertEquals(expected, receivedEventNameList);
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
@@ -200,8 +198,7 @@ public class RabbitMQQueueTestCase {
         expected.add("WSO2");
         AssertJUnit.assertEquals(3, count);
         AssertJUnit.assertTrue(eventArrived);
-        AssertJUnit.assertEquals("RabbitMQ Source expected input not received",
-                expected, receivedEventNameList);
+        AssertJUnit.assertEquals(expected, receivedEventNameList);
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
@@ -256,7 +253,6 @@ public class RabbitMQQueueTestCase {
         Thread.sleep(10000);
         AssertJUnit.assertEquals(3, count);
         AssertJUnit.assertTrue(eventArrived);
-
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
