@@ -251,8 +251,7 @@ public class RabbitMQSinkTestCase {
                             "define stream FooStream1 (symbol string, price float, volume long); " +
                             "@info(name = 'query1') " +
                             "@sink(type ='rabbitmq', uri ='amqp://guest:guest@172.17.0.2:5672', " +
-                            "exchange.type='topic', exchange.durable.enabled= 'true', " +
-                            "routing.key= 'topic.test', " +
+                            "exchange.type='topic', " +
                             "@map(type='xml'))" +
                             "Define stream BarStream1 (symbol string, price float, volume long);" +
                             "from FooStream1 select symbol, price, volume insert into BarStream1;");

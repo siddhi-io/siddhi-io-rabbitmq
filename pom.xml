@@ -43,14 +43,17 @@
     </scm>
 
     <properties>
-        <siddhi.version>4.0.0-M33</siddhi.version>
+        <siddhi.version>4.0.0-M44</siddhi.version>
         <log4j.version>1.2.17.wso2v1</log4j.version>
         <rabbitmq.version>3.6.3</rabbitmq.version>
         <carbon.feature.plugin.version>3.0.0</carbon.feature.plugin.version>
         <maven.surefire.plugin.version>2.12.4</maven.surefire.plugin.version>
         <testing.version>6.8</testing.version>
-        <siddhi.map.xml.version>4.0.0-M7</siddhi.map.xml.version>
+        <siddhi.map.xml.version>4.0.0-M8</siddhi.map.xml.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jacoco.version>0.7.9</jacoco.version>
+        <maven.failsafe.plugin.version>2.19.1</maven.failsafe.plugin.version>
+        <docker.maven.plugin.version>0.15.9</docker.maven.plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -79,6 +82,24 @@
                 <groupId>org.apache.log4j.wso2</groupId>
                 <artifactId>log4j</artifactId>
                 <version>${log4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jacoco</groupId>
+                <artifactId>org.jacoco.agent</artifactId>
+                <classifier>runtime</classifier>
+                <version>${jacoco.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.extension.siddhi.map.xml</groupId>
+                <artifactId>siddhi-map-xml</artifactId>
+                <version>${siddhi.map.xml.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testng</groupId>
+                <artifactId>testng</artifactId>
+                <version>${testing.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -118,6 +139,16 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>${maven.failsafe.plugin.version}</version>
+            </plugin>
+            <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker.maven.plugin.version}</version>
             </plugin>
         </plugins>
 

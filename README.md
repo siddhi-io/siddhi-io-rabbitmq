@@ -3,6 +3,12 @@ siddhi-io-rabbitmq
 
 The **siddhi-io-rabbitmq** is an extension to <a target="_blank" href="https://wso2.github.io/siddhi">Siddhi</a> that publish and receive events from rabbitmq broker.
 
+Find some useful links below:
+
+* <a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq">Source code</a>
+* <a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/releases">Releases</a>
+* <a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/issues">Issue tracker</a>
+
 ## Latest API Docs 
 
 ## How to use 
@@ -26,6 +32,11 @@ The **siddhi-io-rabbitmq** is an extension to <a target="_blank" href="https://w
 ```
 
 ## Jenkins Build Status
+---
+
+|  Branch | Build Status |
+| :------ |:------------ | 
+| master  | [![Build Status](https://wso2.org/jenkins/job/siddhi/job/siddhi-io-rabbitmq/badge/icon)](https://wso2.org/jenkins/job/siddhi/job/siddhi-io-rabbitmq/) |
 
 ---
 
@@ -35,7 +46,7 @@ The **siddhi-io-rabbitmq** is an extension to <a target="_blank" href="https://w
 ## How to Contribute
  
   * Please report issues at <a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/issues">GitHub Issue Tracker</a>.
-  * Send your bug fixes pull requests to <a target="_blank" href="https://github.com/wso2-extensions/siddhi-execution-unique/tree/master">master branch</a>. 
+  * Send your bug fixes pull requests to <a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/tree/master">master branch</a>. 
  
 ## Contact us 
 
