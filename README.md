@@ -19,7 +19,7 @@ Latest API Docs is <a target="_blank" href="https://wso2-extensions.github.io/si
 
 * You can use this extension in the latest <a target="_blank" href="https://github.com/wso2/product-sp/releases">WSO2 Stream Processor</a> that is a part of <a target="_blank" href="http://wso2.com/analytics?utm_source=gitanalytics&utm_campaign=gitanalytics_Jul17">WSO2 Analytics</a> offering, with editor, debugger and simulation support. 
 
-* This extension is shipped by default with WSO2 Stream Processor, if you wish to use an alternative version of this extension you can replace the component <a target="_blank" href="https://github.com/wso2-extensions/siddhi-execution-unique/releases">jar</a> that can be found in the `<STREAM_PROCESSOR_HOME>/lib` directory.
+* This extension is shipped by default with WSO2 Stream Processor, if you wish to use an alternative version of this extension you can replace the component <a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/releases">jar</a> that can be found in the `<STREAM_PROCESSOR_HOME>/lib` directory.
 
 **Using the extension as a <a target="_blank" href="https://wso2.github.io/siddhi/documentation/running-as-a-java-library">java library</a>**
 
@@ -34,6 +34,7 @@ Latest API Docs is <a target="_blank" href="https://wso2-extensions.github.io/si
 ```
 
 ## Jenkins Build Status
+
 ---
 
 |  Branch | Build Status |
@@ -50,11 +51,12 @@ Latest API Docs is <a target="_blank" href="https://wso2-extensions.github.io/si
 ## How to Contribute
  
   * Please report issues at <a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/issues">GitHub Issue Tracker</a>.
-  * Send your bug fixes pull requests to <a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/tree/master">master branch</a>. 
+  
+  * Send your contributions as pull requests to <a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/tree/master">master branch</a>. 
  
 ## Contact us 
 
- * Post your questions on <a target="_blank" href="http://stackoverflow.com/">Stackoverflow</a> with the tag <a target="_blank" href="http://stackoverflow.com/search?q=siddhi">"siddhi"</a>. 
+ * Post your questions with the <a target="_blank" href="http://stackoverflow.com/search?q=siddhi">"Siddhi"</a> tag in <a target="_blank" href="http://stackoverflow.com/search?q=siddhi">Stackoverflow</a>. 
  
  * Siddhi developers can be contacted via the mailing lists:
  
