@@ -10,14 +10,6 @@
     
 
     
-    <url>
-     <loc>/license/</loc>
-     <lastmod>2017-09-07</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
         
     <url>
      <loc>/api/1.0.1-SNAPSHOT/</loc>
@@ -25,6 +17,14 @@
      <changefreq>daily</changefreq>
     </url>
         
+    
+
+    
+    <url>
+     <loc>/license/</loc>
+     <lastmod>2017-09-07</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
     
 
 </urlset>

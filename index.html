@@ -230,27 +230,15 @@
       
 
 
-  <li class="md-nav__item">
-    <a href="license/" title="License" class="md-nav__link">
-      License
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
     
-    <label class="md-nav__link" for="nav-3">
+    <label class="md-nav__link" for="nav-2">
       API Docs
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-3">
+      <label class="md-nav__title" for="nav-2">
         API Docs
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -270,6 +258,18 @@
         
       </ul>
     </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="license/" title="License" class="md-nav__link">
+      License
+    </a>
   </li>
 
     
@@ -366,7 +366,7 @@
 <li><a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/issues">Issue tracker</a></li>
 </ul>
 <h2 id="latest-api-docs">Latest API Docs</h2>
-<p>Latest API Docs is <a target="_blank" href="./api/1.0.1-SNAPSHOT">1.0.1-SNAPSHOT</a>.</p>
+<p>Latest API Docs is <a target="_blank" href="https://wso2-extensions.github.io/siddhi-io-rabbitmq/api/1.0.1-SNAPSHOT">1.0.1-SNAPSHOT</a>.</p>
 <h2 id="how-to-use">How to use</h2>
 <p><strong>Using the extension in <a target="_blank" href="https://github.com/wso2/product-sp">WSO2 Stream Processor</a></strong></p>
 <ul>
@@ -374,7 +374,7 @@
 <p>You can use this extension in the latest <a target="_blank" href="https://github.com/wso2/product-sp/releases">WSO2 Stream Processor</a> that is a part of <a target="_blank" href="http://wso2.com/analytics?utm_source=gitanalytics&utm_campaign=gitanalytics_Jul17">WSO2 Analytics</a> offering, with editor, debugger and simulation support. </p>
 </li>
 <li>
-<p>This extension is shipped by default with WSO2 Stream Processor, if you wish to use an alternative version of this extension you can replace the component <a target="_blank" href="https://github.com/wso2-extensions/siddhi-execution-unique/releases">jar</a> that can be found in the <code>&lt;STREAM_PROCESSOR_HOME&gt;/lib</code> directory.</p>
+<p>This extension is shipped by default with WSO2 Stream Processor, if you wish to use an alternative version of this extension you can replace the component <a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/releases">jar</a> that can be found in the <code>&lt;STREAM_PROCESSOR_HOME&gt;/lib</code> directory.</p>
 </li>
 </ul>
 <p><strong>Using the extension as a <a target="_blank" href="https://wso2.github.io/siddhi/documentation/running-as-a-java-library">java library</a></strong></p>
@@ -382,9 +382,9 @@
 <li>This extension can be added as a maven dependency along with other Siddhi dependencies to your project.</li>
 </ul>
 <pre><code>     &lt;dependency&gt;
-         &lt;groupId&gt;com.rabbitmq&lt;/groupId&gt;
-         &lt;artifactId&gt;amqp-client&lt;/artifactId&gt;
-         &lt;version&gt;&lt;version&gt;x.x.x&lt;/version&gt;&lt;/version&gt;
+        &lt;groupId&gt;org.wso2.extension.siddhi.io.rabbitmq&lt;/groupId&gt;
+        &lt;artifactId&gt;siddhi-io-rabbitmq&lt;/artifactId&gt;
+        &lt;version&gt;&lt;version&gt;x.x.x&lt;/version&gt;&lt;/version&gt;
      &lt;/dependency&gt;
 </code></pre>
 
@@ -407,18 +407,22 @@
 <hr />
 <h2 id="features">Features</h2>
 <ul>
-<li><a target="_blank" href="./api/1.0.1-SNAPSHOT/#rabbitmq-source">rabbitmq</a> <em>(<a target="_blank" href="https://wso2.github.io/siddhi/documentation/siddhi-4.0/#sources">Source</a>)</em><br><div style="padding-left: 1em;"><p>The rabbitmq source receives the events from the rabbitmq broker using the AMQP protocol. </p></div></li>
-<li><a target="_blank" href="./api/1.0.1-SNAPSHOT/#rabbitmq-sink">rabbitmq</a> <em>(<a target="_blank" href="https://wso2.github.io/siddhi/documentation/siddhi-4.0/#sinks">Sink</a>)</em><br><div style="padding-left: 1em;"><p>The rabbitmq sink pushes the events into a rabbitmq broker using the AMQP protocol</p></div></li>
+<li><a target="_blank" href="https://wso2-extensions.github.io/siddhi-io-rabbitmq/api/1.0.1-SNAPSHOT/#rabbitmq-source">rabbitmq</a> <em>(<a target="_blank" href="https://wso2.github.io/siddhi/documentation/siddhi-4.0/#sources">Source</a>)</em><br><div style="padding-left: 1em;"><p>The rabbitmq source receives the events from the rabbitmq broker using the AMQP protocol. </p></div></li>
+<li><a target="_blank" href="https://wso2-extensions.github.io/siddhi-io-rabbitmq/api/1.0.1-SNAPSHOT/#rabbitmq-sink">rabbitmq</a> <em>(<a target="_blank" href="https://wso2.github.io/siddhi/documentation/siddhi-4.0/#sinks">Sink</a>)</em><br><div style="padding-left: 1em;"><p>The rabbitmq sink pushes the events into a rabbitmq broker using the AMQP protocol</p></div></li>
 </ul>
 <h2 id="how-to-contribute">How to Contribute</h2>
 <ul>
-<li>Please report issues at <a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/issues">GitHub Issue Tracker</a>.</li>
-<li>Send your bug fixes pull requests to <a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/tree/master">master branch</a>. </li>
+<li>
+<p>Please report issues at <a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/issues">GitHub Issue Tracker</a>.</p>
+</li>
+<li>
+<p>Send your contributions as pull requests to <a target="_blank" href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/tree/master">master branch</a>. </p>
+</li>
 </ul>
 <h2 id="contact-us">Contact us</h2>
 <ul>
 <li>
-<p>Post your questions on <a target="_blank" href="http://stackoverflow.com/">Stackoverflow</a> with the tag <a target="_blank" href="http://stackoverflow.com/search?q=siddhi">"siddhi"</a>. </p>
+<p>Post your questions with the <a target="_blank" href="http://stackoverflow.com/search?q=siddhi">"Siddhi"</a> tag in <a target="_blank" href="http://stackoverflow.com/search?q=siddhi">Stackoverflow</a>. </p>
 </li>
 <li>
 <p>Siddhi developers can be contacted via the mailing lists:</p>
@@ -454,13 +458,13 @@
       <nav class="md-footer-nav__inner md-grid">
         
         
-          <a href="license/" title="License" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="api/1.0.1-SNAPSHOT/" title="1.0.1-SNAPSHOT" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                License
+                1.0.1-SNAPSHOT
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
