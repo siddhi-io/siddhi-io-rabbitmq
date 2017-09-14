@@ -68,162 +68,167 @@ import javax.net.ssl.TrustManagerFactory;
         parameters = {
                 @Parameter(
                         name = "uri",
-                        description = "The uri that used to connects to an AMQP server. This is a mandatory " +
-                                "parameter and if it is not specified, an error is logged in the CLI " +
-                                "e.g., " +
+                        description = "The URI that used to connect to an AMQP server. If no URI is specified, an " +
+                                "error is logged in the CLI." +
+                                "e.g.,\n" +
                                 "`amqp://guest:guest`, " +
                                 "`amqp://guest:guest@localhost:5672` ",
                         type = {DataType.STRING}),
                 @Parameter(
                         name = "heartbeat",
-                        description = "It defines after what period of time the peer TCP connection should " +
+                        description = "The period of time (in seconds) after which the peer TCP connection should " +
                                 "be considered unreachable (down) by RabbitMQ and client libraries.",
                         type = {DataType.INT},
                         optional = true, defaultValue = "60"),
                 @Parameter(
                         name = "exchange.name",
-                        description = "The name of the exchange, which decide what to do with a message it receives." +
-                                "If the exchange.name is already in the RabbitMQ server, then the system use " +
-                                "that exchange.name instead of redeclaring.",
+                        description = "The name of the exchange that decides what to do with a message it sends." +
+                                "If the `exchange.name` already exists in the RabbitMQ server, then the system uses " +
+                                "that `exchange.name` instead of redeclaring.",
                         type = {DataType.STRING},
                         dynamic = true),
                 @Parameter(
                         name = "exchange.type",
-                        description = "The type of the exchange.name. There are four different exchange types are " +
-                                "available: `direct`, `fanout`, `topic` and `headers`. ",
+                        description = "The type of the exchange.name. The exchange types available are " +
+                                "`direct`, `fanout`, `topic` and `headers`. For a detailed description of each " +
+                                "type, see " +
+                                "[RabbitMQ - AMQP Concepts](https://www.rabbitmq.com/tutorials/amqp-concepts.html) ",
                         type = {DataType.STRING},
                         dynamic = true,
                         optional = true, defaultValue = "direct"),
                 @Parameter(
                         name = "exchange.durable.enabled",
-                        description = "Decide whether the exchange should remain declared even if the broker " +
-                                "restarts. ",
+                        description = "If this is set to `true`, the exchange remains declared even if the broker" +
+                                " restarts.",
                         type = {DataType.BOOL},
                         dynamic = true,
                         optional = true, defaultValue = "false"),
                 @Parameter(
                         name = "exchange.autodelete.enabled",
-                        description = "Decide whether to keep the exchange even if it is not used anymore. ",
+                        description = "If this is set to `true`, the exchange is automatically deleted when it is " +
+                                "not used anymore. ",
                         type = {DataType.BOOL},
                         dynamic = true,
                         optional = true, defaultValue = "false"),
                 @Parameter(
                         name = "delivery.mode",
-                        description = "Decide whether the connection should be persistent or not. delivery.mode's" +
-                                "value should be either 1 or 2. " +
+                        description = "This determines whether the connection should be persistent or not. The value" +
+                                " must be either `1` or `2`." +
                                 "If the delivery.mode = 1, then the connection is not persistent. " +
-                                "If the delivery.mode = 2, then the connection is persistent",
+                                "If the delivery.mode = 2, then the connection is persistent.",
                         type = {DataType.INT},
                         optional = true, defaultValue = "1"),
                 @Parameter(
                         name = "content.type",
-                        description = "Message content type, value should be MIME content type.",
+                        description = "The message content type. This should be the `MIME` content type.",
                         type = {DataType.STRING},
                         optional = true, defaultValue = "null"),
                 @Parameter(
                         name = "content.encoding",
-                        description = "Message content encoding, value should be MIME content encoding.",
+                        description = "The message content encoding. The value should be `MIME` content encoding.",
                         type = {DataType.STRING},
                         optional = true, defaultValue = "null"),
                 @Parameter(
                         name = "priority",
-                        description = "Message priority, value should be within the range 0 to 9",
+                        description = "Specify a value within the range 0 to 9 in this parameter to indicate the " +
+                                "message priority.",
                         type = {DataType.INT},
                         dynamic = true,
                         optional = true, defaultValue = "0"),
                 @Parameter(
                         name = "correlation.id",
-                        description = "Message correlated to this one, e.g. what request this message is a " +
-                                "reply to. A request comes in, message describing the task is pushed to queue " +
-                                "by the frontend server. After that the frontend server blocks to wait for " +
-                                "response message with the same correlation id. A pool of worker machines are " +
-                                "listening on queue and one of them picks up the task, performs it and returns " +
-                                "the result as message. Once a message with right correlation id comes in, " +
-                                "frontend server continues to return the response to the caller. ",
+                        description = "The message correlated to the current message. e.g., The request to which this" +
+                                " message is a reply. When a request arrives, a message describing the task is " +
+                                "pushed to the queue by the front end server. After that the frontend server blocks " +
+                                "to wait for a response message with the same correlation ID. A pool of worker " +
+                                "machines listen on queue, and one of them picks up the task, performs it, and " +
+                                "returns the result as message. Once a message with right correlation ID arrives, the" +
+                                "front end server continues to return the response to the caller. ",
                         type = {DataType.STRING},
                         dynamic = true,
                         optional = true, defaultValue = "null"),
                 @Parameter(
                         name = "reply.to",
-                        description = "This is an anonymous exclusive callback Queue. When the RabbitMQ receives " +
-                                "a message with the property 'reply.to', it will send the response to the " +
-                                "mentioned queue. Commonly used to name a reply queue (or any other identifier " +
+                        description = "This is an anonymous exclusive callback queue. When the RabbitMQ receives " +
+                                "a message with the `reply.to` property, it sends the response to the mentioned" +
+                                " queue. This is commonly used to name a reply queue (or any other identifier " +
                                 "that helps a consumer application to direct its response).",
                         type = {DataType.STRING},
                         optional = true, defaultValue = "null"),
                 @Parameter(
                         name = "expiration",
-                        description = "Expiration time after which the message will be deleted. The value of the " +
-                                "expiration field describes the TTL period in milliseconds.",
+                        description = "The expiration time after which the message is deleted. The value of the " +
+                                "expiration field describes the TTL (Time To Live) period in milliseconds.",
                         type = {DataType.STRING},
                         optional = true, defaultValue = "null"),
                 @Parameter(
                         name = "message.id",
-                        description = "Message identifier. If applications need to identify messages, " +
-                                "it is recommended that they use this attribute instead of putting it into " +
-                                "the message payload. ",
+                        description = "The message identifier. If applications need to identify messages, it is" +
+                                " recommended that they use this attribute instead of putting it into the message" +
+                                " payload.",
                         type = {DataType.STRING},
                         dynamic = true,
                         optional = true, defaultValue = "null"),
                 @Parameter(
                         name = "timestamp",
-                        description = "Timestamp of the moment when message was sent. If the timestamp is empty, " +
-                                "then the system will automatically generate the current date and time as the " +
-                                "timestamp value. The format of the timestamp is that dd/mm/yyyy.",
+                        description = "Timestamp of the moment when the message was sent. If you do not specify a " +
+                                "value for this parameter, the system automatically generates the current date and " +
+                                "time as the timestamp value. The format of the timestamp value is `dd/mm/yyyy`.",
                         type = {DataType.STRING},
                         optional = true, defaultValue = "current timestamp"),
                 @Parameter(
                         name = "type",
-                        description = "Message type, e.g. what type of event or command this message represents.",
+                        description = "The type of the message. e.g., The type of the event or the command " +
+                                "represented by the message.",
                         type = {DataType.STRING},
                         optional = true, defaultValue = "null"),
                 @Parameter(
                         name = "user.id",
-                        description = "Optional user ID. Verified by RabbitMQ against the actual connection " +
-                                "username. ",
+                        description = "The user ID specified here is verified by RabbitMQ against theuser name of " +
+                                "the actual connection. This is an optional parameter.",
                         type = {DataType.STRING},
                         optional = true, defaultValue = "null"),
                 @Parameter(
                         name = "app.id",
-                        description = "Identifier of the application that produced the message.",
+                        description = "The identifier of the application that produced the message.",
                         type = {DataType.STRING},
                         optional = true, defaultValue = "null"),
                 @Parameter(
                         name = "routing.key",
-                        description = "The key that the exchange looks at to decide how to route the message to " +
-                                "queues. The routing key is like an address for the message. ",
+                        description = "The key based on which the excahnge determines how to route the message " +
+                                "to the queue. The routing key is similar to an address for the message.",
                         type = {DataType.STRING},
                         dynamic = true,
                         optional = true, defaultValue = "empty"),
                 @Parameter(
                         name = "headers",
-                        description = "Headers of the message. The attributes used for routing are taken " +
-                                "from the headers attribute. A message is considered matching if the value of " +
-                                "the header equals the value specified upon binding ",
+                        description = "The headers of the message. The attributes used for routing are taken " +
+                                "from the this paremeter. A message is considered matching if the value of " +
+                                "the header equals the value specified upon binding. ",
                         type = {DataType.STRING},
                         dynamic = true,
                         optional = true, defaultValue = "null"),
                 @Parameter(
                         name = "tls.enabled",
-                        description = "Used to establish an encrypted communication channel. The parameters " +
-                                "`tls.truststore.path` and `tls.truststore.password` should be initialised " +
-                                "when the parameter tls.enable = true: ",
+                        description = "This parameter specifies whether an encrypted communication channel should " +
+                                "be established or not. When this parameter is set to `true`, the " +
+                                "`tls.truststore.path` and `tls.truststore.password` parameters are initialized.",
                         type = {DataType.BOOL},
                         optional = true, defaultValue = "false"),
                 @Parameter(
                         name = "tls.truststore.path",
                         description = "The file path to the location of the truststore of the client that sends " +
-                                "the RabbitMQ events through 'AMQP' protocol. A custom client-truststore can be " +
-                                "specified if required. If custom truststore is not specified then the system " +
-                                "uses the default client-trustore in the " +
-                                "`${carbon.home}/resources/security` directory.",
+                                "the RabbitMQ events via the `AMQP` protocol. A custom client-truststore can be " +
+                                "specified if required. If a custom truststore is not specified, then the system " +
+                                "uses the default client-trustore in the `${carbon.home}/resources/security` " +
+                                "directory.",
                         type = {DataType.STRING},
                         optional = true, defaultValue = "${carbon.home}/resources/security/client-truststore.jks"),
                 @Parameter(
                         name = "tls.truststore.password",
                         description = "The password for the client-truststore. A custom password can be specified " +
                                 "if required. If no custom password is specified, then the system uses " +
-                                "'wso2carbon' as the default password.",
+                                "`wso2carbon` as the default password.",
                         type = {DataType.STRING},
                         optional = true, defaultValue = "wso2carbon"),
                 @Parameter(
@@ -239,19 +244,19 @@ import javax.net.ssl.TrustManagerFactory;
         },
         examples = {
                 @Example(
-                        description = "The following query will publish events to 'direct' exchange with " +
-                                "exchange type `direct` and routing key `directTest`",
                         syntax = "@App:name('TestExecutionPlan') \n" +
                                 "define stream FooStream (symbol string, price float, volume long); \n" +
-                                "@info(name = 'query1') \n" +
-                                "@sink(type ='rabbitmq', " +
-                                "uri = 'amqp://guest:guest@localhost:5672', " +
-                                "exchange.name = 'direct', " +
-                                "routing.key= 'direct', " +
-                                "@map(type='xml'))" +
+                                "@info(name = 'query1')\n" +
+                                "@sink(type ='rabbitmq',\n" +
+                                "uri = 'amqp://guest:guest@localhost:5672',\n" +
+                                "exchange.name = 'direct',\n" +
+                                "routing.key= 'direct',\n" +
+                                "@map(type='xml'))\n" +
                                 "Define stream BarStream (symbol string, price float, volume long);\n" +
-                                "from FooStream select symbol, price, volume insert into BarStream;\n")}
-)
+                                "from FooStream select symbol, price, volume insert into BarStream;\n",
+                        description = "This query publishes events to the `direct` exchange with " +
+                                "the `direct` exchange type and the `directTest` routing key.")
+        })
 public class RabbitMQSink extends Sink {
     private static final Logger log = Logger.getLogger(RabbitMQSink.class);
 
