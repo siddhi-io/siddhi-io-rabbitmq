@@ -25,7 +25,6 @@ public class RabbitMQSourceTestCase {
     private List<String> receivedEventNameList;
     private List<String> receivedEventNameList1;
 
-
     @BeforeMethod
     public void init() {
         eventCount1.set(0);
@@ -84,11 +83,11 @@ public class RabbitMQSourceTestCase {
         expected.add("WSO2");
         SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
         AssertJUnit.assertEquals(expected, receivedEventNameList);
-
+        AssertJUnit.assertEquals(3, eventCount1.get());
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
-
     }
+
     @Test
     public void rabbitmqDirectConsumerTest() throws InterruptedException {
         log.info("---------------------------------------------------------------------------------------------");
@@ -143,6 +142,7 @@ public class RabbitMQSourceTestCase {
         expected.add("WSO2");
         SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
         AssertJUnit.assertEquals(expected, receivedEventNameList);
+        AssertJUnit.assertEquals(3, eventCount1.get());
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
@@ -203,7 +203,7 @@ public class RabbitMQSourceTestCase {
         expected.add("WSO2");
         SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
         AssertJUnit.assertEquals(expected, receivedEventNameList);
-
+        AssertJUnit.assertEquals(3, eventCount1.get());
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
@@ -261,7 +261,7 @@ public class RabbitMQSourceTestCase {
         expected.add("WSO2");
         SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
         AssertJUnit.assertEquals(expected, receivedEventNameList);
-
+        AssertJUnit.assertEquals(3, eventCount1.get());
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
@@ -320,7 +320,7 @@ public class RabbitMQSourceTestCase {
         expected.add("WSO2");
         SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
         AssertJUnit.assertEquals(expected, receivedEventNameList);
-
+        AssertJUnit.assertEquals(3, eventCount1.get());
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
@@ -378,11 +378,12 @@ public class RabbitMQSourceTestCase {
         expected.add("WSO2");
         SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
         AssertJUnit.assertEquals(expected, receivedEventNameList);
-
+        AssertJUnit.assertEquals(3, eventCount1.get());
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
     }
+
     @Test
     public void rabbitmqMultipleExchangeNameTest() throws InterruptedException {
         log.info("---------------------------------------------------------------------------------------------");
@@ -453,10 +454,11 @@ public class RabbitMQSourceTestCase {
         List<String> expected1 = new ArrayList<>(2);
         expected1.add("IBM");
         SiddhiTestHelper.waitForEvents(waitTime, 1, eventCount1, timeout);
-        SiddhiTestHelper.waitForEvents(waitTime, 2, eventCount2, timeout);
+        SiddhiTestHelper.waitForEvents(waitTime, 1, eventCount2, timeout);
         AssertJUnit.assertEquals(expected, receivedEventNameList);
         AssertJUnit.assertEquals(expected1, receivedEventNameList1);
-
+        AssertJUnit.assertEquals(1, eventCount1.get());
+        AssertJUnit.assertEquals(1, eventCount2.get());
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
     }

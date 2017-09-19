@@ -27,6 +27,7 @@
             <class name="org.wso2.extension.siddhi.io.rabbitmq.source.RabbitMQSourceTestCase" />
             <class name="org.wso2.extension.siddhi.io.rabbitmq.source.RabbitMQQueueTestCase" />
             <class name="org.wso2.extension.siddhi.io.rabbitmq.source.RabbitMQUriTestCase" />
+           <!-- <class name="org.wso2.extension.siddhi.io.rabbitmq.source.RabbitMQTlsTestCase" />-->
         </classes>
     </test>
 </suite>
