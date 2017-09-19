@@ -80,6 +80,7 @@ public class RabbitMQQueueTestCase {
         expected.add("WSO2");
         SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
         AssertJUnit.assertEquals(expected, receivedEventNameList);
+        AssertJUnit.assertEquals(3, eventCount1.get());
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
@@ -136,6 +137,7 @@ public class RabbitMQQueueTestCase {
         expected.add("WSO2");
         SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
         AssertJUnit.assertEquals(expected, receivedEventNameList);
+        AssertJUnit.assertEquals(3, eventCount1.get());
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
@@ -192,6 +194,7 @@ public class RabbitMQQueueTestCase {
         expected.add("WSO2");
         SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
         AssertJUnit.assertEquals(expected, receivedEventNameList);
+        AssertJUnit.assertEquals(3, eventCount1.get());
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
@@ -243,6 +246,7 @@ public class RabbitMQQueueTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
         SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
+        AssertJUnit.assertEquals(3, eventCount1.get());
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
@@ -312,6 +316,8 @@ public class RabbitMQQueueTestCase {
         fooStream.send(new Object[]{"WSO2", 57.6f, 100L});
         SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
         SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount2, timeout);
+        AssertJUnit.assertEquals(3, eventCount1.get());
+        AssertJUnit.assertEquals(3, eventCount2.get());
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
@@ -392,6 +398,8 @@ public class RabbitMQQueueTestCase {
         SiddhiTestHelper.waitForEvents(waitTime, 1, eventCount2, timeout);
         AssertJUnit.assertEquals(expected, receivedEventNameList);
         AssertJUnit.assertEquals(expected1, receivedEventNameList1);
+        AssertJUnit.assertEquals(2, eventCount1.get());
+        AssertJUnit.assertEquals(1, eventCount2.get());
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
     }

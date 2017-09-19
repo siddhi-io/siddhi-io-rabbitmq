@@ -10,7 +10,6 @@ import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.stream.output.StreamCallback;
 import org.wso2.siddhi.core.util.SiddhiTestHelper;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -21,7 +20,6 @@ public class RabbitMQTlsTestCase {
     private int waitTime = 50;
     private int timeout = 30000;
     private List<String> receivedEventNameList;
-
 
     @BeforeMethod
     public void init() {
@@ -80,7 +78,7 @@ public class RabbitMQTlsTestCase {
         expected.add("WSO2");
         SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
         AssertJUnit.assertEquals(expected, receivedEventNameList);
-
+        AssertJUnit.assertEquals(3, eventCount1.get());
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
     }

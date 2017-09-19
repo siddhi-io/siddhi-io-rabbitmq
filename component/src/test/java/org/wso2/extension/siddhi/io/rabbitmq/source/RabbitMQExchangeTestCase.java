@@ -83,6 +83,7 @@ public class RabbitMQExchangeTestCase {
         expected.add("WSO2");
         SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount, timeout);
         AssertJUnit.assertEquals(expected, receivedEventNameList);
+        AssertJUnit.assertEquals(3, eventCount.get());
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
@@ -139,6 +140,7 @@ public class RabbitMQExchangeTestCase {
         expected.add("WSO2");
         SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount, timeout);
         AssertJUnit.assertEquals(expected, receivedEventNameList);
+        AssertJUnit.assertEquals(3, eventCount.get());
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
 
