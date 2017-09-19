@@ -87,8 +87,8 @@ public class RabbitMQSourceTestCase {
 
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
-
     }
+
     @Test
     public void rabbitmqDirectConsumerTest() throws InterruptedException {
         log.info("---------------------------------------------------------------------------------------------");
@@ -383,6 +383,7 @@ public class RabbitMQSourceTestCase {
         siddhiAppRuntime.shutdown();
 
     }
+
     @Test
     public void rabbitmqMultipleExchangeNameTest() throws InterruptedException {
         log.info("---------------------------------------------------------------------------------------------");
