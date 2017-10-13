@@ -4,19 +4,18 @@ import org.apache.log4j.Logger;
 import org.testng.annotations.Test;;
 import org.wso2.siddhi.core.SiddhiAppRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
+import org.wso2.siddhi.query.api.exception.SiddhiAppValidationException;
 
 public class RabbitMQUriTestCase {
     private static final Logger log = Logger.getLogger(RabbitMQUriTestCase.class);
 
-    @Test
-    public void rabbitmqWithoutUriTest() throws InterruptedException {
-        try {
+    @Test (expectedExceptions = SiddhiAppValidationException.class)
+    public void rabbitmqWithoutUriTest() {
             log.info("---------------------------------------------------------------------------------------------");
             log.info("RabbitMQ Source test without URI");
             log.info("---------------------------------------------------------------------------------------------");
             SiddhiManager siddhiManager = new SiddhiManager();
-            SiddhiAppRuntime siddhiAppRuntime = siddhiManager
-                    .createSiddhiAppRuntime(
+            siddhiManager.createSiddhiAppRuntime(
                             "@App:name('TestExecutionPlan') " +
                                     "define stream FooStream1 (symbol string, price float, volume long); " +
                                     "@info(name = 'query1') " +
@@ -25,16 +24,10 @@ public class RabbitMQUriTestCase {
                                     "@map(type='xml'))" +
                                     "Define stream BarStream1 (symbol string, price float, volume long);" +
                                     "from FooStream1 select symbol, price, volume insert into BarStream1;");
-            siddhiAppRuntime.start();
-            siddhiAppRuntime.shutdown();
-        } catch (Exception e) {
-            log.warn("Error while connecting with the RabbitMQ Server ");
-        }
-
     }
 
     @Test
-    public void rabbitmqInvalidUriTest() throws InterruptedException {
+    public void rabbitmqInvalidUriTest() {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Source test with invalid URI");
         log.info("---------------------------------------------------------------------------------------------");
@@ -55,7 +48,7 @@ public class RabbitMQUriTestCase {
     }
 
     @Test
-    public void rabbitmqInvalidUriCredentialsTest() throws InterruptedException {
+    public void rabbitmqInvalidUriCredentialsTest() {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Source test with invalid URI credentials");
         log.info("---------------------------------------------------------------------------------------------");
@@ -76,7 +69,7 @@ public class RabbitMQUriTestCase {
     }
 
     @Test
-    public void rabbitmqInvalidUriHostnameTest() throws InterruptedException {
+    public void rabbitmqInvalidUriHostnameTest() {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Source test with invalid URI hostname");
         log.info("---------------------------------------------------------------------------------------------");

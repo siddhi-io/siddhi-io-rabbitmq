@@ -25,7 +25,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.wso2.siddhi.core.SiddhiAppRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
+import org.wso2.siddhi.core.exception.SiddhiAppCreationException;
 import org.wso2.siddhi.core.stream.input.InputHandler;
+import org.wso2.siddhi.query.api.exception.SiddhiAppValidationException;
 
 public class RabbitMQSinkTestCase {
     private static final Logger log = Logger.getLogger(RabbitMQSinkTestCase.class);
@@ -56,7 +58,7 @@ public class RabbitMQSinkTestCase {
         InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream");
 
         RabbitMQSinkTestUtil.consumer("mandatorySink", "direct", false,
-                false, "", eventArrived, count);
+                                      false, "", eventArrived, count);
 
         executionPlanRuntime.start();
 
@@ -91,7 +93,7 @@ public class RabbitMQSinkTestCase {
         InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream");
 
         RabbitMQSinkTestUtil.consumer("direct", "direct", false,
-                false, "direct", eventArrived, count);
+                                      false, "direct", eventArrived, count);
 
         executionPlanRuntime.start();
 
@@ -105,7 +107,6 @@ public class RabbitMQSinkTestCase {
         AssertJUnit.assertEquals(3, count);
         AssertJUnit.assertTrue(eventArrived);
         executionPlanRuntime.shutdown();
-
     }
 
     @Test
@@ -127,7 +128,7 @@ public class RabbitMQSinkTestCase {
         InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream");
 
         RabbitMQSinkTestUtil.consumer("topicRouting", "topic", false,
-                false, "topic.*", eventArrived, count);
+                                      false, "topic.*", eventArrived, count);
 
         executionPlanRuntime.start();
         fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
@@ -162,7 +163,7 @@ public class RabbitMQSinkTestCase {
         InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream");
 
         RabbitMQSinkTestUtil.consumer("fanoutTest", "fanout", false,
-                false, "", eventArrived, count);
+                                      false, "", eventArrived, count);
 
         executionPlanRuntime.start();
         fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
@@ -198,7 +199,7 @@ public class RabbitMQSinkTestCase {
         InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream");
 
         RabbitMQSinkTestUtil.consumer("headersTest", "headers", false,
-                true, "", eventArrived, count);
+                                      true, "", eventArrived, count);
 
         executionPlanRuntime.start();
         fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
@@ -210,96 +211,83 @@ public class RabbitMQSinkTestCase {
         eventArrived = RabbitMQSinkTestUtil.geteventArrived();
         AssertJUnit.assertEquals(3, count);
         AssertJUnit.assertTrue(eventArrived);
-
         executionPlanRuntime.shutdown();
-
-    }
-    @Test
-    public void rabbitmqWithoutUriSinkTest() throws InterruptedException {
-        try {
-            log.info("---------------------------------------------------------------------------------------------");
-            log.info("RabbitMQ Sink test without URI");
-            log.info("---------------------------------------------------------------------------------------------");
-            SiddhiManager siddhiManager = new SiddhiManager();
-            SiddhiAppRuntime executionPlanRuntime = siddhiManager.createSiddhiAppRuntime(
-                    "@App:name('TestExecutionPlan') " +
-                            "define stream FooStream1 (symbol string, price float, volume long); " +
-                            "@info(name = 'query1') " +
-                            "@sink(type ='rabbitmq' " +
-                            "exchange.name = 'testUri', routing.key= 'test', " +
-                            "@map(type='xml'))" +
-                            "Define stream BarStream1 (symbol string, price float, volume long);" +
-                            "from FooStream1 select symbol, price, volume insert into BarStream1;");
-            executionPlanRuntime.start();
-            executionPlanRuntime.shutdown();
-        } catch (Exception e) {
-            log.warn("Error while connecting with the RabbitMQ Server ");
-        }
-
     }
 
+    @Test (expectedExceptions = SiddhiAppCreationException.class)
+    public void rabbitmqTimestampPublishTest() throws InterruptedException {
+        log.info("----------------------------------------------------------------------------------");
+        log.info("RabbitMQ Sink test with invalid timestamp format");
+        log.info("----------------------------------------------------------------------------------");
+        SiddhiManager siddhiManager = new SiddhiManager();
+        SiddhiAppRuntime executionPlanRuntime = siddhiManager.createSiddhiAppRuntime(
+                "@App:name('TestExecutionPlan') " +
+                        "define stream FooStream (symbol string, price float, volume long); " +
+                        "@info(name = 'query1') " +
+                        "@sink(type ='rabbitmq', uri ='amqp://guest:guest@172.17.0.2:5672', " +
+                        "exchange.name = 'TimestampTest',  timestamp = 'jan/13/2017', " +
+                        "exchange.autodelete.enabled = 'true', " +
+                        "@map(type='xml'))" +
+                        "Define stream BarStream (symbol string, price float, volume long);" +
+                        "from FooStream select symbol, price, volume insert into BarStream;");
+        InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream");
 
-    @Test
-    public void rabbitmqWithoutExchangeNameSinkTest() throws InterruptedException {
-        try {
-            log.info("---------------------------------------------------------------------------------------------");
-            log.info("RabbitMQ Sink test without exchange name");
-            log.info("---------------------------------------------------------------------------------------------");
-            SiddhiManager siddhiManager = new SiddhiManager();
-            SiddhiAppRuntime executionPlanRuntime = siddhiManager.createSiddhiAppRuntime(
-                    "@App:name('TestExecutionPlan') " +
-                            "define stream FooStream1 (symbol string, price float, volume long); " +
-                            "@info(name = 'query1') " +
-                            "@sink(type ='rabbitmq', uri ='amqp://guest:guest@172.17.0.2:5672', " +
-                            "exchange.type='topic', " +
-                            "@map(type='xml'))" +
-                            "Define stream BarStream1 (symbol string, price float, volume long);" +
-                            "from FooStream1 select symbol, price, volume insert into BarStream1;");
-            executionPlanRuntime.start();
-            executionPlanRuntime.shutdown();
-        } catch (Exception e) {
-            log.warn("Exchange name is not mentioned");
-        }
+        executionPlanRuntime.start();
+        fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
+        fooStream.send(new Object[]{"IBM", 75.6f, 100L});
+        fooStream.send(new Object[]{"WSO2", 57.6f, 100L});
+        executionPlanRuntime.shutdown();
+    }
 
+    @Test(expectedExceptions = SiddhiAppValidationException.class)
+    public void rabbitmqWithoutUriSinkTest() {
+        log.info("---------------------------------------------------------------------------------------------");
+        log.info("RabbitMQ Sink test without URI");
+        log.info("---------------------------------------------------------------------------------------------");
+        SiddhiManager siddhiManager = new SiddhiManager();
+        siddhiManager.createSiddhiAppRuntime(
+                "@App:name('TestExecutionPlan') " +
+                        "define stream FooStream1 (symbol string, price float, volume long); " +
+                        "@info(name = 'query1') " +
+                        "@sink(type ='rabbitmq', " +
+                        "exchange.type='topic', " +
+                        "@map(type='xml'))" +
+                        "Define stream BarStream1 (symbol string, price float, volume long);" +
+                        "from FooStream1 select symbol, price, volume insert into BarStream1;");
     }
 
 
-    //TODO test for TLS pubish with default value
+    @Test(expectedExceptions = SiddhiAppValidationException.class)
+    public void rabbitmqWithoutExchangeNameSinkTest() {
+        log.info("---------------------------------------------------------------------------------------------");
+        log.info("RabbitMQ Sink test without exchange name");
+        log.info("---------------------------------------------------------------------------------------------");
+        SiddhiManager siddhiManager = new SiddhiManager();
+        siddhiManager.createSiddhiAppRuntime(
+                "@App:name('TestExecutionPlan') " +
+                        "define stream FooStream1 (symbol string, price float, volume long); " +
+                        "@info(name = 'query1') " +
+                        "@sink(type ='rabbitmq', uri ='amqp://guest:guest@172.17.0.2:5672', " +
+                        "exchange.type='topic', " +
+                        "@map(type='xml'))" +
+                        "Define stream BarStream1 (symbol string, price float, volume long);" +
+                        "from FooStream1 select symbol, price, volume insert into BarStream1;");
+    }
 
-    /* @Test
-     public void rabbitmqTLSPublishTest() throws Exception {
-
-     SiddhiManager siddhiManager = new SiddhiManager();
-     SiddhiAppRuntime executionPlanRuntime = siddhiManager.createSiddhiAppRuntime(
-     "@App:name('TestExecutionPlan') " +
-     "define stream FooStream (symbol string, price float, volume long); " +
-     "@info(name = 'query1') " +
-     "@sink(type ='rabbitmq', uri = 'amqp://guest:guest@localhost:5671', " +
-     "exchange.name = 'tlstest', exchange.type = 'fanout', tls.enabled = 'true', " +
-     "tls.truststore.Type = 'JKS', tls.truststore.path = '/home/sivaramya/rabbitmq/rabbitstore', " +
-     "tls.version= 'TLSv1.2', tls.truststore.password = 'MySecretPassword', " +
-     "@map(type='xml'))" +
-     "Define stream BarStream (symbol string, price float, volume long);" +
-     "from FooStream select symbol, price, volume insert into BarStream;");
-     InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream");
-
-     RabbitMQSinkTestUtil.consumer("tlstest", "fanout", false,
-             false, "", eventArrived, count);
-     executionPlanRuntime.start();
-
-     fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
-     fooStream.send(new Object[]{"IBM", 75.6f, 100L});
-     fooStream.send(new Object[]{"WSO2", 57.6f, 100L});
-     Thread.sleep(10000);
-
-     count = RabbitMQSinkTestUtil.getCount();
-     eventArrived = RabbitMQSinkTestUtil.geteventArrived();
-     AssertJunit.assertEquals(3, count);
-     AssertJunit.assertTrue(eventArrived);
-
-     executionPlanRuntime.shutdown();
-
-     }*/
-
-
+    @Test(expectedExceptions = SiddhiAppCreationException.class)
+    public void rabbitmqInvalidExchangeTypeSinkTest() {
+        log.info("---------------------------------------------------------------------------------------------");
+        log.info("RabbitMQ Sink test without exchange name");
+        log.info("---------------------------------------------------------------------------------------------");
+        SiddhiManager siddhiManager = new SiddhiManager();
+        siddhiManager.createSiddhiAppRuntime(
+                "@App:name('TestExecutionPlan') " +
+                        "define stream FooStream1 (symbol string, price float, volume long); " +
+                        "@info(name = 'query1') " +
+                        "@sink(type ='rabbitmq', uri ='amqp://guest:guest@172.17.0.2:5672', " +
+                        "exchange.name='testexchangetype', exchange.type='exchange', " +
+                        "@map(type='xml'))" +
+                        "Define stream BarStream1 (symbol string, price float, volume long);" +
+                        "from FooStream1 select symbol, price, volume insert into BarStream1;");
+    }
 }

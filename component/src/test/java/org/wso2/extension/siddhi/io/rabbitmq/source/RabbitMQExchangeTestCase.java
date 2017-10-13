@@ -8,9 +8,11 @@ import org.testng.annotations.Test;;
 import org.wso2.siddhi.core.SiddhiAppRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.event.Event;
+import org.wso2.siddhi.core.exception.SiddhiAppCreationException;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.stream.output.StreamCallback;
 import org.wso2.siddhi.core.util.SiddhiTestHelper;
+import org.wso2.siddhi.query.api.exception.SiddhiAppValidationException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -146,16 +148,13 @@ public class RabbitMQExchangeTestCase {
 
     }
 
-    @Test
-    public void rabbitmqWithoutExchangeNameTest() throws InterruptedException {
-        try {
+    @Test(expectedExceptions = SiddhiAppValidationException.class)
+    public void rabbitmqWithoutExchangeNameTest() {
             log.info("---------------------------------------------------------------------------------------------");
             log.info("RabbitMQ Source test without exchange name");
             log.info("---------------------------------------------------------------------------------------------");
-            receivedEventNameList = new ArrayList<>(3);
             SiddhiManager siddhiManager = new SiddhiManager();
-            SiddhiAppRuntime siddhiAppRuntime = siddhiManager
-                    .createSiddhiAppRuntime(
+            siddhiManager.createSiddhiAppRuntime(
                             "@App:name('TestExecutionPlan') " +
                                     "define stream FooStream1 (symbol string, price float, volume long); " +
                                     "@info(name = 'query1') " +
@@ -164,11 +163,22 @@ public class RabbitMQExchangeTestCase {
                                     "@map(type='xml'))" +
                                     "Define stream BarStream1 (symbol string, price float, volume long);" +
                                     "from FooStream1 select symbol, price, volume insert into BarStream1;");
-            siddhiAppRuntime.start();
-            siddhiAppRuntime.shutdown();
-        } catch (Exception e) {
-            log.warn("Exchange name is not mentioned");
-        }
+    }
 
+    @Test(expectedExceptions = SiddhiAppCreationException.class)
+    public void rabbitmqInvalidExchangeTypeTest() {
+            log.info("---------------------------------------------------------------------------------------------");
+            log.info("RabbitMQ Source test without exchange name");
+            log.info("---------------------------------------------------------------------------------------------");
+            SiddhiManager siddhiManager = new SiddhiManager();
+            siddhiManager.createSiddhiAppRuntime(
+                            "@App:name('TestExecutionPlan') " +
+                                    "define stream FooStream1 (symbol string, price float, volume long); " +
+                                    "@info(name = 'query1') " +
+                                    "@source(type='rabbitmq', uri = 'amqp://guest:guest@172.17.0.2:5672', " +
+                                    "exchange.name ='sourceTest', exchange.type='exchange', " +
+                                    "@map(type='xml'))" +
+                                    "Define stream BarStream1 (symbol string, price float, volume long);" +
+                                    "from FooStream1 select symbol, price, volume insert into BarStream1;");
     }
 }
