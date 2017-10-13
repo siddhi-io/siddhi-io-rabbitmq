@@ -1,3 +1,22 @@
+/*
+ *  Copyright (c) 2017 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ *  WSO2 Inc. licenses this file to you under the Apache License,
+ *  Version 2.0 (the "License"); you may not use this file except
+ *  in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
+
 package org.wso2.extension.siddhi.io.rabbitmq.source;
 
 import org.apache.log4j.Logger;
@@ -37,8 +56,8 @@ public class RabbitMQTlsTestCase {
         log.info("RabbitMQ Sink and Source test with tls.enabled = true");
         log.info("---------------------------------------------------------------------------------------------");
         receivedEventNameList = new ArrayList<>(3);
-        File f = new File("src/test/resources/client-truststore.jks");
-        String truststorePath = f.getAbsolutePath();
+        File file = new File("src/test/resources/client-truststore.jks");
+        String truststorePath = file.getAbsolutePath();
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -101,8 +120,8 @@ public class RabbitMQTlsTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Source test with tls.enabled = true");
         log.info("---------------------------------------------------------------------------------------------");
-        File f = new File("src/test/resources/client-truststore.jks");
-        String truststorePath = f.getAbsolutePath();
+        File file = new File("src/test/resources/client-truststore.jks");
+        String truststorePath = file.getAbsolutePath();
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -127,8 +146,8 @@ public class RabbitMQTlsTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Source test with tls.enabled = true");
         log.info("---------------------------------------------------------------------------------------------");
-        File f = new File("src/test/resources/client-truststore.jks");
-        String truststorePath = f.getAbsolutePath();
+        File file = new File("src/test/resources/client-truststore.jks");
+        String truststorePath = file.getAbsolutePath();
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -153,8 +172,8 @@ public class RabbitMQTlsTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Sink test with invalid truststore path");
         log.info("---------------------------------------------------------------------------------------------");
-        File f = new File("src/test/resources/client-trustsore.jks");
-        String truststorePath = f.getAbsolutePath();
+        File file = new File("src/test/resources/client-trustsore.jks");
+        String truststorePath = file.getAbsolutePath();
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -178,8 +197,8 @@ public class RabbitMQTlsTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Source test with invalid truststore path");
         log.info("---------------------------------------------------------------------------------------------");
-        File f = new File("src/test/resources/client-trusttore.jks");
-        String truststorePath = f.getAbsolutePath();
+        File file = new File("src/test/resources/client-trusttore.jks");
+        String truststorePath = file.getAbsolutePath();
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -203,8 +222,8 @@ public class RabbitMQTlsTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Source test with invalid truststore type");
         log.info("---------------------------------------------------------------------------------------------");
-        File f = new File("src/test/resources/client-truststore.jks");
-        String truststorePath = f.getAbsolutePath();
+        File file = new File("src/test/resources/client-truststore.jks");
+        String truststorePath = file.getAbsolutePath();
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -228,8 +247,8 @@ public class RabbitMQTlsTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Sink test with with invalid truststore type");
         log.info("---------------------------------------------------------------------------------------------");
-        File f = new File("src/test/resources/client-truststore.jks");
-        String truststorePath = f.getAbsolutePath();
+        File file = new File("src/test/resources/client-truststore.jks");
+        String truststorePath = file.getAbsolutePath();
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -253,8 +272,8 @@ public class RabbitMQTlsTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Sink test with with invalid truststore version");
         log.info("---------------------------------------------------------------------------------------------");
-        File f = new File("src/test/resources/client-truststore.jks");
-        String truststorePath = f.getAbsolutePath();
+        File file = new File("src/test/resources/client-truststore.jks");
+        String truststorePath = file.getAbsolutePath();
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -278,8 +297,8 @@ public class RabbitMQTlsTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Source test with invalid truststore version");
         log.info("---------------------------------------------------------------------------------------------");
-        File f = new File("src/test/resources/client-truststore.jks");
-        String truststorePath = f.getAbsolutePath();
+        File file = new File("src/test/resources/client-truststore.jks");
+        String truststorePath = file.getAbsolutePath();
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
