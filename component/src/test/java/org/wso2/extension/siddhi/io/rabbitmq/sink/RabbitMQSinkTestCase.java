@@ -29,13 +29,19 @@ import org.wso2.siddhi.core.exception.SiddhiAppCreationException;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.query.api.exception.SiddhiAppValidationException;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class RabbitMQSinkTestCase {
     private static final Logger log = Logger.getLogger(RabbitMQSinkTestCase.class);
     private volatile int count;
     private volatile boolean eventArrived;
+    private int waitTime = 50;
+    private int timeout = 30000;
+    private AtomicInteger eventCount = new AtomicInteger(0);
 
     @BeforeMethod
     public void init() {
+        eventCount.set(0);
         count = 0;
         eventArrived = false;
     }
@@ -192,7 +198,7 @@ public class RabbitMQSinkTestCase {
                         "@info(name = 'query1') " +
                         "@sink(type ='rabbitmq', uri ='amqp://guest:guest@172.17.0.2:5672', " +
                         "exchange.name = 'headersTest', exchange.type = 'headers', headers= \"'A:1','B:2'\", " +
-                        "exchange.autodelete.enabled = 'true', " +
+                        "exchange.autodelete.enabled = 'true', timestamp = '14/10/2017', " +
                         "@map(type='xml'))" +
                         "Define stream BarStream (symbol string, price float, volume long);" +
                         "from FooStream select symbol, price, volume insert into BarStream;");
@@ -289,5 +295,49 @@ public class RabbitMQSinkTestCase {
                         "@map(type='xml'))" +
                         "Define stream BarStream1 (symbol string, price float, volume long);" +
                         "from FooStream1 select symbol, price, volume insert into BarStream1;");
+    }
+
+    @Test
+    public void rabbitmqInvalidUriSinkTest() {
+        log.info("---------------------------------------------------------------------------------------------");
+        log.info("RabbitMQ Sink test invalid hostname");
+        log.info("---------------------------------------------------------------------------------------------");
+        SiddhiManager siddhiManager = new SiddhiManager();
+        SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
+                "@App:name('TestExecutionPlan') " +
+                        "define stream FooStream1 (symbol string, price float, volume long); " +
+                        "@info(name = 'query1') " +
+                        "@sink(type ='rabbitmq', uri = 'amqp://guest:guest@host:5672'," +
+                        "exchange.name='testexchangetype', " +
+                        "@map(type='xml'))" +
+                        "Define stream BarStream1 (symbol string, price float, volume long);" +
+                        "from FooStream1 select symbol, price, volume insert into BarStream1;");
+        siddhiAppRuntime.start();
+        siddhiAppRuntime.shutdown();
+    }
+
+    @Test
+    public void rabbitmqInvalidHeaderFormatPublishTest() throws Exception {
+        log.info("----------------------------------------------------------------------------------");
+        log.info("RabbitMQ Sink test with exchange type with invalid header format");
+        log.info("----------------------------------------------------------------------------------");
+        SiddhiManager siddhiManager = new SiddhiManager();
+        SiddhiAppRuntime executionPlanRuntime = siddhiManager.createSiddhiAppRuntime(
+                "@App:name('TestExecutionPlan') " +
+                        "define stream FooStream (symbol string, price float, volume long); " +
+                        "@info(name = 'query1') " +
+                        "@sink(type ='rabbitmq', uri ='amqp://guest:guest@172.17.0.2:5672', " +
+                        "exchange.name = 'headersTest', exchange.type = 'headers', headers= \"'A/1B/2'\", " +
+                        "exchange.autodelete.enabled = 'true', timestamp = '14/10/2017', " +
+                        "@map(type='xml'))" +
+                        "Define stream BarStream (symbol string, price float, volume long);" +
+                        "from FooStream select symbol, price, volume insert into BarStream;");
+        InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream");
+
+        executionPlanRuntime.start();
+        fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
+        fooStream.send(new Object[]{"IBM", 75.6f, 100L});
+        fooStream.send(new Object[]{"WSO2", 57.6f, 100L});
+        executionPlanRuntime.shutdown();
     }
 }
