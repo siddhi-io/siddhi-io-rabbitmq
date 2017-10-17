@@ -226,7 +226,7 @@ public class RabbitMQExchangeTestCase {
     @Test
     public void rabbitmqPauseAndResumeTest() throws InterruptedException {
         log.info("---------------------------------------------------------------------------------------------");
-        log.info("RabbitMQ Sink and Source test with exchange type headers and exchange autodelete is true");
+        log.info("RabbitMQ Sink and Source pause and resume test");
         log.info("---------------------------------------------------------------------------------------------");
         receivedEventNameList = new ArrayList<>(3);
         SiddhiManager siddhiManager = new SiddhiManager();
@@ -280,13 +280,11 @@ public class RabbitMQExchangeTestCase {
         AssertJUnit.assertEquals(expected, receivedEventNameList);
         AssertJUnit.assertEquals(3, eventCount.get());
         eventArrived = false;
-        //eventCount.set(3);
         sources.forEach(e -> e.forEach(Source::pause));
         arrayList.clear();
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[2]));
-        Thread.sleep(100);
         AssertJUnit.assertFalse(eventArrived);
         // resume
         sources.forEach(e -> e.forEach(Source::resume));
@@ -296,7 +294,7 @@ public class RabbitMQExchangeTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[2]));
 
-        Thread.sleep(1000);
+        SiddhiTestHelper.waitForEvents(waitTime, 7, eventCount, timeout);
         AssertJUnit.assertEquals(7, eventCount.get());
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
