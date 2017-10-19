@@ -69,7 +69,7 @@ public class RabbitMQUriTestCase {
                                 "Define stream BarStream1 (symbol string, price float, volume long);" +
                                 "from FooStream1 select symbol, price, volume insert into BarStream1;");
         siddhiAppRuntime.start();
-        AssertJUnit.assertTrue(appender.messages.contains("Failed to connect with the Rabbitmq server"));
+        AssertJUnit.assertTrue(appender.getMessages().contains("Failed to connect with the Rabbitmq server"));
         siddhiAppRuntime.shutdown();
 
     }
@@ -94,7 +94,7 @@ public class RabbitMQUriTestCase {
                                 "Define stream BarStream1 (symbol string, price float, volume long);" +
                                 "from FooStream1 select symbol, price, volume insert into BarStream1;");
         siddhiAppRuntime.start();
-        AssertJUnit.assertTrue(appender.messages.contains("Failed to connect with the Rabbitmq server"));
+        AssertJUnit.assertTrue(appender.getMessages().contains("Failed to connect with the Rabbitmq server"));
         siddhiAppRuntime.shutdown();
 
     }
@@ -119,7 +119,7 @@ public class RabbitMQUriTestCase {
                                 "Define stream BarStream1 (symbol string, price float, volume long);" +
                                 "from FooStream1 select symbol, price, volume insert into BarStream1;");
         siddhiAppRuntime.start();
-        AssertJUnit.assertTrue(appender.messages.contains("Failed to connect with the Rabbitmq server"));
+        AssertJUnit.assertTrue(appender.getMessages().contains("Failed to connect with the Rabbitmq server"));
         siddhiAppRuntime.shutdown();
     }
 

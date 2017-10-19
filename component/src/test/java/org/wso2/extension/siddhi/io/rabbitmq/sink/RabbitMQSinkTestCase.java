@@ -317,7 +317,7 @@ public class RabbitMQSinkTestCase {
                         "Define stream BarStream1 (symbol string, price float, volume long);" +
                         "from FooStream1 select symbol, price, volume insert into BarStream1;");
         siddhiAppRuntime.start();
-        AssertJUnit.assertTrue(appender.messages.contains("Failed to connect with the Rabbitmq server"));
+        AssertJUnit.assertTrue(appender.getMessages().contains("Failed to connect with the Rabbitmq server"));
         siddhiAppRuntime.shutdown();
     }
 
@@ -346,7 +346,7 @@ public class RabbitMQSinkTestCase {
         fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
         fooStream.send(new Object[]{"IBM", 75.6f, 100L});
         fooStream.send(new Object[]{"WSO2", 57.6f, 100L});
-        AssertJUnit.assertTrue(appender.messages.contains("Error in sending the message to the exchange.name = "
+        AssertJUnit.assertTrue(appender.getMessages().contains("Error in sending the message to the exchange.name = "
                                                                   + "headersTest in RabbitMQ broker"));
         executionPlanRuntime.shutdown();
     }
