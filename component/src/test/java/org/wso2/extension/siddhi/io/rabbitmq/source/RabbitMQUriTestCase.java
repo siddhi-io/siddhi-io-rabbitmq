@@ -20,14 +20,17 @@
 package org.wso2.extension.siddhi.io.rabbitmq.source;
 
 import org.apache.log4j.Logger;
+import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
+import org.wso2.extension.siddhi.io.rabbitmq.util.UnitTestAppender;
 import org.wso2.siddhi.core.SiddhiAppRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.exception.SiddhiAppCreationException;
+import org.wso2.siddhi.core.stream.input.source.Source;
 import org.wso2.siddhi.query.api.exception.SiddhiAppValidationException;
 
 public class RabbitMQUriTestCase {
-    private static final Logger log = Logger.getLogger(RabbitMQUriTestCase.class);
+    private static Logger log = Logger.getLogger(RabbitMQUriTestCase.class);
 
     @Test (expectedExceptions = SiddhiAppValidationException.class)
     public void rabbitmqWithoutUriTest() {
@@ -51,6 +54,9 @@ public class RabbitMQUriTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Source test with invalid URI");
         log.info("---------------------------------------------------------------------------------------------");
+        log = Logger.getLogger(Source.class);
+        UnitTestAppender appender = new UnitTestAppender();
+        log.addAppender(appender);
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -63,6 +69,7 @@ public class RabbitMQUriTestCase {
                                 "Define stream BarStream1 (symbol string, price float, volume long);" +
                                 "from FooStream1 select symbol, price, volume insert into BarStream1;");
         siddhiAppRuntime.start();
+        AssertJUnit.assertTrue(appender.messages.contains("Failed to connect with the Rabbitmq server"));
         siddhiAppRuntime.shutdown();
 
     }
@@ -72,6 +79,9 @@ public class RabbitMQUriTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Source test with invalid URI credentials");
         log.info("---------------------------------------------------------------------------------------------");
+        log = Logger.getLogger(Source.class);
+        UnitTestAppender appender = new UnitTestAppender();
+        log.addAppender(appender);
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -84,6 +94,7 @@ public class RabbitMQUriTestCase {
                                 "Define stream BarStream1 (symbol string, price float, volume long);" +
                                 "from FooStream1 select symbol, price, volume insert into BarStream1;");
         siddhiAppRuntime.start();
+        AssertJUnit.assertTrue(appender.messages.contains("Failed to connect with the Rabbitmq server"));
         siddhiAppRuntime.shutdown();
 
     }
@@ -93,6 +104,9 @@ public class RabbitMQUriTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Source test with invalid URI hostname");
         log.info("---------------------------------------------------------------------------------------------");
+        log = Logger.getLogger(Source.class);
+        UnitTestAppender appender = new UnitTestAppender();
+        log.addAppender(appender);
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -105,6 +119,7 @@ public class RabbitMQUriTestCase {
                                 "Define stream BarStream1 (symbol string, price float, volume long);" +
                                 "from FooStream1 select symbol, price, volume insert into BarStream1;");
         siddhiAppRuntime.start();
+        AssertJUnit.assertTrue(appender.messages.contains("Failed to connect with the Rabbitmq server"));
         siddhiAppRuntime.shutdown();
     }
 

@@ -90,7 +90,7 @@ public class RabbitMQSourceTestCase {
         InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream1");
 
         executionPlanRuntime.start();
-        ArrayList<Event> arrayList = new ArrayList<Event>();
+        List<Event> arrayList = new ArrayList<Event>();
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 55.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
@@ -149,7 +149,7 @@ public class RabbitMQSourceTestCase {
         InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream1");
 
         executionPlanRuntime.start();
-        ArrayList<Event> arrayList = new ArrayList<Event>();
+        List<Event> arrayList = new ArrayList<Event>();
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 55.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
@@ -210,7 +210,7 @@ public class RabbitMQSourceTestCase {
         InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream1");
 
         executionPlanRuntime.start();
-        ArrayList<Event> arrayList = new ArrayList<Event>();
+        List<Event> arrayList = new ArrayList<Event>();
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 55.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
@@ -268,7 +268,7 @@ public class RabbitMQSourceTestCase {
         InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream1");
 
         executionPlanRuntime.start();
-        ArrayList<Event> arrayList = new ArrayList<Event>();
+        List<Event> arrayList = new ArrayList<Event>();
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 55.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
@@ -327,7 +327,7 @@ public class RabbitMQSourceTestCase {
         InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream1");
 
         executionPlanRuntime.start();
-        ArrayList<Event> arrayList = new ArrayList<Event>();
+        List<Event> arrayList = new ArrayList<Event>();
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 55.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
@@ -385,7 +385,7 @@ public class RabbitMQSourceTestCase {
         InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream1");
 
         executionPlanRuntime.start();
-        ArrayList<Event> arrayList = new ArrayList<Event>();
+        List<Event> arrayList = new ArrayList<Event>();
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 55.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));

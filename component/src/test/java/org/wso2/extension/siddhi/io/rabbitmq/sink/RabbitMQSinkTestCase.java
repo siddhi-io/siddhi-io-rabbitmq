@@ -23,20 +23,21 @@ import org.apache.log4j.Logger;
 import org.testng.AssertJUnit;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.wso2.extension.siddhi.io.rabbitmq.util.UnitTestAppender;
 import org.wso2.siddhi.core.SiddhiAppRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.exception.SiddhiAppCreationException;
 import org.wso2.siddhi.core.stream.input.InputHandler;
+import org.wso2.siddhi.core.stream.output.sink.Sink;
 import org.wso2.siddhi.query.api.exception.SiddhiAppValidationException;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class RabbitMQSinkTestCase {
-    private static final Logger log = Logger.getLogger(RabbitMQSinkTestCase.class);
+    private static Logger log = Logger.getLogger(RabbitMQSinkTestCase.class);
+
     private volatile int count;
     private volatile boolean eventArrived;
-    private int waitTime = 50;
-    private int timeout = 30000;
     private AtomicInteger eventCount = new AtomicInteger(0);
 
     @BeforeMethod
@@ -220,7 +221,7 @@ public class RabbitMQSinkTestCase {
         executionPlanRuntime.shutdown();
     }
 
-    @Test (expectedExceptions = SiddhiAppCreationException.class)
+    @Test(expectedExceptions = SiddhiAppCreationException.class)
     public void rabbitmqTimestampPublishTest() throws InterruptedException {
         log.info("----------------------------------------------------------------------------------");
         log.info("RabbitMQ Sink test with invalid timestamp format");
@@ -302,6 +303,9 @@ public class RabbitMQSinkTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Sink test invalid hostname");
         log.info("---------------------------------------------------------------------------------------------");
+        log = Logger.getLogger(Sink.class);
+        UnitTestAppender appender = new UnitTestAppender();
+        log.addAppender(appender);
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
                 "@App:name('TestExecutionPlan') " +
@@ -313,6 +317,7 @@ public class RabbitMQSinkTestCase {
                         "Define stream BarStream1 (symbol string, price float, volume long);" +
                         "from FooStream1 select symbol, price, volume insert into BarStream1;");
         siddhiAppRuntime.start();
+        AssertJUnit.assertTrue(appender.messages.contains("Failed to connect with the Rabbitmq server"));
         siddhiAppRuntime.shutdown();
     }
 
@@ -321,7 +326,10 @@ public class RabbitMQSinkTestCase {
         log.info("----------------------------------------------------------------------------------");
         log.info("RabbitMQ Sink test with exchange type with invalid header format");
         log.info("----------------------------------------------------------------------------------");
+        log = Logger.getLogger(RabbitMQSink.class);
         SiddhiManager siddhiManager = new SiddhiManager();
+        UnitTestAppender appender = new UnitTestAppender();
+        log.addAppender(appender);
         SiddhiAppRuntime executionPlanRuntime = siddhiManager.createSiddhiAppRuntime(
                 "@App:name('TestExecutionPlan') " +
                         "define stream FooStream (symbol string, price float, volume long); " +
@@ -338,6 +346,8 @@ public class RabbitMQSinkTestCase {
         fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
         fooStream.send(new Object[]{"IBM", 75.6f, 100L});
         fooStream.send(new Object[]{"WSO2", 57.6f, 100L});
+        AssertJUnit.assertTrue(appender.messages.contains("Error in sending the message to the exchange.name = "
+                                                                  + "headersTest in RabbitMQ broker"));
         executionPlanRuntime.shutdown();
     }
 }
