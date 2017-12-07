@@ -54,6 +54,7 @@
         <jacoco.version>0.7.9</jacoco.version>
         <maven.failsafe.plugin.version>2.19.1</maven.failsafe.plugin.version>
         <docker.maven.plugin.version>0.15.9</docker.maven.plugin.version>
+        <owasp.encoder.version>1.2.0.wso2v2</owasp.encoder.version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
@@ -89,6 +90,11 @@
                 <artifactId>org.jacoco.agent</artifactId>
                 <classifier>runtime</classifier>
                 <version>${jacoco.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.orbit.org.owasp.encoder</groupId>
+                <artifactId>encoder</artifactId>
+                <version>${owasp.encoder.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.extension.siddhi.map.xml</groupId>

@@ -22,6 +22,7 @@ package org.wso2.extension.siddhi.io.rabbitmq.util;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import org.apache.log4j.Logger;
+import org.owasp.encoder.Encode;
 import org.wso2.siddhi.core.util.config.ConfigReader;
 
 import java.io.IOException;
@@ -48,7 +49,8 @@ public class RabbitMQSinkUtil {
                     null);
 
         } catch (IOException e) {
-            log.error("Error occurred while declaring the exchange - " + exchangeName + ".", e);
+            log.error(getEncodedString("Error occurred while declaring the exchange - " + exchangeName
+                    + "."), e);
         }
     }
 
@@ -58,7 +60,7 @@ public class RabbitMQSinkUtil {
         try {
             channel.queueDeclare(queueName, queueDurable, queueExclusive, queueAutodelete, null);
         } catch (IOException e) {
-            log.error("Error occurred while declaring the queue " + queueName + ".", e);
+            log.error(getEncodedString("Error occurred while declaring the queue " + queueName + "."), e);
         }
     }
 
@@ -91,6 +93,15 @@ public class RabbitMQSinkUtil {
             }
         }
         return map;
+    }
+
+    private static String getEncodedString(String str) {
+        String cleanedString = str.replace('\n', '_').replace('\r', '_');
+        cleanedString = Encode.forHtml(cleanedString);
+        if (!cleanedString.equals(str)) {
+            cleanedString += " (Encoded)";
+        }
+        return cleanedString;
     }
 }
 
