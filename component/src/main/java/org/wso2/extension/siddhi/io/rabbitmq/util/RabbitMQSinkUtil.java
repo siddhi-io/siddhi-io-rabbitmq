@@ -49,8 +49,7 @@ public class RabbitMQSinkUtil {
                     null);
 
         } catch (IOException e) {
-            log.error(getEncodedString("Error occurred while declaring the exchange - " + exchangeName
-                    + "."), e);
+            log.error("Error occurred while declaring the exchange - " + getEncodedString(exchangeName) + ".", e);
         }
     }
 
@@ -60,7 +59,7 @@ public class RabbitMQSinkUtil {
         try {
             channel.queueDeclare(queueName, queueDurable, queueExclusive, queueAutodelete, null);
         } catch (IOException e) {
-            log.error(getEncodedString("Error occurred while declaring the queue " + queueName + "."), e);
+            log.error("Error occurred while declaring the queue " + getEncodedString(queueName) + ".", e);
         }
     }
 
