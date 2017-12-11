@@ -49,10 +49,6 @@
             <artifactId>log4j</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wso2.orbit.org.owasp.encoder</groupId>
-            <artifactId>encoder</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.wso2.extension.siddhi.map.xml</groupId>
             <artifactId>siddhi-map-xml</artifactId>
             <scope>test</scope>
@@ -86,7 +82,6 @@
                             org.wso2.extension.siddhi.io.rabbitmq.*
                         </Export-Package>
                         <Import-Package>
-                            org.owasp.encoder.*;version="${owasp.encoder.version.range}",
                             *;resolution:=optional
                         </Import-Package>
                         <Include-Resource>
