@@ -22,7 +22,6 @@ package org.wso2.extension.siddhi.io.rabbitmq.util;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import org.apache.log4j.Logger;
-import org.owasp.encoder.Encode;
 import org.wso2.siddhi.core.util.config.ConfigReader;
 
 import java.io.IOException;
@@ -49,7 +48,7 @@ public class RabbitMQSinkUtil {
                     null);
 
         } catch (IOException e) {
-            log.error("Error occurred while declaring the exchange - " + getEncodedString(exchangeName) + ".", e);
+            log.error("Error occurred while declaring the exchange - " + removeCRLFCharacters(exchangeName) + ".", e);
         }
     }
 
@@ -59,7 +58,7 @@ public class RabbitMQSinkUtil {
         try {
             channel.queueDeclare(queueName, queueDurable, queueExclusive, queueAutodelete, null);
         } catch (IOException e) {
-            log.error("Error occurred while declaring the queue " + getEncodedString(queueName) + ".", e);
+            log.error("Error occurred while declaring the queue " + removeCRLFCharacters(queueName) + ".", e);
         }
     }
 
@@ -94,13 +93,8 @@ public class RabbitMQSinkUtil {
         return map;
     }
 
-    private static String getEncodedString(String str) {
-        String cleanedString = str.replace('\n', '_').replace('\r', '_');
-        cleanedString = Encode.forHtml(cleanedString);
-        if (!cleanedString.equals(str)) {
-            cleanedString += " (Encoded)";
-        }
-        return cleanedString;
+    private static String removeCRLFCharacters(String str) {
+        return str.replace('\n', '_').replace('\r', '_');
     }
 }
 
