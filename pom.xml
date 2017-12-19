@@ -31,7 +31,7 @@
 
     <groupId>org.wso2.extension.siddhi.io.rabbitmq</groupId>
     <artifactId>siddhi-io-rabbitmq-parent</artifactId>
-    <version>1.0.13</version>
+    <version>1.0.14-SNAPSHOT</version>
     <name>Siddhi IO RabbitMQ Extension Parent</name>
 
     <scm>
@@ -39,7 +39,7 @@
         <url>https://github.com/wso2-extensions/siddhi-io-rabbitmq.git</url>
         <developerConnection>scm:git:https://github.com/wso2-extensions/siddhi-io-rabbitmq.git
         </developerConnection>
-        <tag>v1.0.13</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <properties>
