@@ -12,6 +12,7 @@ extra:
 pages:
 - Welcome to WSO2 Siddhi IO RabbitMQ: index.md
 - API Docs:
-  - 1.0.1-SNAPSHOT: api/1.0.1-SNAPSHOT.md
+  - 1.0.14: api/1.0.14.md
+  - latest: api/latest.md
 - License: license.md
 theme: material
