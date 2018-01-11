@@ -31,7 +31,7 @@
 
     <groupId>org.wso2.extension.siddhi.io.rabbitmq</groupId>
     <artifactId>siddhi-io-rabbitmq-parent</artifactId>
-    <version>1.0.8-SNAPSHOT</version>
+    <version>1.0.14-SNAPSHOT</version>
     <name>Siddhi IO RabbitMQ Extension Parent</name>
 
     <scm>
@@ -43,7 +43,11 @@
     </scm>
 
     <properties>
+<<<<<<< HEAD
         <siddhi.version>4.0.0-beta</siddhi.version>
+=======
+        <siddhi.version>4.0.4</siddhi.version>
+>>>>>>> 1985a2149e450551191feb1baa6f9ab6a5da90f4
         <log4j.version>1.2.17.wso2v1</log4j.version>
         <rabbitmq.version>3.6.3</rabbitmq.version>
         <carbon.feature.plugin.version>3.1.3</carbon.feature.plugin.version>

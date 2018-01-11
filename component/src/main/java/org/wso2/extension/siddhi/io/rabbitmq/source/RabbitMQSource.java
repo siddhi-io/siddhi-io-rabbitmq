@@ -59,105 +59,110 @@ import javax.net.ssl.TrustManagerFactory;
 @Extension(
         name = "rabbitmq",
         namespace = "source",
-        description = "The rabbitmq source receives the events from the rabbitmq broker " +
-                "using the AMQP protocol. ",
+        description = "The rabbitmq source receives the events from the rabbitmq broker via the AMQP protocol. ",
         parameters = {
                 @Parameter(
                         name = "uri",
-                        description = "The uri that used to connects to an AMQP server. This is a mandatory " +
-                                "parameter and if this is not specified, an error is logged in the CLI " +
-                                "e.g., " +
-                                "`amqp://guest:guest`, " +
-                                "`amqp://guest:guest@localhost:5672` ",
+                        description = "The URI that is used to connect to an AMQP server. If no URI is specified," +
+                                "an error is logged in the CLI." +
+                                "e.g.,\n" +
+                                "`amqp://guest:guest`,\n" +
+                                "`amqp://guest:guest@localhost:5672`",
                         type = {DataType.STRING}),
                 @Parameter(
                         name = "heartbeat",
-                        description = "It defines after what period of time the peer TCP connection should " +
+                        description = "The period of time (in seconds) after which the peer TCP connection should " +
                                 "be considered unreachable (down) by RabbitMQ and client libraries.",
                         type = {DataType.INT},
                         optional = true, defaultValue = "60"),
                 @Parameter(
                         name = "exchange.name",
-                        description = "The name of the exchange, which decide what to do with a message it receives." +
-                                "If the exchange.name is already in the RabbitMQ server, then the system use " +
-                                "that exchange.name instead of redeclaring" ,
+                        description = "The name of the exchange that decides what to do with a message it receives." +
+                                "If the `exchange.name` already exists in the RabbitMQ server, then the system uses " +
+                                "that `exchange.name` instead of redeclaring.",
                         type = {DataType.STRING}),
                 @Parameter(
                         name = "exchange.type",
-                        description = "The type of the exchange.name. There are four different exchange types are " +
-                                "available: `direct`, `fanout`, `topic` and `headers`. ",
+                        description = "The type of the exchange name. The exchange types available are " +
+                                "`direct`, `fanout`, `topic` and `headers`. For a detailed description of each " +
+                                "type, see " +
+                                "[RabbitMQ - AMQP Concepts](https://www.rabbitmq.com/tutorials/amqp-concepts.html). ",
                         type = {DataType.STRING},
                         optional = true, defaultValue = "direct"),
                 @Parameter(
                         name = "exchange.durable.enabled",
-                        description = "Decide whether the exchange should remain declared even if the broker " +
-                                "restarts. ",
+                        description = "If this is set to `true`, the exchange remains declared even if the broker" +
+                                " restarts.",
                         type = {DataType.BOOL},
                         optional = true, defaultValue = "false"),
                 @Parameter(
                         name = "exchange.autodelete.enabled",
-                        description = "Decide whether to keep the exchange even if it is not used anymore. ",
+                        description = "If this is set to `true`, the exchange is automatically deleted when it is " +
+                                "not used anymore. ",
                         type = {DataType.BOOL},
                         optional = true, defaultValue = "false"),
                 @Parameter(
                         name = "routing.key",
-                        description = "The key that the exchange looks at to decide how to route the message to " +
-                                "queues. The routing key is like an address for the message. The routing.key " +
-                                "must be initialized when the exchange.type = `direct` or exchange.type = `topic` ",
+                        description = "The key based on which the exchange determines how to route the message to " +
+                                "queues. The routing key is like an address for the message. The routing.key must " +
+                                "be initialized when the value for the `exchange.type` parameter is `direct` " +
+                                "or `topic`.",
                         type = {DataType.STRING},
                         optional = true, defaultValue = "empty"),
                 @Parameter(
                         name = "headers",
-                        description = "Headers of the message. The attributes used for routing are taken " +
-                                "from the headers attribute. A message is considered matching if the value of " +
-                                "the header equals the value specified upon binding ",
+                        description = "The headers of the message. The attributes used for routing are taken " +
+                                "from the this paremeter. A message is considered matching if the value of " +
+                                "the header equals the value specified upon binding. ",
                         type = {DataType.STRING},
                         optional = true, defaultValue = "null"),
                 @Parameter(
                         name = "queue.name",
-                        description = "A queue is a buffer that stores messages. If the queue.name is already " +
-                                "in the RabbitMQ server, then the system use that queue.name instead of " +
-                                "redeclaring it. If the queue.name is empty, then the system will " +
-                                "used a unique queue name that is automatically generated by the rabbitmq server ",
+                        description = "A queue is a buffer that stores messages. If the queue name already exists " +
+                                "in the RabbitMQ server, then the system usees that queue name instead of " +
+                                "redeclaring it. If no value is specified for this parameter, the system uses the " +
+                                "unique queue name that is automatically generated by the RabbitMQ server. ",
                         type = {DataType.STRING},
                         optional = true, defaultValue = "system generated queue name"),
                 @Parameter(
                         name = "queue.durable.enabled",
-                        description = "Decide whether the queue should remain declared even if the broker restarts",
+                        description = "If this parameter is set to `true`, the queue remains declared even if the " +
+                                "broker restarts",
                         type = {DataType.BOOL},
                         optional = true, defaultValue = "false"),
                 @Parameter(
                         name = "queue.exclusive.enabled",
-                        description = "Decide whether the queue should be exclusive or should be consumable by " +
-                                "other connections",
+                        description = "If this parameter is set to `true`, the queue is exclusive for the current " +
+                                "connection. If it is set to `false`, it is also consumable by other connections. ",
                         type = {DataType.BOOL},
                         optional = true, defaultValue = "false"),
                 @Parameter(
                         name = "queue.autodelete.enabled",
-                        description = "Decide whether to keep the queue even if it is not used anymore. ",
+                        description = "If this parameter is set to `true`, the queue is automatically deleted when " +
+                                "it is not used anymore.",
                         type = {DataType.BOOL},
                         optional = true, defaultValue = "false"),
                 @Parameter(
                         name = "tls.enabled",
-                        description = "Used to establish an encrypted communication channel. The parameters " +
-                                "`tls.truststore.path` and `tls.truststore.password` should be initialised " +
-                                "when the parameter tls.enable = true: ",
+                        description = "This parameter specifies whether an encrypted communication channel should " +
+                        "be established or not. When this parameter is set to `true`, the " +
+                        "`tls.truststore.path` and `tls.truststore.password` parameters are initialized.",
                         type = {DataType.BOOL},
                         optional = true, defaultValue = "false"),
                 @Parameter(
                         name = "tls.truststore.path",
-                        description = "The file path to the location of the truststore of the client that sends " +
-                                "the RabbitMQ events through 'AMQP' protocol. A custom client-truststore can be " +
-                                "specified if required. If custom truststore is not specified then the system " +
-                                "uses the default client-trustore in the " +
-                                "`${carbon.home}/resources/security` directory.",
+                        description = "The file path to the location of the truststore of the client that receives " +
+                        "the RabbitMQ events via the `AMQP` protocol. A custom client-truststore can be " +
+                        "specified if required. If a custom truststore is not specified, then the system " +
+                        "uses the default client-trustore in the `${carbon.home}/resources/security` " +
+                        "directory.",
                         type = {DataType.STRING},
                         optional = true,  defaultValue = "${carbon.home}/resources/security/client-truststore.jks"),
                 @Parameter(
                         name = "tls.truststore.password",
                         description = "The password for the client-truststore. A custom password can be specified " +
                                 "if required. If no custom password is specified, then the system uses " +
-                                "'wso2carbon' as the default password.",
+                                "`wso2carbon` as the default password.",
                         type = {DataType.STRING},
                         optional = true, defaultValue = "wso2carbon"),
                 @Parameter(
@@ -173,19 +178,19 @@ import javax.net.ssl.TrustManagerFactory;
         },
         examples = {
                 @Example(
-                        description = "The following query will receive events from  'direct' exchange with " +
-                                "exchange type `direct` and routing key `directTest`",
                         syntax = "@App:name('TestExecutionPlan') \n" +
                                 "define stream FooStream (symbol string, price float, volume long); \n" +
                                 "@info(name = 'query1') \n" +
-                                "@source(type ='rabbitmq', " +
-                                "uri = 'amqp://guest:guest@localhost:5672', " +
-                                "exchange.name = 'direct', " +
-                                "routing.key= 'direct', " +
-                                "@map(type='xml'))" +
+                                "@source(type ='rabbitmq',\n" +
+                                "uri = 'amqp://guest:guest@localhost:5672',\n" +
+                                "exchange.name = 'direct',\n" +
+                                "routing.key= 'direct',\n" +
+                                "@map(type='xml'))\n" +
                                 "Define stream BarStream (symbol string, price float, volume long);\n" +
-                                "from FooStream select symbol, price, volume insert into BarStream;\n")}
-)
+                                "from FooStream select symbol, price, volume insert into BarStream;\n",
+                        description = "This query receives events from the `direct` exchange with the `direct`" +
+                                "exchange type, and the `directTest` routing key.")
+        })
 public class RabbitMQSource extends Source {
     private static final Logger log = Logger.getLogger(RabbitMQSource.class);
     private SourceEventListener sourceEventListener;
