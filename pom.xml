@@ -43,13 +43,13 @@
     </scm>
 
     <properties>
-        <siddhi.version>4.0.4</siddhi.version>
+        <siddhi.version>4.1.38</siddhi.version>
         <log4j.version>1.2.17.wso2v1</log4j.version>
         <rabbitmq.version>3.6.3</rabbitmq.version>
         <carbon.feature.plugin.version>3.1.3</carbon.feature.plugin.version>
         <maven.surefire.plugin.version>2.12.4</maven.surefire.plugin.version>
         <testing.version>6.8</testing.version>
-        <siddhi.map.xml.version>4.0.8</siddhi.map.xml.version>
+        <siddhi.map.xml.version>4.1.14</siddhi.map.xml.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jacoco.version>0.7.9</jacoco.version>
         <maven.failsafe.plugin.version>2.19.1</maven.failsafe.plugin.version>
