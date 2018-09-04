@@ -2,42 +2,47 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
      <loc>https://wso2-extensions.github.io/siddhi-io-rabbitmq/</loc>
-     <lastmod>2018-08-25</lastmod>
+     <lastmod>2018-09-04</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://wso2-extensions.github.io/siddhi-io-rabbitmq/api/1.0.19/</loc>
+     <lastmod>2018-09-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://wso2-extensions.github.io/siddhi-io-rabbitmq/api/1.0.18/</loc>
-     <lastmod>2018-08-25</lastmod>
+     <lastmod>2018-09-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://wso2-extensions.github.io/siddhi-io-rabbitmq/api/1.0.17/</loc>
-     <lastmod>2018-08-25</lastmod>
+     <lastmod>2018-09-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://wso2-extensions.github.io/siddhi-io-rabbitmq/api/1.0.16/</loc>
-     <lastmod>2018-08-25</lastmod>
+     <lastmod>2018-09-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://wso2-extensions.github.io/siddhi-io-rabbitmq/api/1.0.15/</loc>
-     <lastmod>2018-08-25</lastmod>
+     <lastmod>2018-09-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://wso2-extensions.github.io/siddhi-io-rabbitmq/api/1.0.14/</loc>
-     <lastmod>2018-08-25</lastmod>
+     <lastmod>2018-09-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://wso2-extensions.github.io/siddhi-io-rabbitmq/api/latest/</loc>
-     <lastmod>2018-08-25</lastmod>
+     <lastmod>2018-09-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://wso2-extensions.github.io/siddhi-io-rabbitmq/license/</loc>
-     <lastmod>2018-08-25</lastmod>
+     <lastmod>2018-09-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
