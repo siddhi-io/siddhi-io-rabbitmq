@@ -21,8 +21,8 @@ package org.wso2.extension.siddhi.io.rabbitmq.util;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
+import io.siddhi.core.util.config.ConfigReader;
 import org.apache.log4j.Logger;
-import org.wso2.siddhi.core.util.config.ConfigReader;
 
 import java.io.IOException;
 import java.util.HashMap;

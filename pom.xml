@@ -31,7 +31,7 @@
 
     <groupId>org.wso2.extension.siddhi.io.rabbitmq</groupId>
     <artifactId>siddhi-io-rabbitmq-parent</artifactId>
-    <version>1.1.2-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
     <name>Siddhi IO RabbitMQ Extension Parent</name>
 
     <scm>
@@ -43,14 +43,14 @@
     </scm>
 
     <properties>
-        <siddhi.version>4.5.0</siddhi.version>
-        <siddhi.version.range>[4.0.0,5.0.0)</siddhi.version.range>
+        <siddhi.version>5.0.0</siddhi.version>
+        <siddhi.version.range>[5.0.0,6.0.0)</siddhi.version.range>
         <log4j.version>1.2.17.wso2v1</log4j.version>
         <rabbitmq.version>3.6.3</rabbitmq.version>
         <carbon.feature.plugin.version>3.1.3</carbon.feature.plugin.version>
         <maven.surefire.plugin.version>2.12.4</maven.surefire.plugin.version>
         <testing.version>6.8</testing.version>
-        <siddhi.map.xml.version>4.0.18</siddhi.map.xml.version>
+        <siddhi.map.xml.version>5.0.0</siddhi.map.xml.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jacoco.version>0.7.9</jacoco.version>
         <maven.failsafe.plugin.version>2.19.1</maven.failsafe.plugin.version>
@@ -61,17 +61,17 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.wso2.siddhi</groupId>
+                <groupId>io.siddhi</groupId>
                 <artifactId>siddhi-core</artifactId>
                 <version>${siddhi.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.siddhi</groupId>
+                <groupId>io.siddhi</groupId>
                 <artifactId>siddhi-query-api</artifactId>
                 <version>${siddhi.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.siddhi</groupId>
+                <groupId>io.siddhi</groupId>
                 <artifactId>siddhi-annotations</artifactId>
                 <version>${siddhi.version}</version>
             </dependency>

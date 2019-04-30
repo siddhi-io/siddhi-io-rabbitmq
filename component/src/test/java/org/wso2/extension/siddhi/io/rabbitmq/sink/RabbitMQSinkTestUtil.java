@@ -28,7 +28,6 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import org.apache.log4j.Logger;
 
-
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
