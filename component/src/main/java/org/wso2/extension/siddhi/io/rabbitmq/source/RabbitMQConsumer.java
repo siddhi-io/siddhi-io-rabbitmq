@@ -25,9 +25,9 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
+import io.siddhi.core.stream.input.source.SourceEventListener;
 import org.apache.log4j.Logger;
 import org.wso2.extension.siddhi.io.rabbitmq.util.RabbitMQSinkUtil;
-import org.wso2.siddhi.core.stream.input.source.SourceEventListener;
 
 import java.io.IOException;
 import java.util.Map;

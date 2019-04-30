@@ -21,21 +21,23 @@ package org.wso2.extension.siddhi.io.rabbitmq.source;
 
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import io.siddhi.annotation.Example;
+import io.siddhi.annotation.Extension;
+import io.siddhi.annotation.Parameter;
+import io.siddhi.annotation.util.DataType;
+import io.siddhi.core.config.SiddhiAppContext;
+import io.siddhi.core.exception.ConnectionUnavailableException;
+import io.siddhi.core.exception.SiddhiAppCreationException;
+import io.siddhi.core.stream.ServiceDeploymentInfo;
+import io.siddhi.core.stream.input.source.Source;
+import io.siddhi.core.stream.input.source.SourceEventListener;
+import io.siddhi.core.util.config.ConfigReader;
+import io.siddhi.core.util.snapshot.state.State;
+import io.siddhi.core.util.snapshot.state.StateFactory;
+import io.siddhi.core.util.transport.OptionHolder;
 import org.apache.log4j.Logger;
 import org.wso2.extension.siddhi.io.rabbitmq.util.RabbitMQConstants;
 import org.wso2.extension.siddhi.io.rabbitmq.util.RabbitMQSinkUtil;
-import org.wso2.siddhi.annotation.Example;
-import org.wso2.siddhi.annotation.Extension;
-import org.wso2.siddhi.annotation.Parameter;
-import org.wso2.siddhi.annotation.util.DataType;
-import org.wso2.siddhi.core.config.SiddhiAppContext;
-import org.wso2.siddhi.core.exception.ConnectionUnavailableException;
-import org.wso2.siddhi.core.exception.SiddhiAppCreationException;
-import org.wso2.siddhi.core.stream.input.source.Source;
-import org.wso2.siddhi.core.stream.input.source.SourceEventListener;
-import org.wso2.siddhi.core.util.config.ConfigReader;
-import org.wso2.siddhi.core.util.transport.OptionHolder;
-
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -215,8 +217,8 @@ public class RabbitMQSource extends Source {
     private FileInputStream fileInputStream = null;
 
     @Override
-    public void init(SourceEventListener sourceEventListener, OptionHolder optionHolder, String[] strings,
-                     ConfigReader configReader, SiddhiAppContext siddhiAppContext) {
+    public StateFactory init(SourceEventListener sourceEventListener, OptionHolder optionHolder, String[] strings,
+                             ConfigReader configReader, SiddhiAppContext siddhiAppContext) {
         this.sourceEventListener = sourceEventListener;
         this.listenerUri = optionHolder.validateAndGetStaticValue(RabbitMQConstants.RABBITMQ_SERVER_URI);
         this.heartbeat = Integer.parseInt(optionHolder.validateAndGetStaticValue(RabbitMQConstants.RABBITMQ_HEARTBEAT,
@@ -279,7 +281,7 @@ public class RabbitMQSource extends Source {
             throw new SiddhiAppCreationException("Check the exchange type in " + this.sourceEventListener + ". " +
                     "There is no exchange type named as " + exchangeType + " in RabbitMQ");
         }
-
+        return null;
     }
 
     @Override
@@ -288,7 +290,7 @@ public class RabbitMQSource extends Source {
     }
 
     @Override
-    public void connect(ConnectionCallback connectionCallback) throws ConnectionUnavailableException {
+    public void connect(ConnectionCallback connectionCallback, State state) throws ConnectionUnavailableException {
         try {
             ConnectionFactory factory = new ConnectionFactory();
             URI uri = URI.create(listenerUri);
@@ -368,7 +370,12 @@ public class RabbitMQSource extends Source {
         }
     }
 
-        @Override
+    @Override
+    protected ServiceDeploymentInfo exposeServiceDeploymentInfo() {
+        return null;
+    }
+
+    @Override
     public void disconnect() {
         if (connection != null) {
             try {
@@ -401,15 +408,5 @@ public class RabbitMQSource extends Source {
     @Override
     public void resume() {
         RabbitMQConsumer.resume();
-    }
-
-    @Override
-    public Map<String, Object> currentState() {
-        return null;
-    }
-
-    @Override
-    public void restoreState(Map<String, Object> map) {
-
     }
 }
