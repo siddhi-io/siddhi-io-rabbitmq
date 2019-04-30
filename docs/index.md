@@ -11,7 +11,7 @@ Find some useful links below:
 
 ## Latest API Docs 
 
-Latest API Docs is <a target="_blank" href="https://wso2-extensions.github.io/siddhi-io-rabbitmq/api/1.1.1">1.1.1</a>.
+Latest API Docs is <a target="_blank" href="https://wso2-extensions.github.io/siddhi-io-rabbitmq/api/2.0.0">2.0.0</a>.
 
 ## How to use 
 
@@ -45,8 +45,8 @@ Latest API Docs is <a target="_blank" href="https://wso2-extensions.github.io/si
 
 ## Features
 
-* <a target="_blank" href="https://wso2-extensions.github.io/siddhi-io-rabbitmq/api/1.1.1/#rabbitmq-sink">rabbitmq</a> *<a target="_blank" href="https://wso2.github.io/siddhi/documentation/siddhi-4.0/#sink">(Sink)</a>*<br><div style="padding-left: 1em;"><p>The rabbitmq sink pushes the events into a rabbitmq broker using the AMQP protocol</p></div>
-* <a target="_blank" href="https://wso2-extensions.github.io/siddhi-io-rabbitmq/api/1.1.1/#rabbitmq-source">rabbitmq</a> *<a target="_blank" href="https://wso2.github.io/siddhi/documentation/siddhi-4.0/#source">(Source)</a>*<br><div style="padding-left: 1em;"><p>The rabbitmq source receives the events from the rabbitmq broker via the AMQP protocol. </p></div>
+* <a target="_blank" href="https://wso2-extensions.github.io/siddhi-io-rabbitmq/api/2.0.0/#rabbitmq-sink">rabbitmq</a> *<a target="_blank" href="http://siddhi.io/documentation/siddhi-5.x/query-guide-5.x/#sink">(Sink)</a>*<br><div style="padding-left: 1em;"><p>The rabbitmq sink pushes the events into a rabbitmq broker using the AMQP protocol</p></div>
+* <a target="_blank" href="https://wso2-extensions.github.io/siddhi-io-rabbitmq/api/2.0.0/#rabbitmq-source">rabbitmq</a> *<a target="_blank" href="http://siddhi.io/documentation/siddhi-5.x/query-guide-5.x/#source">(Source)</a>*<br><div style="padding-left: 1em;"><p>The rabbitmq source receives the events from the rabbitmq broker via the AMQP protocol. </p></div>
 
 ## How to Contribute
  
