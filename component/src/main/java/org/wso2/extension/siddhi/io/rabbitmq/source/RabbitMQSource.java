@@ -213,6 +213,7 @@ public class RabbitMQSource extends Source {
     private String routingKey;
     private Map<String, Object> map = null;
     private FileInputStream fileInputStream = null;
+    private RabbitMQConsumer rabbitMQConsumer;
 
     @Override
     public void init(SourceEventListener sourceEventListener, OptionHolder optionHolder, String[] strings,
@@ -339,9 +340,10 @@ public class RabbitMQSource extends Source {
                 }
             }
             connection = factory.newConnection();
-            RabbitMQConsumer.consume(connection, exchangeName, exchangeType, exchangeDurable,
+            rabbitMQConsumer = new RabbitMQConsumer();
+            rabbitMQConsumer.consume(connection, exchangeName, exchangeType, exchangeDurable,
                     exchangeAutoDelete, queueName, queueExclusive, queueDurable, queueAutodelete, routingKey, map,
-                    sourceEventListener);
+                    sourceEventListener, connectionCallback);
         } catch (IOException e) {
             throw new ConnectionUnavailableException(
                     "Failed to connect with the Rabbitmq server. Check the " +
@@ -372,11 +374,13 @@ public class RabbitMQSource extends Source {
     public void disconnect() {
         if (connection != null) {
             try {
-                RabbitMQConsumer.closeChannel();
-                connection.close();
-                if (log.isDebugEnabled()) {
-                    log.debug("Server connector for uri = " + listenerUri + " is disconnected in " +
-                            "" + sourceEventListener + ".");
+                if (connection.isOpen()) {
+                    rabbitMQConsumer.closeChannel();
+                    connection.close();
+                    if (log.isDebugEnabled()) {
+                        log.debug("Server connector for uri = " + listenerUri + " is disconnected in " +
+                                "" + sourceEventListener + ".");
+                    }
                 }
             } catch (TimeoutException e) {
                 log.error("Timeout while disconnecting the uri = " + listenerUri + " in " +
@@ -384,6 +388,9 @@ public class RabbitMQSource extends Source {
             } catch (IOException e) {
                 log.error("Error in disconnecting the uri = " + listenerUri + " in " +
                         "" + sourceEventListener + ".");
+            } catch (Exception e) {
+                log.error("Error occurred while closing the RabbitMQ consumer for the queue: "
+                        + queueName + ". ", e);
             }
         }
     }
@@ -395,12 +402,12 @@ public class RabbitMQSource extends Source {
 
     @Override
     public void pause() {
-       RabbitMQConsumer.pause();
+       rabbitMQConsumer.pause();
     }
 
     @Override
     public void resume() {
-        RabbitMQConsumer.resume();
+        rabbitMQConsumer.resume();
     }
 
     @Override
