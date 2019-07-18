@@ -221,7 +221,6 @@ public class RabbitMQSource extends Source {
     @Override
     public StateFactory init(SourceEventListener sourceEventListener, OptionHolder optionHolder, String[] strings,
                              ConfigReader configReader, SiddhiAppContext siddhiAppContext) {
-
         this.siddhiAppName = siddhiAppContext.getName();
         this.sourceEventListener = sourceEventListener;
         this.listenerUri = optionHolder.validateAndGetStaticValue(RabbitMQConstants.RABBITMQ_SERVER_URI);
@@ -401,7 +400,7 @@ public class RabbitMQSource extends Source {
             } catch (Exception e) {
                 log.error("Error occurred while closing the RabbitMQ consumer for the queue: "
                         + queueName + ". Respective Siddhi App name : " + siddhiAppName + " and stream ID : " +
-                        sourceEventListener.getStreamDefinition().getId(), e);
+                        sourceEventListener.getStreamDefinition().getId() + ".", e);
             }
         }
     }
