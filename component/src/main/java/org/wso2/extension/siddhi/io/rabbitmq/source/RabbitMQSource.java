@@ -214,10 +214,12 @@ public class RabbitMQSource extends Source {
     private Map<String, Object> map = null;
     private FileInputStream fileInputStream = null;
     private RabbitMQConsumer rabbitMQConsumer;
+    private String siddhiAppName;
 
     @Override
     public void init(SourceEventListener sourceEventListener, OptionHolder optionHolder, String[] strings,
                      ConfigReader configReader, SiddhiAppContext siddhiAppContext) {
+        this.siddhiAppName = siddhiAppContext.getName();
         this.sourceEventListener = sourceEventListener;
         this.listenerUri = optionHolder.validateAndGetStaticValue(RabbitMQConstants.RABBITMQ_SERVER_URI);
         this.heartbeat = Integer.parseInt(optionHolder.validateAndGetStaticValue(RabbitMQConstants.RABBITMQ_HEARTBEAT,
@@ -390,7 +392,8 @@ public class RabbitMQSource extends Source {
                         "" + sourceEventListener + ".");
             } catch (Exception e) {
                 log.error("Error occurred while closing the RabbitMQ consumer for the queue: "
-                        + queueName + ". ", e);
+                        + queueName + ". Respective Siddhi App name : " + siddhiAppName + " and stream ID : " +
+                        sourceEventListener.getStreamDefinition().getId() + ".", e);
             }
         }
     }
