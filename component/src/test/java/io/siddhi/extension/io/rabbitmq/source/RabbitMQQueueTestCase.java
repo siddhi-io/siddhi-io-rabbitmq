@@ -17,7 +17,7 @@
  *
  */
 
-package org.wso2.extension.siddhi.io.rabbitmq.source;
+package io.siddhi.extension.io.rabbitmq.source;
 
 import io.siddhi.core.SiddhiAppRuntime;
 import io.siddhi.core.SiddhiManager;
@@ -36,8 +36,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 ;
 
-public class RabbitMQSourceTestCase {
-    private static final Logger log = Logger.getLogger(RabbitMQSourceTestCase.class);
+public class RabbitMQQueueTestCase {
+    private static final Logger log = Logger.getLogger(RabbitMQQueueTestCase.class);
     private AtomicInteger eventCount1 = new AtomicInteger(0);
     private AtomicInteger eventCount2 = new AtomicInteger(0);
     private int waitTime = 50;
@@ -52,9 +52,9 @@ public class RabbitMQSourceTestCase {
     }
 
     @Test
-    public void rabbitmqDefaultExchangetypeConsumerTest() throws InterruptedException {
+    public void rabbitmqQueueConsumerTest() throws InterruptedException {
         log.info("---------------------------------------------------------------------------------------------");
-        log.info("RabbitMQ Sink and Source test with mandatory fields");
+        log.info("RabbitMQ Sink and Source test when queue name is provided");
         log.info("---------------------------------------------------------------------------------------------");
         receivedEventNameList = new ArrayList<>(3);
         SiddhiManager siddhiManager = new SiddhiManager();
@@ -64,7 +64,7 @@ public class RabbitMQSourceTestCase {
                                 "define stream FooStream1 (symbol string, price float, volume long); " +
                                 "@info(name = 'query1') " +
                                 "@source(type='rabbitmq', uri = 'amqp://guest:guest@172.17.0.2:5672', " +
-                                "exchange.name = 'direct',  " +
+                                "exchange.name = 'directQueue1', queue.name = 'rabbitmqQueue', " +
                                 "@map(type='xml'))" +
                                 "Define stream BarStream1 (symbol string, price float, volume long);" +
                                 "from FooStream1 select symbol, price, volume insert into BarStream1;");
@@ -78,84 +78,22 @@ public class RabbitMQSourceTestCase {
                 }
             }
         });
-
         siddhiAppRuntime.start();
         SiddhiAppRuntime executionPlanRuntime = siddhiManager.createSiddhiAppRuntime(
                 "@App:name('TestExecutionPlan') " +
                         "define stream FooStream1 (symbol string, price float, volume long); " +
                         "@info(name = 'query1') " +
                         "@sink(type ='rabbitmq', uri = 'amqp://guest:guest@172.17.0.2:5672', " +
-                        "exchange.name = 'direct',  " +
+                        "exchange.name = 'directQueue1', " +
                         "@map(type='xml'))" +
                         "Define stream BarStream1 (symbol string, price float, volume long);" +
                         "from FooStream1 select symbol, price, volume insert into BarStream1;");
         InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream1");
 
         executionPlanRuntime.start();
-        List<Event> arrayList = new ArrayList<Event>();
-        arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 55.6f, 100L}));
-        arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
-        arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
-        fooStream.send(arrayList.toArray(new Event[3]));
-        List<String> expected = new ArrayList<>(2);
-        expected.add("WSO2");
-        expected.add("IBM");
-        expected.add("WSO2");
-        SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
-        AssertJUnit.assertEquals(expected, receivedEventNameList);
-        AssertJUnit.assertEquals(3, eventCount1.get());
-        executionPlanRuntime.shutdown();
-        siddhiAppRuntime.shutdown();
-    }
-
-    @Test
-    public void rabbitmqDirectConsumerTest() throws InterruptedException {
-        log.info("---------------------------------------------------------------------------------------------");
-        log.info("RabbitMQ Sink and Source test when exchange type direct and headers is provided");
-        log.info("---------------------------------------------------------------------------------------------");
-        receivedEventNameList = new ArrayList<>(3);
-        SiddhiManager siddhiManager = new SiddhiManager();
-        SiddhiAppRuntime siddhiAppRuntime = siddhiManager
-                .createSiddhiAppRuntime(
-                        "@App:name('TestExecutionPlan') " +
-                        "define stream FooStream1 (symbol string, price float, volume long); " +
-                        "@info(name = 'query1') " +
-                        "@source(type='rabbitmq', uri = 'amqp://guest:guest@172.17.0.2:5672', " +
-                        "exchange.name = 'rabbitmqDirect', exchange.type='direct', routing.key= 'direct', " +
-                        " headers= \"'x-match':'all','A:1','C:3'\"," +
-                        "@map(type='xml'))" +
-                        "Define stream BarStream1 (symbol string, price float, volume long);" +
-                        "from FooStream1 select symbol, price, volume insert into BarStream1;");
-        siddhiAppRuntime.addCallback("BarStream1", new StreamCallback() {
-            @Override
-            public void receive(Event[] events) {
-                for (Event event : events) {
-                    log.info(event);
-                    receivedEventNameList.add(event.getData(0).toString());
-                    eventCount1.incrementAndGet();
-                }
-            }
-        });
-
-        siddhiAppRuntime.start();
-        SiddhiAppRuntime executionPlanRuntime = siddhiManager.createSiddhiAppRuntime(
-                "@App:name('TestExecutionPlan') " +
-                        "define stream FooStream1 (symbol string, price float, volume long); " +
-                        "@info(name = 'query1') " +
-                        "@sink(type ='rabbitmq', uri = 'amqp://guest:guest@172.17.0.2:5672', " +
-                        "exchange.name = 'rabbitmqDirect', exchange.type='direct', routing.key= 'direct', " +
-                        "headers= \"'A:1','B:2'\", " +
-                        "@map(type='xml'))" +
-                        "Define stream BarStream1 (symbol string, price float, volume long);" +
-                        "from FooStream1 select symbol, price, volume insert into BarStream1;");
-        InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream1");
-
-        executionPlanRuntime.start();
-        List<Event> arrayList = new ArrayList<Event>();
-        arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 55.6f, 100L}));
-        arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
-        arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
-        fooStream.send(arrayList.toArray(new Event[3]));
+        fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
+        fooStream.send(new Object[]{"IBM", 75.6f, 100L});
+        fooStream.send(new Object[]{"WSO2", 57.6f, 100L});
         List<String> expected = new ArrayList<>(2);
         expected.add("WSO2");
         expected.add("IBM");
@@ -168,11 +106,10 @@ public class RabbitMQSourceTestCase {
 
     }
 
-
     @Test
-    public void rabbitmqTopicConsumerTest() throws InterruptedException {
+    public void rabbitmqQueueExclusiveConsumerTest() throws InterruptedException {
         log.info("---------------------------------------------------------------------------------------------");
-        log.info("RabbitMQ Sink and Source test when exchange type topic");
+        log.info("RabbitMQ Sink and Source test with queue exclusive is true");
         log.info("---------------------------------------------------------------------------------------------");
         receivedEventNameList = new ArrayList<>(3);
         SiddhiManager siddhiManager = new SiddhiManager();
@@ -182,8 +119,8 @@ public class RabbitMQSourceTestCase {
                                 "define stream FooStream1 (symbol string, price float, volume long); " +
                                 "@info(name = 'query1') " +
                                 "@source(type='rabbitmq', uri = 'amqp://guest:guest@172.17.0.2:5672', " +
-                                "exchange.name = 'rabbitmqTopic', exchange.type='topic'," +
-                                " routing.key= 'topic.*', " +
+                                "exchange.name = 'directQueue2', queue.name = 'exclusive', " +
+                                "queue.exclusive.enabled = 'true', " +
                                 "@map(type='xml'))" +
                                 "Define stream BarStream1 (symbol string, price float, volume long);" +
                                 "from FooStream1 select symbol, price, volume insert into BarStream1;");
@@ -204,19 +141,16 @@ public class RabbitMQSourceTestCase {
                         "define stream FooStream1 (symbol string, price float, volume long); " +
                         "@info(name = 'query1') " +
                         "@sink(type ='rabbitmq', uri = 'amqp://guest:guest@172.17.0.2:5672', " +
-                        "exchange.name = 'rabbitmqTopic', exchange.type='topic', " +
-                        "routing.key= 'topic.test', " +
+                        "exchange.name = 'directQueue2', " +
                         "@map(type='xml'))" +
                         "Define stream BarStream1 (symbol string, price float, volume long);" +
                         "from FooStream1 select symbol, price, volume insert into BarStream1;");
         InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream1");
 
         executionPlanRuntime.start();
-        List<Event> arrayList = new ArrayList<Event>();
-        arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 55.6f, 100L}));
-        arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
-        arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
-        fooStream.send(arrayList.toArray(new Event[3]));
+        fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
+        fooStream.send(new Object[]{"IBM", 75.6f, 100L});
+        fooStream.send(new Object[]{"WSO2", 57.6f, 100L});
         List<String> expected = new ArrayList<>(2);
         expected.add("WSO2");
         expected.add("IBM");
@@ -230,9 +164,9 @@ public class RabbitMQSourceTestCase {
     }
 
     @Test
-    public void rabbitmqFanoutConsumerTest() throws InterruptedException {
+    public void rabbitmqQueueAutoDeleteConsumerTest() throws InterruptedException {
         log.info("---------------------------------------------------------------------------------------------");
-        log.info("RabbitMQ Sink and Source test when exchange type fanout");
+        log.info("RabbitMQ Sink and Source test with queue autodelete is true");
         log.info("---------------------------------------------------------------------------------------------");
         receivedEventNameList = new ArrayList<>(3);
         SiddhiManager siddhiManager = new SiddhiManager();
@@ -241,8 +175,9 @@ public class RabbitMQSourceTestCase {
                         "@App:name('TestExecutionPlan') " +
                                 "define stream FooStream1 (symbol string, price float, volume long); " +
                                 "@info(name = 'query1') " +
-                                "@source(type='rabbitmq', uri = 'amqp://guest:guest@172.17.0.2:5672', " +
-                                "exchange.name = 'rabbitmqFanout', exchange.type='fanout', " +
+                                "@source(type='rabbitmq', uri ='amqp://guest:guest@172.17.0.2:5672', " +
+                                "exchange.name = 'directQueue3', queue.name = 'autodelete', " +
+                                "queue.autodelete.enabled = 'true', " +
                                 "@map(type='xml'))" +
                                 "Define stream BarStream1 (symbol string, price float, volume long);" +
                                 "from FooStream1 select symbol, price, volume insert into BarStream1;");
@@ -263,18 +198,16 @@ public class RabbitMQSourceTestCase {
                         "define stream FooStream1 (symbol string, price float, volume long); " +
                         "@info(name = 'query1') " +
                         "@sink(type ='rabbitmq', uri = 'amqp://guest:guest@172.17.0.2:5672', " +
-                        "exchange.name = 'rabbitmqFanout', exchange.type='fanout', " +
+                        "exchange.name = 'directQueue3', " +
                         "@map(type='xml'))" +
                         "Define stream BarStream1 (symbol string, price float, volume long);" +
                         "from FooStream1 select symbol, price, volume insert into BarStream1;");
         InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream1");
 
         executionPlanRuntime.start();
-        List<Event> arrayList = new ArrayList<Event>();
-        arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 55.6f, 100L}));
-        arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
-        arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
-        fooStream.send(arrayList.toArray(new Event[3]));
+        fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
+        fooStream.send(new Object[]{"IBM", 75.6f, 100L});
+        fooStream.send(new Object[]{"WSO2", 57.6f, 100L});
         List<String> expected = new ArrayList<>(2);
         expected.add("WSO2");
         expected.add("IBM");
@@ -288,20 +221,19 @@ public class RabbitMQSourceTestCase {
     }
 
     @Test
-    public void rabbitmqHeadersConsumerTest() throws InterruptedException {
+    public void rabbitmqDurableQueueConsumerTest() throws InterruptedException {
         log.info("---------------------------------------------------------------------------------------------");
-        log.info("RabbitMQ Sink and Source test when exchange type headers");
+        log.info("RabbitMQ Sink and Source test with queue durable is true");
         log.info("---------------------------------------------------------------------------------------------");
-        receivedEventNameList = new ArrayList<>(3);
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
                         "@App:name('TestExecutionPlan') " +
                                 "define stream FooStream1 (symbol string, price float, volume long); " +
                                 "@info(name = 'query1') " +
-                                "@source(type='rabbitmq', uri = 'amqp://guest:guest@172.17.0.2:5672', " +
-                                "exchange.name = 'headers', exchange.type = 'headers', " +
-                                "headers= \"'x-match:all','A:1','B:2'\", " +
+                                "@source(type='rabbitmq', uri ='amqp://guest:guest@172.17.0.2:5672', " +
+                                "exchange.name = 'directQueue4', queue.name = 'durableQueue', " +
+                                "queue.durable.enabled = 'true', " +
                                 "@map(type='xml'))" +
                                 "Define stream BarStream1 (symbol string, price float, volume long);" +
                                 "from FooStream1 select symbol, price, volume insert into BarStream1;");
@@ -310,7 +242,6 @@ public class RabbitMQSourceTestCase {
             public void receive(Event[] events) {
                 for (Event event : events) {
                     log.info(event);
-                    receivedEventNameList.add(event.getData(0).toString());
                     eventCount1.incrementAndGet();
                 }
             }
@@ -322,7 +253,7 @@ public class RabbitMQSourceTestCase {
                         "define stream FooStream1 (symbol string, price float, volume long); " +
                         "@info(name = 'query1') " +
                         "@sink(type ='rabbitmq', uri = 'amqp://guest:guest@172.17.0.2:5672', " +
-                        "exchange.name = 'headers', exchange.type = 'headers', headers= \"'A:1','B:2'\", " +
+                        "exchange.name = 'directQueue4', " +
                         "@map(type='xml'))" +
                         "Define stream BarStream1 (symbol string, price float, volume long);" +
                         "from FooStream1 select symbol, price, volume insert into BarStream1;");
@@ -334,12 +265,7 @@ public class RabbitMQSourceTestCase {
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
         fooStream.send(arrayList.toArray(new Event[3]));
-        List<String> expected = new ArrayList<>(2);
-        expected.add("WSO2");
-        expected.add("IBM");
-        expected.add("WSO2");
         SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
-        AssertJUnit.assertEquals(expected, receivedEventNameList);
         AssertJUnit.assertEquals(3, eventCount1.get());
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();
@@ -347,70 +273,10 @@ public class RabbitMQSourceTestCase {
     }
 
     @Test
-    public void rabbitmqEmptyHeadersConsumerTest() throws InterruptedException {
+    public void rabbitmqMultipleSourceWithDifferentQueueTest() throws InterruptedException {
         log.info("---------------------------------------------------------------------------------------------");
-        log.info("RabbitMQ Sink and Source test when exchange type headers and  headers is null");
+        log.info("Multiple RabbitMQ Source test case with different queue name");
         log.info("---------------------------------------------------------------------------------------------");
-        receivedEventNameList = new ArrayList<>(3);
-        SiddhiManager siddhiManager = new SiddhiManager();
-        SiddhiAppRuntime siddhiAppRuntime = siddhiManager
-               .createSiddhiAppRuntime(
-                        "@App:name('TestExecutionPlan') " +
-                                "define stream FooStream1 (symbol string, price float, volume long); " +
-                                "@info(name = 'query1') " +
-                                "@source(type='rabbitmq', uri = 'amqp://guest:guest@172.17.0.2:5672', " +
-                                "exchange.name = 'headers', exchange.type = 'headers', " +
-                                "@map(type='xml'))" +
-                                "Define stream BarStream1 (symbol string, price float, volume long);" +
-                                "from FooStream1 select symbol, price, volume insert into BarStream1;");
-        siddhiAppRuntime.addCallback("BarStream1", new StreamCallback() {
-            @Override
-            public void receive(Event[] events) {
-                for (Event event : events) {
-                    log.info(event);
-                    receivedEventNameList.add(event.getData(0).toString());
-                   eventCount1.incrementAndGet();
-                }
-            }
-        });
-
-        siddhiAppRuntime.start();
-        SiddhiAppRuntime executionPlanRuntime = siddhiManager.createSiddhiAppRuntime(
-                "@App:name('TestExecutionPlan') " +
-                        "define stream FooStream1 (symbol string, price float, volume long); " +
-                        "@info(name = 'query1') " +
-                        "@sink(type ='rabbitmq', uri = 'amqp://guest:guest@172.17.0.2:5672', " +
-                        "exchange.name = 'headers', exchange.type = 'headers', " +
-                        "@map(type='xml'))" +
-                        "Define stream BarStream1 (symbol string, price float, volume long);" +
-                        "from FooStream1 select symbol, price, volume insert into BarStream1;");
-        InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream1");
-
-        executionPlanRuntime.start();
-        List<Event> arrayList = new ArrayList<Event>();
-        arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 55.6f, 100L}));
-        arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"IBM", 75.6f, 100L}));
-        arrayList.add(new Event(System.currentTimeMillis(), new Object[]{"WSO2", 57.6f, 100L}));
-        fooStream.send(arrayList.toArray(new Event[3]));
-        List<String> expected = new ArrayList<>(2);
-        expected.add("WSO2");
-        expected.add("IBM");
-        expected.add("WSO2");
-        SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
-        AssertJUnit.assertEquals(expected, receivedEventNameList);
-        AssertJUnit.assertEquals(3, eventCount1.get());
-        executionPlanRuntime.shutdown();
-        siddhiAppRuntime.shutdown();
-
-    }
-
-    @Test
-    public void rabbitmqMultipleExchangeNameTest() throws InterruptedException {
-        log.info("---------------------------------------------------------------------------------------------");
-        log.info("RabbitMQ test case with multiple exchange name");
-        log.info("---------------------------------------------------------------------------------------------");
-        receivedEventNameList = new ArrayList<>(3);
-        receivedEventNameList1 = new ArrayList<>(3);
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -420,13 +286,13 @@ public class RabbitMQSourceTestCase {
 
                                 "@info(name = 'query1') " +
                                 "@source(type='rabbitmq', uri ='amqp://guest:guest@172.17.0.2:5672', " +
-                                "exchange.name = 'WSO2', " +
+                                "exchange.name = 'multipleQueue', queue.name = 'testCase1', " +
                                 "@map(type='xml'))" +
                                 "Define stream FooStream (symbol string, price float, volume long); " +
 
                                 "@info(name = 'query2') " +
                                 "@source(type='rabbitmq', uri ='amqp://guest:guest@172.17.0.2:5672', " +
-                                "exchange.name = 'IBM', queue.name = 'testCase', " +
+                                "exchange.name = 'multipleQueue', queue.name = 'testCase2', " +
                                 "@map(type='xml'))" +
                                 "Define stream FooStream2 (symbol string, price float, volume long); " +
 
@@ -437,7 +303,6 @@ public class RabbitMQSourceTestCase {
             public void receive(Event[] events) {
                 for (Event event : events) {
                     log.info(event);
-                    receivedEventNameList.add(event.getData(0).toString());
                     eventCount1.incrementAndGet();
                 }
             }
@@ -448,7 +313,6 @@ public class RabbitMQSourceTestCase {
             public void receive(Event[] events) {
                 for (Event event : events) {
                     log.info(event);
-                    receivedEventNameList1.add(event.getData(0).toString());
                     eventCount2.incrementAndGet();
                 }
             }
@@ -460,7 +324,7 @@ public class RabbitMQSourceTestCase {
                         "define stream FooStream1 (symbol string, price float, volume long); " +
                         "@info(name = 'query1') " +
                         "@sink(type ='rabbitmq', uri = 'amqp://guest:guest@172.17.0.2:5672', " +
-                        "exchange.name = '{{symbol}}', " +
+                        "exchange.name = 'multipleQueue', " +
                         "@map(type='xml'))" +
                         "Define stream BarStream1 (symbol string, price float, volume long);" +
                         "from FooStream1 select symbol, price, volume insert into BarStream1;");
@@ -469,15 +333,92 @@ public class RabbitMQSourceTestCase {
         executionPlanRuntime.start();
         fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
         fooStream.send(new Object[]{"IBM", 75.6f, 100L});
+        fooStream.send(new Object[]{"WSO2", 57.6f, 100L});
+        SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount1, timeout);
+        SiddhiTestHelper.waitForEvents(waitTime, 3, eventCount2, timeout);
+        AssertJUnit.assertEquals(3, eventCount1.get());
+        AssertJUnit.assertEquals(3, eventCount2.get());
+        executionPlanRuntime.shutdown();
+        siddhiAppRuntime.shutdown();
+
+    }
+
+    @Test
+    public void rabbitmqMultipleSourceWithSameQueueTest() throws InterruptedException {
+        log.info("---------------------------------------------------------------------------------------------");
+        log.info("Multiple RabbitMQ Source test case with same queue name");
+        log.info("---------------------------------------------------------------------------------------------");
+        receivedEventNameList = new ArrayList<>(2);
+        receivedEventNameList1 = new ArrayList<>(2);
+        SiddhiManager siddhiManager = new SiddhiManager();
+        SiddhiAppRuntime siddhiAppRuntime = siddhiManager
+                .createSiddhiAppRuntime(
+                        "@App:name('TestExecutionPlan') " +
+                                "define stream BarStream (symbol string, price float, volume long); " +
+                                "define stream BarStream2 (symbol string, price float, volume long); " +
+
+                                "@info(name = 'query1') " +
+                                "@source(type='rabbitmq', uri ='amqp://guest:guest@172.17.0.2:5672', " +
+                                "exchange.name = 'testCase', queue.name = 'testCase', " +
+                                "@map(type='xml'))" +
+                                "Define stream FooStream (symbol string, price float, volume long); " +
+
+                                "@info(name = 'query2') " +
+                                "@source(type='rabbitmq', uri ='amqp://guest:guest@172.17.0.2:5672', " +
+                                "exchange.name = 'testCase', queue.name = 'testCase', " +
+                                "@map(type='xml'))" +
+                                "Define stream FooStream2 (symbol string, price float, volume long); " +
+
+                                "from FooStream select symbol, price, volume insert into BarStream; " +
+                                "from FooStream2 select symbol, price, volume insert into BarStream2; ");
+        siddhiAppRuntime.addCallback("BarStream", new StreamCallback() {
+            @Override
+            public void receive(Event[] events) {
+                for (Event event : events) {
+                    log.info(event);
+                    eventCount1.incrementAndGet();
+                    receivedEventNameList.add(event.getData(0).toString());
+                }
+            }
+        });
+
+        siddhiAppRuntime.addCallback("BarStream2", new StreamCallback() {
+            @Override
+            public void receive(Event[] events) {
+                for (Event event : events) {
+                    log.info(event);
+                    eventCount2.incrementAndGet();
+                    receivedEventNameList1.add(event.getData(0).toString());
+                }
+            }
+        });
+
+        siddhiAppRuntime.start();
+        SiddhiAppRuntime executionPlanRuntime = siddhiManager.createSiddhiAppRuntime(
+                "@App:name('TestExecutionPlan') " +
+                        "define stream FooStream (symbol string, price float, volume long); " +
+                        "@info(name = 'query1') " +
+                        "@sink(type ='rabbitmq', uri = 'amqp://guest:guest@172.17.0.2:5672', " +
+                        "exchange.name = 'testCase', " +
+                        "@map(type='xml'))" +
+                        "Define stream BarStream (symbol string, price float, volume long);" +
+                        "from FooStream select symbol, price, volume insert into BarStream;");
+        InputHandler fooStream = executionPlanRuntime.getInputHandler("FooStream");
+
+        executionPlanRuntime.start();
+        fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
+        fooStream.send(new Object[]{"IBM", 75.6f, 100L});
+        fooStream.send(new Object[]{"WSO2", 57.6f, 100L});
         List<String> expected = new ArrayList<>(2);
-        expected.add("WSO2");
         List<String> expected1 = new ArrayList<>(2);
+        expected.add("WSO2");
         expected1.add("IBM");
-        SiddhiTestHelper.waitForEvents(waitTime, 1, eventCount1, timeout);
+        expected.add("WSO2");
+        SiddhiTestHelper.waitForEvents(waitTime, 2, eventCount1, timeout);
         SiddhiTestHelper.waitForEvents(waitTime, 1, eventCount2, timeout);
         AssertJUnit.assertEquals(expected, receivedEventNameList);
         AssertJUnit.assertEquals(expected1, receivedEventNameList1);
-        AssertJUnit.assertEquals(1, eventCount1.get());
+        AssertJUnit.assertEquals(2, eventCount1.get());
         AssertJUnit.assertEquals(1, eventCount2.get());
         executionPlanRuntime.shutdown();
         siddhiAppRuntime.shutdown();

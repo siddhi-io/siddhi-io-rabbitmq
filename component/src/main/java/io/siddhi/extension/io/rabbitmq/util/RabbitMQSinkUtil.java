@@ -17,7 +17,7 @@
  *
  */
 
-package org.wso2.extension.siddhi.io.rabbitmq.util;
+package io.siddhi.extension.io.rabbitmq.util;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;

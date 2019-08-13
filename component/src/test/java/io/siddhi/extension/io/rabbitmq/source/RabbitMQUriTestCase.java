@@ -17,36 +17,36 @@
  *
  */
 
-package org.wso2.extension.siddhi.io.rabbitmq.source;
+package io.siddhi.extension.io.rabbitmq.source;
 
 import io.siddhi.core.SiddhiAppRuntime;
 import io.siddhi.core.SiddhiManager;
 import io.siddhi.core.exception.SiddhiAppCreationException;
 import io.siddhi.core.stream.input.source.Source;
+import io.siddhi.extension.io.rabbitmq.util.UnitTestAppender;
 import io.siddhi.query.api.exception.SiddhiAppValidationException;
 import org.apache.log4j.Logger;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
-import org.wso2.extension.siddhi.io.rabbitmq.util.UnitTestAppender;
 
 public class RabbitMQUriTestCase {
     private static Logger log = Logger.getLogger(RabbitMQUriTestCase.class);
 
-    @Test (expectedExceptions = SiddhiAppValidationException.class)
+    @Test(expectedExceptions = SiddhiAppValidationException.class)
     public void rabbitmqWithoutUriTest() {
-            log.info("---------------------------------------------------------------------------------------------");
-            log.info("RabbitMQ Source test without URI");
-            log.info("---------------------------------------------------------------------------------------------");
-            SiddhiManager siddhiManager = new SiddhiManager();
-            siddhiManager.createSiddhiAppRuntime(
-                            "@App:name('TestExecutionPlan') " +
-                                    "define stream FooStream1 (symbol string, price float, volume long); " +
-                                    "@info(name = 'query1') " +
-                                    "@source(type='rabbitmq', " +
-                                    "exchange.name = 'testUri', " +
-                                    "@map(type='xml'))" +
-                                    "Define stream BarStream1 (symbol string, price float, volume long);" +
-                                    "from FooStream1 select symbol, price, volume insert into BarStream1;");
+        log.info("---------------------------------------------------------------------------------------------");
+        log.info("RabbitMQ Source test without URI");
+        log.info("---------------------------------------------------------------------------------------------");
+        SiddhiManager siddhiManager = new SiddhiManager();
+        siddhiManager.createSiddhiAppRuntime(
+                "@App:name('TestExecutionPlan') " +
+                        "define stream FooStream1 (symbol string, price float, volume long); " +
+                        "@info(name = 'query1') " +
+                        "@source(type='rabbitmq', " +
+                        "exchange.name = 'testUri', " +
+                        "@map(type='xml'))" +
+                        "Define stream BarStream1 (symbol string, price float, volume long);" +
+                        "from FooStream1 select symbol, price, volume insert into BarStream1;");
     }
 
     @Test
@@ -123,7 +123,7 @@ public class RabbitMQUriTestCase {
         siddhiAppRuntime.shutdown();
     }
 
-    @Test (expectedExceptions = SiddhiAppCreationException.class)
+    @Test(expectedExceptions = SiddhiAppCreationException.class)
     public void rabbitmqInvalidUriHostnameTest1() {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Source test with invalid URI");

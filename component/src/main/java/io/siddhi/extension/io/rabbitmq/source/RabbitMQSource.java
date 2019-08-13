@@ -17,7 +17,7 @@
  *
  */
 
-package org.wso2.extension.siddhi.io.rabbitmq.source;
+package io.siddhi.extension.io.rabbitmq.source;
 
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -35,9 +35,9 @@ import io.siddhi.core.util.config.ConfigReader;
 import io.siddhi.core.util.snapshot.state.State;
 import io.siddhi.core.util.snapshot.state.StateFactory;
 import io.siddhi.core.util.transport.OptionHolder;
+import io.siddhi.extension.io.rabbitmq.util.RabbitMQConstants;
+import io.siddhi.extension.io.rabbitmq.util.RabbitMQSinkUtil;
 import org.apache.log4j.Logger;
-import org.wso2.extension.siddhi.io.rabbitmq.util.RabbitMQConstants;
-import org.wso2.extension.siddhi.io.rabbitmq.util.RabbitMQSinkUtil;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

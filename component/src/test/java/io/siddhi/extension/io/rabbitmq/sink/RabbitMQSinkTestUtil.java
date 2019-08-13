@@ -17,7 +17,7 @@
  *
  */
 
-package org.wso2.extension.siddhi.io.rabbitmq.sink;
+package io.siddhi.extension.io.rabbitmq.sink;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;

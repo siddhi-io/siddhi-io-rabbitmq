@@ -16,7 +16,7 @@
  *  under the License.
  *
  */
-package org.wso2.extension.siddhi.io.rabbitmq.sink;
+package io.siddhi.extension.io.rabbitmq.sink;
 
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
@@ -37,10 +37,10 @@ import io.siddhi.core.util.snapshot.state.StateFactory;
 import io.siddhi.core.util.transport.DynamicOptions;
 import io.siddhi.core.util.transport.Option;
 import io.siddhi.core.util.transport.OptionHolder;
+import io.siddhi.extension.io.rabbitmq.util.RabbitMQConstants;
+import io.siddhi.extension.io.rabbitmq.util.RabbitMQSinkUtil;
 import io.siddhi.query.api.definition.StreamDefinition;
 import org.apache.log4j.Logger;
-import org.wso2.extension.siddhi.io.rabbitmq.util.RabbitMQConstants;
-import org.wso2.extension.siddhi.io.rabbitmq.util.RabbitMQSinkUtil;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

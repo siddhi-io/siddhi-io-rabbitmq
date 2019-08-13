@@ -17,7 +17,7 @@
  *
  */
 
-package org.wso2.extension.siddhi.io.rabbitmq.util;
+package io.siddhi.extension.io.rabbitmq.util;
 
 /**
  * This class represents RabbitMQ specific Constants.

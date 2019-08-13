@@ -17,19 +17,19 @@
  *
  */
 
-package org.wso2.extension.siddhi.io.rabbitmq.sink;
+package io.siddhi.extension.io.rabbitmq.sink;
 
 import io.siddhi.core.SiddhiAppRuntime;
 import io.siddhi.core.SiddhiManager;
 import io.siddhi.core.exception.SiddhiAppCreationException;
 import io.siddhi.core.stream.input.InputHandler;
 import io.siddhi.core.stream.output.sink.Sink;
+import io.siddhi.extension.io.rabbitmq.util.UnitTestAppender;
 import io.siddhi.query.api.exception.SiddhiAppValidationException;
 import org.apache.log4j.Logger;
 import org.testng.AssertJUnit;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.wso2.extension.siddhi.io.rabbitmq.util.UnitTestAppender;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
