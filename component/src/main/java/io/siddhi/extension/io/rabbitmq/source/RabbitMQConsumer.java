@@ -25,6 +25,10 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.ShutdownListener;
+import com.rabbitmq.client.ShutdownSignalException;
+import io.siddhi.core.exception.ConnectionUnavailableException;
+import io.siddhi.core.stream.input.source.Source;
 import io.siddhi.core.stream.input.source.SourceEventListener;
 import io.siddhi.extension.io.rabbitmq.util.RabbitMQSinkUtil;
 import org.apache.log4j.Logger;
@@ -42,17 +46,20 @@ import java.util.concurrent.locks.ReentrantLock;
 public class RabbitMQConsumer {
     private static final Logger log = Logger.getLogger(RabbitMQConsumer.class);
 
-    private static Channel channel = null;
-    private static boolean isPaused;
-    private static ReentrantLock lock;
-    private static Condition condition;
+    private Channel channel = null;
+    private boolean isPaused;
+    private ReentrantLock lock;
+    private Condition condition;
+    private Source.ConnectionCallback connectionCallback;
 
-    public static void consume (Connection connection, String exchangeName, String exchangeType,
-                                boolean exchangeDurable, boolean exchangeAutoDelete,
-                                String queueName, boolean queueExclusive,
-                                boolean queueDurable, boolean queueAutodelete, String routingKey,
-                                Map<String, Object> map, SourceEventListener sourceEventListener)
-            throws Exception {
+    public void consume (Connection connection, String exchangeName, String exchangeType,
+                         boolean exchangeDurable, boolean exchangeAutoDelete,
+                         String queueName, boolean queueExclusive,
+                         boolean queueDurable, boolean queueAutodelete, String routingKey,
+                         Map<String, Object> map, SourceEventListener sourceEventListener,
+                         Source.ConnectionCallback connectionCallback) throws Exception {
+
+        this.connectionCallback = connectionCallback;
         channel = connection.createChannel();
         lock = new ReentrantLock();
         condition = lock.newCondition();
@@ -110,25 +117,42 @@ public class RabbitMQConsumer {
                 }
             }
         };
+
+        channel.addShutdownListener(new RabbitMQShutdownListener());
         channel.basicConsume(queueName, true, consumer);
     }
 
 
-    public static void closeChannel() throws IOException, TimeoutException {
+    public void closeChannel() throws IOException, TimeoutException {
         channel.close();
     }
 
-    public static void pause() {
+    public void pause() {
         isPaused = true;
     }
 
-    public static void resume() {
+    public void resume() {
         isPaused = false;
         try {
             lock.lock();
             condition.signalAll();
         } finally {
             lock.unlock();
+        }
+    }
+
+    class RabbitMQShutdownListener implements ShutdownListener {
+
+        @Override
+        public void shutdownCompleted(ShutdownSignalException e) {
+            log.error("Exception occurred when consuming messages: " + e.getMessage(), e);
+            Thread thread = new Thread() {
+                public void run() {
+                    connectionCallback.onError(new ConnectionUnavailableException(e));
+                }
+            };
+
+            thread.start();
         }
     }
 }
