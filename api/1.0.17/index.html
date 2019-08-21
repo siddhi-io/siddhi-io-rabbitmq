@@ -13,10 +13,6 @@
         <meta name="description" content="Siddhi IO Rabbitmq Extension">
       
       
-        <link rel="canonical" href="https://wso2-extensions.github.io/siddhi-io-rabbitmq/api/1.0.17/">
-      
-      
-        <meta name="author" content="WSO2">
       
       
         <meta name="lang:clipboard.copy" content="Copy to clipboard">
@@ -69,7 +65,7 @@
     <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/extra.css">
     
     
       
@@ -127,9 +123,9 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="https://wso2-extensions.github.io/siddhi-io-rabbitmq/" title="Siddhi IO Rabbitmq" class="md-header-nav__button md-logo">
+        <a href="../.." title="Siddhi IO Rabbitmq" class="md-header-nav__button md-logo">
           
-            <img src="../../images/siddhi-logo-w.svg" width="24" height="24">
+            <img src="../../images/siddhi-logo.svg" width="24" height="24">
           
         </a>
       </div>
@@ -186,7 +182,7 @@
 
   
 
-<a href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/" title="Go to repository" class="md-source" data-md-source="github">
+<a href="https://github.com/siddhi.io/siddhi-io-rabbitmq/" title="Go to repository" class="md-source" data-md-source="github">
   
     <div class="md-source__icon">
       <svg viewBox="0 0 24 24" width="24" height="24">
@@ -219,9 +215,9 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="https://wso2-extensions.github.io/siddhi-io-rabbitmq/" title="Siddhi IO Rabbitmq" class="md-nav__button md-logo">
+    <a href="../.." title="Siddhi IO Rabbitmq" class="md-nav__button md-logo">
       
-        <img src="../../images/siddhi-logo-w.svg" width="48" height="48">
+        <img src="../../images/siddhi-logo.svg" width="48" height="48">
       
     </a>
     Siddhi IO Rabbitmq
@@ -233,7 +229,7 @@
 
   
 
-<a href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/" title="Go to repository" class="md-source" data-md-source="github">
+<a href="https://github.com/siddhi.io/siddhi-io-rabbitmq/" title="Go to repository" class="md-source" data-md-source="github">
   
     <div class="md-source__icon">
       <svg viewBox="0 0 24 24" width="24" height="24">
@@ -255,8 +251,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../.." title="Welcome" class="md-nav__link">
-      Welcome
+    <a href="../.." title="Information" class="md-nav__link">
+      Information
     </a>
   </li>
 
@@ -288,8 +284,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../1.1.2/" title="1.1.2" class="md-nav__link">
-      1.1.2
+    <a href="../2.0.0/" title="2.0.0" class="md-nav__link">
+      2.0.0
     </a>
   </li>
 
@@ -578,18 +574,17 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/wso2-extensions/siddhi-io-rabbitmq/edit/master/docs/api/1.0.17.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/siddhi.io/siddhi-io-rabbitmq/blob/master/api/1.0.17.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="api-docs-v1017">API Docs - v1.0.17<a class="headerlink" href="#api-docs-v1017" title="Permanent link">&para;</a></h1>
-<h2 id="sink">Sink<a class="headerlink" href="#sink" title="Permanent link">&para;</a></h2>
-<h3 id="rabbitmq-sink">rabbitmq <em><a target="_blank" href="https://wso2.github.io/siddhi/documentation/siddhi-4.0/#sink">(Sink)</a></em><a class="headerlink" href="#rabbitmq-sink" title="Permanent link">&para;</a></h3>
+                <h1 id="api-docs-v1017">API Docs - v1.0.17</h1>
+<h2 id="sink">Sink</h2>
+<h3 id="rabbitmq-sink">rabbitmq <em><a target="_blank" href="https://wso2.github.io/siddhi/documentation/siddhi-4.0/#sink">(Sink)</a></em></h3>
 <p style="word-wrap: break-word">The rabbitmq sink pushes the events into a rabbitmq broker using the AMQP protocol</p>
 
 <p><span id="syntax" class="md-typeset" style="display: block; font-weight: bold;">Syntax</span></p>
-<div class="codehilite"><pre><span></span>@sink(type=&quot;rabbitmq&quot;, uri=&quot;&lt;STRING&gt;&quot;, heartbeat=&quot;&lt;INT&gt;&quot;, exchange.name=&quot;&lt;STRING&gt;&quot;, exchange.type=&quot;&lt;STRING&gt;&quot;, exchange.durable.enabled=&quot;&lt;BOOL&gt;&quot;, exchange.autodelete.enabled=&quot;&lt;BOOL&gt;&quot;, delivery.mode=&quot;&lt;INT&gt;&quot;, content.type=&quot;&lt;STRING&gt;&quot;, content.encoding=&quot;&lt;STRING&gt;&quot;, priority=&quot;&lt;INT&gt;&quot;, correlation.id=&quot;&lt;STRING&gt;&quot;, reply.to=&quot;&lt;STRING&gt;&quot;, expiration=&quot;&lt;STRING&gt;&quot;, message.id=&quot;&lt;STRING&gt;&quot;, timestamp=&quot;&lt;STRING&gt;&quot;, type=&quot;&lt;STRING&gt;&quot;, user.id=&quot;&lt;STRING&gt;&quot;, app.id=&quot;&lt;STRING&gt;&quot;, routing.key=&quot;&lt;STRING&gt;&quot;, headers=&quot;&lt;STRING&gt;&quot;, tls.enabled=&quot;&lt;BOOL&gt;&quot;, tls.truststore.path=&quot;&lt;STRING&gt;&quot;, tls.truststore.password=&quot;&lt;STRING&gt;&quot;, tls.truststore.type=&quot;&lt;STRING&gt;&quot;, tls.version=&quot;&lt;STRING&gt;&quot;, @map(...)))
-</pre></div>
-
+<pre><code>@sink(type=&quot;rabbitmq&quot;, uri=&quot;&lt;STRING&gt;&quot;, heartbeat=&quot;&lt;INT&gt;&quot;, exchange.name=&quot;&lt;STRING&gt;&quot;, exchange.type=&quot;&lt;STRING&gt;&quot;, exchange.durable.enabled=&quot;&lt;BOOL&gt;&quot;, exchange.autodelete.enabled=&quot;&lt;BOOL&gt;&quot;, delivery.mode=&quot;&lt;INT&gt;&quot;, content.type=&quot;&lt;STRING&gt;&quot;, content.encoding=&quot;&lt;STRING&gt;&quot;, priority=&quot;&lt;INT&gt;&quot;, correlation.id=&quot;&lt;STRING&gt;&quot;, reply.to=&quot;&lt;STRING&gt;&quot;, expiration=&quot;&lt;STRING&gt;&quot;, message.id=&quot;&lt;STRING&gt;&quot;, timestamp=&quot;&lt;STRING&gt;&quot;, type=&quot;&lt;STRING&gt;&quot;, user.id=&quot;&lt;STRING&gt;&quot;, app.id=&quot;&lt;STRING&gt;&quot;, routing.key=&quot;&lt;STRING&gt;&quot;, headers=&quot;&lt;STRING&gt;&quot;, tls.enabled=&quot;&lt;BOOL&gt;&quot;, tls.truststore.path=&quot;&lt;STRING&gt;&quot;, tls.truststore.password=&quot;&lt;STRING&gt;&quot;, tls.truststore.type=&quot;&lt;STRING&gt;&quot;, tls.version=&quot;&lt;STRING&gt;&quot;, @map(...)))
+</code></pre>
 
 <p><span id="query-parameters" class="md-typeset" style="display: block; color: rgba(0, 0, 0, 0.54); font-size: 12.8px; font-weight: bold;">QUERY PARAMETERS</span>
 <table>
@@ -804,29 +799,28 @@
 </table></p>
 <p><span id="examples" class="md-typeset" style="display: block; font-weight: bold;">Examples</span>
 <span id="example-1" class="md-typeset" style="display: block; color: rgba(0, 0, 0, 0.54); font-size: 12.8px; font-weight: bold;">EXAMPLE 1</span></p>
-<div class="codehilite"><pre><span></span>@App:name(&#39;TestExecutionPlan&#39;) 
+<pre><code>@App:name('TestExecutionPlan') 
 define stream FooStream (symbol string, price float, volume long); 
-@info(name = &#39;query1&#39;)
-@sink(type =&#39;rabbitmq&#39;,
-uri = &#39;amqp://guest:guest@localhost:5672&#39;,
-exchange.name = &#39;direct&#39;,
-routing.key= &#39;direct&#39;,
-@map(type=&#39;xml&#39;))
+@info(name = 'query1')
+@sink(type ='rabbitmq',
+uri = 'amqp://guest:guest@localhost:5672',
+exchange.name = 'direct',
+routing.key= 'direct',
+@map(type='xml'))
 Define stream BarStream (symbol string, price float, volume long);
 from FooStream select symbol, price, volume insert into BarStream;
-</pre></div>
 
+</code></pre>
 
 <p style="word-wrap: break-word">This query publishes events to the <code>direct</code> exchange with the <code>direct</code> exchange type and the <code>directTest</code> routing key.</p>
 
-<h2 id="source">Source<a class="headerlink" href="#source" title="Permanent link">&para;</a></h2>
-<h3 id="rabbitmq-source">rabbitmq <em><a target="_blank" href="https://wso2.github.io/siddhi/documentation/siddhi-4.0/#source">(Source)</a></em><a class="headerlink" href="#rabbitmq-source" title="Permanent link">&para;</a></h3>
+<h2 id="source">Source</h2>
+<h3 id="rabbitmq-source">rabbitmq <em><a target="_blank" href="https://wso2.github.io/siddhi/documentation/siddhi-4.0/#source">(Source)</a></em></h3>
 <p style="word-wrap: break-word">The rabbitmq source receives the events from the rabbitmq broker via the AMQP protocol. </p>
 
 <p><span id="syntax" class="md-typeset" style="display: block; font-weight: bold;">Syntax</span></p>
-<div class="codehilite"><pre><span></span>@source(type=&quot;rabbitmq&quot;, uri=&quot;&lt;STRING&gt;&quot;, heartbeat=&quot;&lt;INT&gt;&quot;, exchange.name=&quot;&lt;STRING&gt;&quot;, exchange.type=&quot;&lt;STRING&gt;&quot;, exchange.durable.enabled=&quot;&lt;BOOL&gt;&quot;, exchange.autodelete.enabled=&quot;&lt;BOOL&gt;&quot;, routing.key=&quot;&lt;STRING&gt;&quot;, headers=&quot;&lt;STRING&gt;&quot;, queue.name=&quot;&lt;STRING&gt;&quot;, queue.durable.enabled=&quot;&lt;BOOL&gt;&quot;, queue.exclusive.enabled=&quot;&lt;BOOL&gt;&quot;, queue.autodelete.enabled=&quot;&lt;BOOL&gt;&quot;, tls.enabled=&quot;&lt;BOOL&gt;&quot;, tls.truststore.path=&quot;&lt;STRING&gt;&quot;, tls.truststore.password=&quot;&lt;STRING&gt;&quot;, tls.truststore.type=&quot;&lt;STRING&gt;&quot;, tls.version=&quot;&lt;STRING&gt;&quot;, @map(...)))
-</pre></div>
-
+<pre><code>@source(type=&quot;rabbitmq&quot;, uri=&quot;&lt;STRING&gt;&quot;, heartbeat=&quot;&lt;INT&gt;&quot;, exchange.name=&quot;&lt;STRING&gt;&quot;, exchange.type=&quot;&lt;STRING&gt;&quot;, exchange.durable.enabled=&quot;&lt;BOOL&gt;&quot;, exchange.autodelete.enabled=&quot;&lt;BOOL&gt;&quot;, routing.key=&quot;&lt;STRING&gt;&quot;, headers=&quot;&lt;STRING&gt;&quot;, queue.name=&quot;&lt;STRING&gt;&quot;, queue.durable.enabled=&quot;&lt;BOOL&gt;&quot;, queue.exclusive.enabled=&quot;&lt;BOOL&gt;&quot;, queue.autodelete.enabled=&quot;&lt;BOOL&gt;&quot;, tls.enabled=&quot;&lt;BOOL&gt;&quot;, tls.truststore.path=&quot;&lt;STRING&gt;&quot;, tls.truststore.password=&quot;&lt;STRING&gt;&quot;, tls.truststore.type=&quot;&lt;STRING&gt;&quot;, tls.version=&quot;&lt;STRING&gt;&quot;, @map(...)))
+</code></pre>
 
 <p><span id="query-parameters" class="md-typeset" style="display: block; color: rgba(0, 0, 0, 0.54); font-size: 12.8px; font-weight: bold;">QUERY PARAMETERS</span>
 <table>
@@ -977,18 +971,18 @@ from FooStream select symbol, price, volume insert into BarStream;
 </table></p>
 <p><span id="examples" class="md-typeset" style="display: block; font-weight: bold;">Examples</span>
 <span id="example-1" class="md-typeset" style="display: block; color: rgba(0, 0, 0, 0.54); font-size: 12.8px; font-weight: bold;">EXAMPLE 1</span></p>
-<div class="codehilite"><pre><span></span>@App:name(&#39;TestExecutionPlan&#39;) 
+<pre><code>@App:name('TestExecutionPlan') 
 define stream FooStream (symbol string, price float, volume long); 
-@info(name = &#39;query1&#39;) 
-@source(type =&#39;rabbitmq&#39;,
-uri = &#39;amqp://guest:guest@localhost:5672&#39;,
-exchange.name = &#39;direct&#39;,
-routing.key= &#39;direct&#39;,
-@map(type=&#39;xml&#39;))
+@info(name = 'query1') 
+@source(type ='rabbitmq',
+uri = 'amqp://guest:guest@localhost:5672',
+exchange.name = 'direct',
+routing.key= 'direct',
+@map(type='xml'))
 Define stream BarStream (symbol string, price float, volume long);
 from FooStream select symbol, price, volume insert into BarStream;
-</pre></div>
 
+</code></pre>
 
 <p style="word-wrap: break-word">This query receives events from the <code>direct</code> exchange with the <code>direct</code>exchange type, and the <code>directTest</code> routing key.</p>
                 
@@ -1048,7 +1042,7 @@ from FooStream select symbol, price, volume insert into BarStream;
       <div class="md-footer-copyright">
         
           <div class="md-footer-copyright__highlight">
-            Copyright &copy; 2011 - 2018 WSO2
+            Siddhi - Documentation
           </div>
         
         powered by
@@ -1061,7 +1055,11 @@ from FooStream select symbol, price, volume insert into BarStream;
   <div class="md-footer-social">
     <link rel="stylesheet" href="../../assets/fonts/font-awesome.css">
     
-      <a href="https://github.com/wso2/siddhi" class="md-footer-social__link fa fa-github"></a>
+      <a href="https://github.com/siddhi-io/siddhi" class="md-footer-social__link fa fa-github"></a>
+    
+      <a href="https://medium.com/siddhi-io" class="md-footer-social__link fa fa-medium"></a>
+    
+      <a href="https://twitter.com/siddhi_io" class="md-footer-social__link fa fa-twitter"></a>
     
       <a href="https://www.linkedin.com/groups/13553064" class="md-footer-social__link fa fa-linkedin"></a>
     
@@ -1077,7 +1075,7 @@ from FooStream select symbol, price, volume insert into BarStream;
       
       <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
       
-        <script src="../../javascripts/extra.js"></script>
+        <script src="../../assets/javascripts/extra.js"></script>
       
     
   </body>
