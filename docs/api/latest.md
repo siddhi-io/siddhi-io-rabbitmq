@@ -2,7 +2,7 @@
 
 ## Sink
 
-### rabbitmq *<a target="_blank" href="http://siddhi.io/documentation/siddhi-5.x/query-guide-5.x/#sink">(Sink)</a>*
+### rabbitmq *<a target="_blank" href="http://siddhi.io/en/v5.1/docs/query-guide/#sink">(Sink)</a>*
 
 <p style="word-wrap: break-word">The rabbitmq sink pushes the events into a rabbitmq broker using the AMQP protocol</p>
 
@@ -242,7 +242,7 @@ from FooStream select symbol, price, volume insert into BarStream;
 
 ## Source
 
-### rabbitmq *<a target="_blank" href="http://siddhi.io/documentation/siddhi-5.x/query-guide-5.x/#source">(Source)</a>*
+### rabbitmq *<a target="_blank" href="http://siddhi.io/en/v5.1/docs/query-guide/#source">(Source)</a>*
 
 <p style="word-wrap: break-word">The rabbitmq source receives the events from the rabbitmq broker via the AMQP protocol. </p>
 
