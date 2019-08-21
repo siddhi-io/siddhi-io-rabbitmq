@@ -22,12 +22,12 @@
 <suite name="Generic Integration test suite">
     <test name="org.wso2.das">
         <classes>
-            <class name="org.wso2.extension.siddhi.io.rabbitmq.sink.RabbitMQSinkTestCase" />
-            <class name="org.wso2.extension.siddhi.io.rabbitmq.source.RabbitMQExchangeTestCase" />
-            <class name="org.wso2.extension.siddhi.io.rabbitmq.source.RabbitMQSourceTestCase" />
-            <class name="org.wso2.extension.siddhi.io.rabbitmq.source.RabbitMQQueueTestCase" />
-            <class name="org.wso2.extension.siddhi.io.rabbitmq.source.RabbitMQUriTestCase" />
-           <!-- <class name="org.wso2.extension.siddhi.io.rabbitmq.source.RabbitMQTlsTestCase" />-->
+            <class name="io.siddhi.extension.io.rabbitmq.sink.RabbitMQSinkTestCase" />
+            <class name="io.siddhi.extension.io.rabbitmq.source.RabbitMQExchangeTestCase" />
+            <class name="io.siddhi.extension.io.rabbitmq.source.RabbitMQSourceTestCase" />
+            <class name="io.siddhi.extension.io.rabbitmq.source.RabbitMQQueueTestCase" />
+            <class name="io.siddhi.extension.io.rabbitmq.source.RabbitMQUriTestCase" />
+           <!-- <class name="RabbitMQTlsTestCase" />-->
         </classes>
     </test>
 </suite>

@@ -29,28 +29,28 @@
         <module>component</module>
     </modules>
 
-    <groupId>org.wso2.extension.siddhi.io.rabbitmq</groupId>
+    <groupId>io.siddhi.extension.io.rabbitmq</groupId>
     <artifactId>siddhi-io-rabbitmq-parent</artifactId>
-    <version>2.0.1-SNAPSHOT</version>
+    <version>2.1.0-SNAPSHOT</version>
     <name>Siddhi IO RabbitMQ Extension Parent</name>
 
     <scm>
-        <connection>scm:git:https://github.com/wso2-extensions/siddhi-io-rabbitmq.git</connection>
-        <url>https://github.com/wso2-extensions/siddhi-io-rabbitmq.git</url>
-        <developerConnection>scm:git:https://github.com/wso2-extensions/siddhi-io-rabbitmq.git
+        <connection>scm:git:https://github.com/siddhi-io/siddhi-io-rabbitmq.git</connection>
+        <url>https://github.com/siddhi-io/siddhi-io-rabbitmq.git</url>
+        <developerConnection>scm:git:https://github.com/siddhi-io/siddhi-io-rabbitmq.git
         </developerConnection>
         <tag>HEAD</tag>
     </scm>
 
     <properties>
-        <siddhi.version>5.0.0</siddhi.version>
+        <siddhi.version>5.1.2</siddhi.version>
         <siddhi.version.range>[5.0.0,6.0.0)</siddhi.version.range>
         <log4j.version>1.2.17.wso2v1</log4j.version>
         <rabbitmq.version>3.6.3</rabbitmq.version>
         <carbon.feature.plugin.version>3.1.3</carbon.feature.plugin.version>
         <maven.surefire.plugin.version>2.12.4</maven.surefire.plugin.version>
         <testing.version>6.8</testing.version>
-        <siddhi.map.xml.version>5.0.0</siddhi.map.xml.version>
+        <siddhi.map.xml.version>5.0.3</siddhi.map.xml.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jacoco.version>0.7.9</jacoco.version>
         <maven.failsafe.plugin.version>2.19.1</maven.failsafe.plugin.version>
@@ -92,7 +92,7 @@
                 <version>${jacoco.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.extension.siddhi.map.xml</groupId>
+                <groupId>io.siddhi.extension.map.xml</groupId>
                 <artifactId>siddhi-map-xml</artifactId>
                 <version>${siddhi.map.xml.version}</version>
                 <scope>test</scope>
