@@ -21,8 +21,8 @@ Latest API Docs is <a target="_blank" href="https://siddhi-io.github.io/siddhi-i
 
 ## Features
 
-* <a target="_blank" href="https://siddhi-io.github.io/siddhi-io-rabbitmq/api/2.0.0/#rabbitmq-sink">rabbitmq</a> *<a target="_blank" href="http://siddhi.io/documentation/siddhi-5.x/query-guide-5.x/#sink">(Sink)</a>*<br><div style="padding-left: 1em;"><p>The rabbitmq sink pushes the events into a rabbitmq broker using the AMQP protocol</p></div>
-* <a target="_blank" href="https://siddhi-io.github.io/siddhi-io-rabbitmq/api/2.0.0/#rabbitmq-source">rabbitmq</a> *<a target="_blank" href="http://siddhi.io/documentation/siddhi-5.x/query-guide-5.x/#source">(Source)</a>*<br><div style="padding-left: 1em;"><p>The rabbitmq source receives the events from the rabbitmq broker via the AMQP protocol. </p></div>
+* <a target="_blank" href="https://siddhi-io.github.io/siddhi-io-rabbitmq/api/2.0.0/#rabbitmq-sink">rabbitmq</a> *<a target="_blank" href="http://siddhi.io/en/v5.1/docs/query-guide/#sink">(Sink)</a>*<br><div style="padding-left: 1em;"><p>The rabbitmq sink pushes the events into a rabbitmq broker using the AMQP protocol</p></div>
+* <a target="_blank" href="https://siddhi-io.github.io/siddhi-io-rabbitmq/api/2.0.0/#rabbitmq-source">rabbitmq</a> *<a target="_blank" href="http://siddhi.io/en/v5.1/docs/query-guide/#source">(Source)</a>*<br><div style="padding-left: 1em;"><p>The rabbitmq source receives the events from the rabbitmq broker via the AMQP protocol. </p></div>
 
 ## Dependencies
 There are no other dependencies needed for this extension.
