@@ -79,7 +79,7 @@
                             com.rabbitmq.client.*, com.rabbitmq.utility.*
                         </Private-Package>
                         <Export-Package>
-                            org.wso2.extension.siddhi.io.rabbitmq.*
+                            io.siddhi.extension.io.rabbitmq.*
                         </Export-Package>
                         <Import-Package>
                             io.siddhi.core.*;version="${siddhi.version.range}",
