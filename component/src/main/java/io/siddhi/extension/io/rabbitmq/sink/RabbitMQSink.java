@@ -48,6 +48,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -457,7 +458,7 @@ public class RabbitMQSink extends Sink {
             if (payload instanceof byte[]) {
                 byteArray = (byte[]) payload;
             } else {
-                byteArray = payload.toString().getBytes("UTF-8");
+                byteArray = payload.toString().getBytes(Charset.defaultCharset());
             }
             String exchangeName = exchangeNameOption.getValue(dynamicOptions);
             String exchangeType = exchangeTypeOption.getValue(dynamicOptions);
