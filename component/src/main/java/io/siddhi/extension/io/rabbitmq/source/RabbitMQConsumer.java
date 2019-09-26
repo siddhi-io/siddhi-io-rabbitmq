@@ -109,9 +109,8 @@ public class RabbitMQConsumer {
                             lock.unlock();
                         }
                     }
-                 String message = new String(body, "UTF-8");
-                 sourceEventListener.onEvent(message, null);
-                } catch (IOException e) {
+                 sourceEventListener.onEvent(body, null);
+                } catch (Exception e) {
                     log.error("Error in receiving the message from the RabbitMQ broker in "
                         + sourceEventListener, e);
                 }
