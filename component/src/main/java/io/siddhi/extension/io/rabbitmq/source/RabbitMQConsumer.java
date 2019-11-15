@@ -57,7 +57,7 @@ public class RabbitMQConsumer {
                          String queueName, boolean queueExclusive,
                          boolean queueDurable, boolean queueAutodelete, String routingKey,
                          Map<String, Object> map, SourceEventListener sourceEventListener,
-                         Source.ConnectionCallback connectionCallback) throws Exception {
+                         Source.ConnectionCallback connectionCallback, boolean autoAck) throws Exception {
 
         this.connectionCallback = connectionCallback;
         channel = connection.createChannel();
@@ -110,6 +110,9 @@ public class RabbitMQConsumer {
                         }
                     }
                  sourceEventListener.onEvent(body, null);
+                 if(!autoAck) {
+                	 channel.basicAck(envelope.getDeliveryTag(), false);
+                 }
                 } catch (Exception e) {
                     log.error("Error in receiving the message from the RabbitMQ broker in "
                         + sourceEventListener, e);
@@ -118,7 +121,7 @@ public class RabbitMQConsumer {
         };
 
         channel.addShutdownListener(new RabbitMQShutdownListener());
-        channel.basicConsume(queueName, true, consumer);
+        channel.basicConsume(queueName, autoAck, consumer);
     }
 
 
