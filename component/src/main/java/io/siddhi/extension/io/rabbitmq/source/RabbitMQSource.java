@@ -176,7 +176,13 @@ import javax.net.ssl.TrustManagerFactory;
                         name = "tls.version",
                         description = "The version of the tls/ssl.",
                         type = {DataType.STRING},
-                        optional = true, defaultValue = "SSL")
+                        optional = true, defaultValue = "SSL"),
+                @Parameter(
+                		name = "auto.ack",
+                        description = "If this parameter is set to `false`, the server should " +
+                        		"expect explicit messages acknowledgements once delivered",
+                        type = {DataType.BOOL},
+                        optional = true, defaultValue = "true")
         },
         examples = {
                 @Example(
@@ -217,6 +223,7 @@ public class RabbitMQSource extends Source {
     private FileInputStream fileInputStream = null;
     private RabbitMQConsumer rabbitMQConsumer;
     private String siddhiAppName;
+    private boolean autoAck;
 
     @Override
     public StateFactory init(SourceEventListener sourceEventListener, OptionHolder optionHolder, String[] strings,
@@ -261,6 +268,9 @@ public class RabbitMQSource extends Source {
         this.exchangeAutoDelete = Boolean.parseBoolean(optionHolder.validateAndGetStaticValue
                 (RabbitMQConstants.RABBITMQ_EXCHANGE_AUTO_DELETE,
                         RabbitMQConstants.DEFAULT_EXCHANGE_AUTODELETE));
+        this.autoAck = Boolean.parseBoolean(optionHolder.validateAndGetStaticValue
+                (RabbitMQConstants.RABBITMQ_AUTO_ACK,
+                        RabbitMQConstants.DEFAULT_AUTO_ACK));
 
         routingKey = optionHolder.validateAndGetStaticValue(RabbitMQConstants.RABBITMQ_ROUTINGKEY,
                 RabbitMQConstants.EMPTY_STRING);
@@ -347,7 +357,7 @@ public class RabbitMQSource extends Source {
             rabbitMQConsumer = new RabbitMQConsumer();
             rabbitMQConsumer.consume(connection, exchangeName, exchangeType, exchangeDurable,
                     exchangeAutoDelete, queueName, queueExclusive, queueDurable, queueAutodelete, routingKey, map,
-                    sourceEventListener, connectionCallback);
+                    sourceEventListener, connectionCallback, autoAck);
         } catch (IOException e) {
             throw new ConnectionUnavailableException(
                     "Failed to connect with the Rabbitmq server. Check the " +

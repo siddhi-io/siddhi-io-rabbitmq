@@ -427,6 +427,21 @@ public class RabbitMQSink extends Sink {
 
             connection = factory.newConnection();
             channel = connection.createChannel();
+            
+            /*
+            In the following method, system checked whether the exchange.name is already existed or not.
+            If the exchange.name is not existed, then the system declare the exchange.name
+             */                        
+            boolean exchangeAutoDelete = Boolean.parseBoolean(exchangeDurableAsStringOption.getValue());
+            boolean exchangeDurable = Boolean.parseBoolean(exchangeAutoDeleteAsStringOption.getValue());
+            
+            try {
+            	channel.exchangeDeclarePassive(exchangeNameOption.getValue());
+            } catch (Exception e) {
+            	channel = connection.createChannel();
+            	RabbitMQSinkUtil.declareExchange(connection, channel, exchangeNameOption.getValue(),
+            			exchangeTypeOption.getValue(), exchangeDurable, exchangeAutoDelete);
+            }
         } catch (IOException e) {
             throw new ConnectionUnavailableException(
                     "Failed to connect with the Rabbitmq server. Check the " +
@@ -461,7 +476,6 @@ public class RabbitMQSink extends Sink {
                 byteArray = payload.toString().getBytes(Charset.defaultCharset());
             }
             String exchangeName = exchangeNameOption.getValue(dynamicOptions);
-            String exchangeType = exchangeTypeOption.getValue(dynamicOptions);
             String headers = headerOption.getValue(dynamicOptions);
             String messageId = messageIdOption.getValue(dynamicOptions);
             int priority = Integer.parseInt(priorityOption.getValue(dynamicOptions));
@@ -494,21 +508,7 @@ public class RabbitMQSink extends Sink {
                     type(type).
                     timestamp(timestamp).
                     headers(map).
-                    build();
-
-            boolean exchangeAutoDelete = Boolean.parseBoolean(exchangeDurableAsStringOption.getValue(dynamicOptions));
-            boolean exchangeDurable = Boolean.parseBoolean(exchangeAutoDeleteAsStringOption.getValue(dynamicOptions));
-            /*
-              In the following method, system checked whether the exchange.name is already existed or not.
-              If the exchange.name is not existed, then the system declare the exchange.name
-             */
-            try {
-                channel.exchangeDeclarePassive(exchangeName);
-            } catch (Exception e) {
-                channel = connection.createChannel();
-                RabbitMQSinkUtil.declareExchange(connection, channel, exchangeName, exchangeType,
-                        exchangeDurable, exchangeAutoDelete);
-            }
+                    build();            
 
             channel.basicPublish(exchangeName, routingKey, props, byteArray);
         } catch (ParseException e) {
@@ -520,10 +520,6 @@ public class RabbitMQSink extends Sink {
         } catch (IOException e) {
             log.error("Error in sending the message to the " + RabbitMQConstants.RABBITMQ_EXCHANGE_NAME +
                     " = " + exchangeNameOption.getValue() + " in RabbitMQ broker at " + streamDefinition, e);
-        } catch (TimeoutException e) {
-            throw new SiddhiAppCreationException(
-                    "Timeout while publishing the events to " + exchangeNameOption.getValue() + " in " +
-                            "RabbitMQ server", e);
         }
     }
 
