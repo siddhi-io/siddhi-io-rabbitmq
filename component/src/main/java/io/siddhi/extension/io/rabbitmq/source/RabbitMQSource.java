@@ -178,9 +178,9 @@ import javax.net.ssl.TrustManagerFactory;
                         type = {DataType.STRING},
                         optional = true, defaultValue = "SSL"),
                 @Parameter(
-                		name = "auto.ack",
+                        name = "auto.ack",
                         description = "If this parameter is set to `false`, the server should " +
-                        		"expect explicit messages acknowledgements once delivered",
+                                "expect explicit messages acknowledgements once delivered",
                         type = {DataType.BOOL},
                         optional = true, defaultValue = "true")
         },
