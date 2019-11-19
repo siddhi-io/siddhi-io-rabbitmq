@@ -431,16 +431,16 @@ public class RabbitMQSink extends Sink {
             /*
             In the following method, system checked whether the exchange.name is already existed or not.
             If the exchange.name is not existed, then the system declare the exchange.name
-             */                        
+             */
             boolean exchangeAutoDelete = Boolean.parseBoolean(exchangeDurableAsStringOption.getValue());
             boolean exchangeDurable = Boolean.parseBoolean(exchangeAutoDeleteAsStringOption.getValue());
-            
+
             try {
-            	channel.exchangeDeclarePassive(exchangeNameOption.getValue());
+                channel.exchangeDeclarePassive(exchangeNameOption.getValue());
             } catch (Exception e) {
-            	channel = connection.createChannel();
-            	RabbitMQSinkUtil.declareExchange(connection, channel, exchangeNameOption.getValue(),
-            			exchangeTypeOption.getValue(), exchangeDurable, exchangeAutoDelete);
+                channel = connection.createChannel();
+                RabbitMQSinkUtil.declareExchange(connection, channel, exchangeNameOption.getValue(),
+                        exchangeTypeOption.getValue(), exchangeDurable, exchangeAutoDelete);
             }
         } catch (IOException e) {
             throw new ConnectionUnavailableException(
