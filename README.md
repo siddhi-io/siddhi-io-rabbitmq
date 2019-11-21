@@ -17,12 +17,12 @@ For information on <a target="_blank" href="https://siddhi.io/">Siddhi</a> and i
 * Versions 2.x and lower with group id `org.wso2.extension.siddhi.` from  <a target="_blank" href="https://mvnrepository.com/artifact/org.wso2.extension.siddhi.io.rabbitmq/siddhi-io-rabbitmq">here</a>.
 ## Latest API Docs 
 
-Latest API Docs is <a target="_blank" href="https://siddhi-io.github.io/siddhi-io-rabbitmq/api/3.0.2">3.0.2</a>.
+Latest API Docs is <a target="_blank" href="https://siddhi-io.github.io/siddhi-io-rabbitmq/api/3.0.3">3.0.3</a>.
 
 ## Features
 
-* <a target="_blank" href="https://siddhi-io.github.io/siddhi-io-rabbitmq/api/3.0.2/#rabbitmq-sink">rabbitmq</a> *(<a target="_blank" href="http://siddhi.io/en/v5.1/docs/query-guide/#sink">Sink</a>)*<br> <div style="padding-left: 1em;"><p><p style="word-wrap: break-word;margin: 0;">The rabbitmq sink pushes the events into a rabbitmq broker using the AMQP protocol</p></p></div>
-* <a target="_blank" href="https://siddhi-io.github.io/siddhi-io-rabbitmq/api/3.0.2/#rabbitmq-source">rabbitmq</a> *(<a target="_blank" href="http://siddhi.io/en/v5.1/docs/query-guide/#source">Source</a>)*<br> <div style="padding-left: 1em;"><p><p style="word-wrap: break-word;margin: 0;">The rabbitmq source receives the events from the rabbitmq broker via the AMQP protocol. </p></p></div>
+* <a target="_blank" href="https://siddhi-io.github.io/siddhi-io-rabbitmq/api/3.0.3/#rabbitmq-sink">rabbitmq</a> *(<a target="_blank" href="http://siddhi.io/en/v5.1/docs/query-guide/#sink">Sink</a>)*<br> <div style="padding-left: 1em;"><p><p style="word-wrap: break-word;margin: 0;">The rabbitmq sink pushes the events into a rabbitmq broker using the AMQP protocol</p></p></div>
+* <a target="_blank" href="https://siddhi-io.github.io/siddhi-io-rabbitmq/api/3.0.3/#rabbitmq-source">rabbitmq</a> *(<a target="_blank" href="http://siddhi.io/en/v5.1/docs/query-guide/#source">Source</a>)*<br> <div style="padding-left: 1em;"><p><p style="word-wrap: break-word;margin: 0;">The rabbitmq source receives the events from the rabbitmq broker via the AMQP protocol. </p></p></div>
 
 ## Dependencies
 There are no other dependencies needed for this extension.
