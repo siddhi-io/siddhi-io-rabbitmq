@@ -31,7 +31,7 @@
 
     <groupId>io.siddhi.extension.io.rabbitmq</groupId>
     <artifactId>siddhi-io-rabbitmq-parent</artifactId>
-    <version>3.0.3</version>
+    <version>3.0.4-SNAPSHOT</version>
     <name>Siddhi IO RabbitMQ Extension Parent</name>
 
     <scm>
@@ -39,7 +39,7 @@
         <url>https://github.com/siddhi-io/siddhi-io-rabbitmq.git</url>
         <developerConnection>scm:git:https://github.com/siddhi-io/siddhi-io-rabbitmq.git
         </developerConnection>
-        <tag>v3.0.3</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <properties>
