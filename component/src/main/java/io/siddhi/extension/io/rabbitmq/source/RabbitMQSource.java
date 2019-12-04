@@ -182,7 +182,12 @@ import javax.net.ssl.TrustManagerFactory;
                         description = "If this parameter is set to `false`, the server should " +
                                 "expect explicit messages acknowledgements once delivered",
                         type = {DataType.BOOL},
-                        optional = true, defaultValue = "true")
+                        optional = true, defaultValue = "true"),
+                @Parameter(
+                        name = "consumers.number",
+                        description = "The number of consumers to be registered",
+                        type = {DataType.INT},
+                        optional = true, defaultValue = "1")
         },
         examples = {
                 @Example(
@@ -224,6 +229,7 @@ public class RabbitMQSource extends Source {
     private RabbitMQConsumer rabbitMQConsumer;
     private String siddhiAppName;
     private boolean autoAck;
+    private int consumersNumber;
 
     @Override
     public StateFactory init(SourceEventListener sourceEventListener, OptionHolder optionHolder, String[] strings,
@@ -271,6 +277,8 @@ public class RabbitMQSource extends Source {
         this.autoAck = Boolean.parseBoolean(optionHolder.validateAndGetStaticValue
                 (RabbitMQConstants.RABBITMQ_AUTO_ACK,
                         RabbitMQConstants.DEFAULT_AUTO_ACK));
+        this.consumersNumber = Integer.parseInt(optionHolder.validateAndGetStaticValue(RabbitMQConstants.RABBITMQ_CONSUMERS_NUMBER,
+                RabbitMQConstants.DEFAULT_CONSUMERS_NUMBER));
 
         routingKey = optionHolder.validateAndGetStaticValue(RabbitMQConstants.RABBITMQ_ROUTINGKEY,
                 RabbitMQConstants.EMPTY_STRING);
@@ -354,10 +362,12 @@ public class RabbitMQSource extends Source {
                 }
             }
             connection = factory.newConnection();
-            rabbitMQConsumer = new RabbitMQConsumer();
-            rabbitMQConsumer.consume(connection, exchangeName, exchangeType, exchangeDurable,
-                    exchangeAutoDelete, queueName, queueExclusive, queueDurable, queueAutodelete, routingKey, map,
-                    sourceEventListener, connectionCallback, autoAck);
+            for(int i = 0 ; i < consumersNumber ; i++) {
+            	rabbitMQConsumer = new RabbitMQConsumer();
+	            rabbitMQConsumer.consume(connection, exchangeName, exchangeType, exchangeDurable,
+	                    exchangeAutoDelete, queueName, queueExclusive, queueDurable, queueAutodelete, routingKey, map,
+	                    sourceEventListener, connectionCallback, autoAck);
+            }
         } catch (IOException e) {
             throw new ConnectionUnavailableException(
                     "Failed to connect with the Rabbitmq server. Check the " +

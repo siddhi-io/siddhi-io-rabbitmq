@@ -77,8 +77,10 @@ public class RabbitMQConstants {
     public static final String RABBITMQ_QUEUE_AUTO_DELETE = "queue.autodelete.enabled";
     public static final String RABBITMQ_QUEUE_EXCLUSIVE = "queue.exclusive.enabled";
     public static final String RABBITMQ_AUTO_ACK = "auto.ack";
+    public static final String RABBITMQ_CONSUMERS_NUMBER = "consumers.number";
     public static final String DEFAULT_QUEUE_DURABLE = "false";
     public static final String DEFAULT_QUEUE_AUTO_DELETE = "false";
     public static final String DEFAULT_QUEUE_EXCLUSIVE = "false";
     public static final String DEFAULT_AUTO_ACK = "true";
+    public static final String DEFAULT_CONSUMERS_NUMBER = "1";
 }
