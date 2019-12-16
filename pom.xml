@@ -56,6 +56,7 @@
         <maven.failsafe.plugin.version>2.19.1</maven.failsafe.plugin.version>
         <docker.maven.plugin.version>0.15.9</docker.maven.plugin.version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <mavan.findbugsplugin.exclude.file>findbugs-exclude.xml</mavan.findbugsplugin.exclude.file>
     </properties>
 
     <dependencyManagement>

@@ -50,6 +50,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeoutException;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
@@ -230,6 +231,8 @@ public class RabbitMQSource extends Source {
     private String siddhiAppName;
     private boolean autoAck;
     private int consumerThreadPoolSize;
+    private ExecutorService executorService;
+
 
     @Override
     public StateFactory init(SourceEventListener sourceEventListener, OptionHolder optionHolder, String[] strings,
@@ -285,6 +288,7 @@ public class RabbitMQSource extends Source {
 
         String headers = optionHolder.validateAndGetStaticValue(RabbitMQConstants.RABBITMQ_HEADERS,
                 RabbitMQConstants.NULL);
+        this.executorService = siddhiAppContext.getExecutorService();
 
         if (headers != null) {
             try {
@@ -365,7 +369,7 @@ public class RabbitMQSource extends Source {
             rabbitMQConsumer = new RabbitMQConsumer();
             rabbitMQConsumer.consume(listenerUri,  connection, exchangeName, exchangeType, exchangeDurable,
                     exchangeAutoDelete, queueName, queueExclusive, queueDurable, queueAutodelete, routingKey, map,
-                    sourceEventListener, connectionCallback, autoAck, consumerThreadPoolSize);
+                    sourceEventListener, connectionCallback, autoAck, consumerThreadPoolSize, executorService);
         } catch (IOException e) {
             throw new ConnectionUnavailableException(
                     "Failed to connect with the Rabbitmq server. Check the " +
