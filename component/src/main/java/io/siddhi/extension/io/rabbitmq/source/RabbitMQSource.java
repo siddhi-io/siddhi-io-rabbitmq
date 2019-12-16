@@ -187,7 +187,7 @@ import javax.net.ssl.TrustManagerFactory;
                         name = "consumer.threadpool.size",
                         description = "The number of consumer threads to be registered",
                         type = {DataType.INT},
-                        optional = true, defaultValue = "10")
+                        optional = true, defaultValue = "1")
         },
         examples = {
                 @Example(

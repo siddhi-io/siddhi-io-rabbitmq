@@ -82,5 +82,5 @@ public class RabbitMQConstants {
     public static final String DEFAULT_QUEUE_AUTO_DELETE = "false";
     public static final String DEFAULT_QUEUE_EXCLUSIVE = "false";
     public static final String DEFAULT_AUTO_ACK = "true";
-    public static final String DEFAULT_CONSUMER_THREADPOOL_SIZE = "10";
+    public static final String DEFAULT_CONSUMER_THREADPOOL_SIZE = "1";
 }
