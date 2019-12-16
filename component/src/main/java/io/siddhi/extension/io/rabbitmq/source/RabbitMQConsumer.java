@@ -35,6 +35,8 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -44,6 +46,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 
 public class RabbitMQConsumer {
+
     private static final Logger log = Logger.getLogger(RabbitMQConsumer.class);
 
     private Channel channel = null;
@@ -51,24 +54,32 @@ public class RabbitMQConsumer {
     private ReentrantLock lock;
     private Condition condition;
     private Source.ConnectionCallback connectionCallback;
+    private ExecutorService executorService;
+    private String listenerUri;
+    private String exchangeName;
 
-    public void consume (Connection connection, String exchangeName, String exchangeType,
-                         boolean exchangeDurable, boolean exchangeAutoDelete,
-                         String queueName, boolean queueExclusive,
-                         boolean queueDurable, boolean queueAutodelete, String routingKey,
-                         Map<String, Object> map, SourceEventListener sourceEventListener,
-                         Source.ConnectionCallback connectionCallback, boolean autoAck) throws Exception {
+    public void consume(String listenerUri, Connection connection, String exchangeName, String exchangeType,
+                        boolean exchangeDurable, boolean exchangeAutoDelete,
+                        String queueName, boolean queueExclusive,
+                        boolean queueDurable, boolean queueAutodelete, String routingKey,
+                        Map<String, Object> map, SourceEventListener sourceEventListener,
+                        Source.ConnectionCallback connectionCallback, boolean autoAck,
+                        int consumerThreadPoolSize) throws Exception {
 
+        this.listenerUri = listenerUri;
+        this.exchangeName = exchangeName;
+        this.executorService = Executors.newFixedThreadPool(consumerThreadPoolSize);
         this.connectionCallback = connectionCallback;
         channel = connection.createChannel();
         lock = new ReentrantLock();
         condition = lock.newCondition();
+
         /*
          * In the following method, system checked whether the exchange.name is already existed or not.
          * If the exchange.name is not existed, then the system declare the exchange.name
          */
         try {
-           channel.exchangeDeclarePassive(exchangeName);
+            channel.exchangeDeclarePassive(exchangeName);
         } catch (Exception e) {
             channel = connection.createChannel();
             RabbitMQSinkUtil.declareExchange(connection, channel, exchangeName, exchangeType,
@@ -109,13 +120,11 @@ public class RabbitMQConsumer {
                             lock.unlock();
                         }
                     }
-                    sourceEventListener.onEvent(body, null);
-                    if (!autoAck) {
-                        channel.basicAck(envelope.getDeliveryTag(), false);
-                    }
+
+                    executorService.execute(new RabbitMQConsumerThread(body, sourceEventListener, envelope, autoAck));
                 } catch (Exception e) {
                     log.error("Error in receiving the message from the RabbitMQ broker in "
-                            + sourceEventListener, e);
+                            + listenerUri + " and exchange name " + exchangeName, e);
                 }
             }
         };
@@ -124,9 +133,9 @@ public class RabbitMQConsumer {
         channel.basicConsume(queueName, autoAck, consumer);
     }
 
-
     public void closeChannel() throws IOException, TimeoutException {
         channel.close();
+        executorService.shutdownNow();
     }
 
     public void pause() {
@@ -155,6 +164,35 @@ public class RabbitMQConsumer {
             };
 
             thread.start();
+        }
+    }
+
+    class RabbitMQConsumerThread implements Runnable {
+
+        private SourceEventListener sourceEventListener;
+        private byte[] body;
+        private Envelope envelope;
+        private boolean autoAck;
+
+        private RabbitMQConsumerThread(byte[] event, SourceEventListener sourceEventListener, Envelope envelope,
+                                       boolean autoAck) {
+            this.body = event;
+            this.sourceEventListener = sourceEventListener;
+            this.envelope = envelope;
+            this.autoAck = autoAck;
+        }
+
+        @Override
+        public void run() {
+            try {
+                sourceEventListener.onEvent(body, null);
+                if (!autoAck) {
+                    channel.basicAck(envelope.getDeliveryTag(), false);
+                }
+            } catch (Exception e) {
+                log.error("Error in processing the message received from RabbitMQ broker in "
+                        + listenerUri + " and exchange name " + exchangeName, e);
+            }
         }
     }
 }

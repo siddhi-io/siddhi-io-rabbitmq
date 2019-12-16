@@ -184,10 +184,10 @@ import javax.net.ssl.TrustManagerFactory;
                         type = {DataType.BOOL},
                         optional = true, defaultValue = "true"),
                 @Parameter(
-                        name = "consumers.number",
-                        description = "The number of consumers to be registered",
+                        name = "consumer.threadpool.size",
+                        description = "The number of consumer threads to be registered",
                         type = {DataType.INT},
-                        optional = true, defaultValue = "1")
+                        optional = true, defaultValue = "10")
         },
         examples = {
                 @Example(
@@ -229,7 +229,7 @@ public class RabbitMQSource extends Source {
     private RabbitMQConsumer rabbitMQConsumer;
     private String siddhiAppName;
     private boolean autoAck;
-    private int consumersNumber;
+    private int consumerThreadPoolSize;
 
     @Override
     public StateFactory init(SourceEventListener sourceEventListener, OptionHolder optionHolder, String[] strings,
@@ -277,9 +277,9 @@ public class RabbitMQSource extends Source {
         this.autoAck = Boolean.parseBoolean(optionHolder.validateAndGetStaticValue
                 (RabbitMQConstants.RABBITMQ_AUTO_ACK,
                         RabbitMQConstants.DEFAULT_AUTO_ACK));
-        this.consumersNumber = Integer.parseInt(optionHolder.validateAndGetStaticValue(RabbitMQConstants.RABBITMQ_CONSUMERS_NUMBER,
-                RabbitMQConstants.DEFAULT_CONSUMERS_NUMBER));
-
+        this.consumerThreadPoolSize = Integer.parseInt(optionHolder.
+                validateAndGetStaticValue(RabbitMQConstants.RABBITMQ_CONSUMER_THREADPOOL_SIZE,
+                RabbitMQConstants.DEFAULT_CONSUMER_THREADPOOL_SIZE));
         routingKey = optionHolder.validateAndGetStaticValue(RabbitMQConstants.RABBITMQ_ROUTINGKEY,
                 RabbitMQConstants.EMPTY_STRING);
 
@@ -362,12 +362,10 @@ public class RabbitMQSource extends Source {
                 }
             }
             connection = factory.newConnection();
-            for(int i = 0 ; i < consumersNumber ; i++) {
-            	rabbitMQConsumer = new RabbitMQConsumer();
-	            rabbitMQConsumer.consume(connection, exchangeName, exchangeType, exchangeDurable,
-	                    exchangeAutoDelete, queueName, queueExclusive, queueDurable, queueAutodelete, routingKey, map,
-	                    sourceEventListener, connectionCallback, autoAck);
-            }
+            rabbitMQConsumer = new RabbitMQConsumer();
+            rabbitMQConsumer.consume(listenerUri,  connection, exchangeName, exchangeType, exchangeDurable,
+                    exchangeAutoDelete, queueName, queueExclusive, queueDurable, queueAutodelete, routingKey, map,
+                    sourceEventListener, connectionCallback, autoAck, consumerThreadPoolSize);
         } catch (IOException e) {
             throw new ConnectionUnavailableException(
                     "Failed to connect with the Rabbitmq server. Check the " +
