@@ -50,6 +50,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeoutException;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
@@ -182,7 +183,12 @@ import javax.net.ssl.TrustManagerFactory;
                         description = "If this parameter is set to `false`, the server should " +
                                 "expect explicit messages acknowledgements once delivered",
                         type = {DataType.BOOL},
-                        optional = true, defaultValue = "true")
+                        optional = true, defaultValue = "true"),
+                @Parameter(
+                        name = "consumer.threadpool.size",
+                        description = "The number of consumer threads to be registered",
+                        type = {DataType.INT},
+                        optional = true, defaultValue = "1")
         },
         examples = {
                 @Example(
@@ -224,6 +230,9 @@ public class RabbitMQSource extends Source {
     private RabbitMQConsumer rabbitMQConsumer;
     private String siddhiAppName;
     private boolean autoAck;
+    private int consumerThreadPoolSize;
+    private ExecutorService executorService;
+
 
     @Override
     public StateFactory init(SourceEventListener sourceEventListener, OptionHolder optionHolder, String[] strings,
@@ -271,12 +280,15 @@ public class RabbitMQSource extends Source {
         this.autoAck = Boolean.parseBoolean(optionHolder.validateAndGetStaticValue
                 (RabbitMQConstants.RABBITMQ_AUTO_ACK,
                         RabbitMQConstants.DEFAULT_AUTO_ACK));
-
+        this.consumerThreadPoolSize = Integer.parseInt(optionHolder.
+                validateAndGetStaticValue(RabbitMQConstants.RABBITMQ_CONSUMER_THREADPOOL_SIZE,
+                RabbitMQConstants.DEFAULT_CONSUMER_THREADPOOL_SIZE));
         routingKey = optionHolder.validateAndGetStaticValue(RabbitMQConstants.RABBITMQ_ROUTINGKEY,
                 RabbitMQConstants.EMPTY_STRING);
 
         String headers = optionHolder.validateAndGetStaticValue(RabbitMQConstants.RABBITMQ_HEADERS,
                 RabbitMQConstants.NULL);
+        this.executorService = siddhiAppContext.getExecutorService();
 
         if (headers != null) {
             try {
@@ -355,9 +367,9 @@ public class RabbitMQSource extends Source {
             }
             connection = factory.newConnection();
             rabbitMQConsumer = new RabbitMQConsumer();
-            rabbitMQConsumer.consume(connection, exchangeName, exchangeType, exchangeDurable,
+            rabbitMQConsumer.consume(listenerUri,  connection, exchangeName, exchangeType, exchangeDurable,
                     exchangeAutoDelete, queueName, queueExclusive, queueDurable, queueAutodelete, routingKey, map,
-                    sourceEventListener, connectionCallback, autoAck);
+                    sourceEventListener, connectionCallback, autoAck, consumerThreadPoolSize, executorService);
         } catch (IOException e) {
             throw new ConnectionUnavailableException(
                     "Failed to connect with the Rabbitmq server. Check the " +
