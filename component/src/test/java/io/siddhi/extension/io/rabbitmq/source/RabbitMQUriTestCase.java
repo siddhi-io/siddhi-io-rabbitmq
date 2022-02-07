@@ -22,15 +22,16 @@ package io.siddhi.extension.io.rabbitmq.source;
 import io.siddhi.core.SiddhiAppRuntime;
 import io.siddhi.core.SiddhiManager;
 import io.siddhi.core.exception.SiddhiAppCreationException;
-import io.siddhi.core.stream.input.source.Source;
 import io.siddhi.extension.io.rabbitmq.util.UnitTestAppender;
 import io.siddhi.query.api.exception.SiddhiAppValidationException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 public class RabbitMQUriTestCase {
-    private static Logger log = Logger.getLogger(RabbitMQUriTestCase.class);
+    private static final Logger log = (Logger) LogManager.getLogger(RabbitMQUriTestCase.class);
 
     @Test(expectedExceptions = SiddhiAppValidationException.class)
     public void rabbitmqWithoutUriTest() {
@@ -54,9 +55,10 @@ public class RabbitMQUriTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Source test with invalid URI");
         log.info("---------------------------------------------------------------------------------------------");
-        log = Logger.getLogger(Source.class);
-        UnitTestAppender appender = new UnitTestAppender();
-        log.addAppender(appender);
+        UnitTestAppender appender = new UnitTestAppender("UnitTestAppender", null);
+        final Logger logger = (Logger) LogManager.getRootLogger();
+        logger.setLevel(Level.ALL);
+        logger.addAppender(appender);
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -69,8 +71,10 @@ public class RabbitMQUriTestCase {
                                 "Define stream BarStream1 (symbol string, price float, volume long);" +
                                 "from FooStream1 select symbol, price, volume insert into BarStream1;");
         siddhiAppRuntime.start();
-        AssertJUnit.assertTrue(appender.getMessages().contains("Failed to connect with the Rabbitmq server"));
+        AssertJUnit.assertTrue(((UnitTestAppender) logger.getAppenders().
+                get("UnitTestAppender")).getMessages().contains("Failed to connect with the Rabbitmq server"));
         siddhiAppRuntime.shutdown();
+        logger.removeAppender(appender);
 
     }
 
@@ -79,9 +83,10 @@ public class RabbitMQUriTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Source test with invalid URI credentials");
         log.info("---------------------------------------------------------------------------------------------");
-        log = Logger.getLogger(Source.class);
-        UnitTestAppender appender = new UnitTestAppender();
-        log.addAppender(appender);
+        UnitTestAppender appender = new UnitTestAppender("UnitTestAppender", null);
+        final Logger logger = (Logger) LogManager.getRootLogger();
+        logger.setLevel(Level.ALL);
+        logger.addAppender(appender);
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -94,8 +99,10 @@ public class RabbitMQUriTestCase {
                                 "Define stream BarStream1 (symbol string, price float, volume long);" +
                                 "from FooStream1 select symbol, price, volume insert into BarStream1;");
         siddhiAppRuntime.start();
-        AssertJUnit.assertTrue(appender.getMessages().contains("Failed to connect with the Rabbitmq server"));
+        AssertJUnit.assertTrue(((UnitTestAppender) logger.getAppenders().
+                get("UnitTestAppender")).getMessages().contains("Failed to connect with the Rabbitmq server"));
         siddhiAppRuntime.shutdown();
+        logger.removeAppender(appender);
 
     }
 
@@ -104,9 +111,10 @@ public class RabbitMQUriTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Source test with invalid URI hostname");
         log.info("---------------------------------------------------------------------------------------------");
-        log = Logger.getLogger(Source.class);
-        UnitTestAppender appender = new UnitTestAppender();
-        log.addAppender(appender);
+        UnitTestAppender appender = new UnitTestAppender("UnitTestAppender", null);
+        final Logger logger = (Logger) LogManager.getRootLogger();
+        logger.setLevel(Level.ALL);
+        logger.addAppender(appender);
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager
                 .createSiddhiAppRuntime(
@@ -119,8 +127,10 @@ public class RabbitMQUriTestCase {
                                 "Define stream BarStream1 (symbol string, price float, volume long);" +
                                 "from FooStream1 select symbol, price, volume insert into BarStream1;");
         siddhiAppRuntime.start();
-        AssertJUnit.assertTrue(appender.getMessages().contains("Failed to connect with the Rabbitmq server"));
+        AssertJUnit.assertTrue(((UnitTestAppender) logger.getAppenders().
+                get("UnitTestAppender")).getMessages().contains("Failed to connect with the Rabbitmq server"));
         siddhiAppRuntime.shutdown();
+        logger.removeAppender(appender);
     }
 
     @Test(expectedExceptions = SiddhiAppCreationException.class)

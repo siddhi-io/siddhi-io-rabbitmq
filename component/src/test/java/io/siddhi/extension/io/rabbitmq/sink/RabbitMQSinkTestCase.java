@@ -23,10 +23,11 @@ import io.siddhi.core.SiddhiAppRuntime;
 import io.siddhi.core.SiddhiManager;
 import io.siddhi.core.exception.SiddhiAppCreationException;
 import io.siddhi.core.stream.input.InputHandler;
-import io.siddhi.core.stream.output.sink.Sink;
 import io.siddhi.extension.io.rabbitmq.util.UnitTestAppender;
 import io.siddhi.query.api.exception.SiddhiAppValidationException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 import org.testng.AssertJUnit;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -34,7 +35,7 @@ import org.testng.annotations.Test;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class RabbitMQSinkTestCase {
-    private static Logger log = Logger.getLogger(RabbitMQSinkTestCase.class);
+    private static final Logger log = (Logger) LogManager.getLogger(RabbitMQSinkTestCase.class);
 
     private volatile int count;
     private volatile boolean eventArrived;
@@ -303,9 +304,11 @@ public class RabbitMQSinkTestCase {
         log.info("---------------------------------------------------------------------------------------------");
         log.info("RabbitMQ Sink test invalid hostname");
         log.info("---------------------------------------------------------------------------------------------");
-        log = Logger.getLogger(Sink.class);
-        UnitTestAppender appender = new UnitTestAppender();
-        log.addAppender(appender);
+        UnitTestAppender appender = new UnitTestAppender("UnitTestAppender", null);
+        final Logger logger = (Logger) LogManager.getRootLogger();
+        logger.setLevel(Level.ALL);
+        logger.addAppender(appender);
+        appender.start();
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
                 "@App:name('TestExecutionPlan') " +
@@ -317,8 +320,10 @@ public class RabbitMQSinkTestCase {
                         "Define stream BarStream1 (symbol string, price float, volume long);" +
                         "from FooStream1 select symbol, price, volume insert into BarStream1;");
         siddhiAppRuntime.start();
-        AssertJUnit.assertTrue(appender.getMessages().contains("Failed to connect with the Rabbitmq server"));
+        AssertJUnit.assertTrue(((UnitTestAppender) logger.getAppenders().
+                get("UnitTestAppender")).getMessages().contains("Failed to connect with the Rabbitmq server"));
         siddhiAppRuntime.shutdown();
+        logger.removeAppender(appender);
     }
 
     @Test
@@ -326,10 +331,12 @@ public class RabbitMQSinkTestCase {
         log.info("----------------------------------------------------------------------------------");
         log.info("RabbitMQ Sink test with exchange type with invalid header format");
         log.info("----------------------------------------------------------------------------------");
-        log = Logger.getLogger(RabbitMQSink.class);
         SiddhiManager siddhiManager = new SiddhiManager();
-        UnitTestAppender appender = new UnitTestAppender();
-        log.addAppender(appender);
+        UnitTestAppender appender = new UnitTestAppender("UnitTestAppender", null);
+        final Logger logger = (Logger) LogManager.getRootLogger();
+        logger.setLevel(Level.ALL);
+        logger.addAppender(appender);
+        appender.start();
         SiddhiAppRuntime executionPlanRuntime = siddhiManager.createSiddhiAppRuntime(
                 "@App:name('TestExecutionPlan') " +
                         "define stream FooStream (symbol string, price float, volume long); " +
@@ -346,8 +353,10 @@ public class RabbitMQSinkTestCase {
         fooStream.send(new Object[]{"WSO2", 55.6f, 100L});
         fooStream.send(new Object[]{"IBM", 75.6f, 100L});
         fooStream.send(new Object[]{"WSO2", 57.6f, 100L});
-        AssertJUnit.assertTrue(appender.getMessages().contains("Error in sending the message to the exchange.name = "
+        AssertJUnit.assertTrue(((UnitTestAppender) logger.getAppenders().
+                get("UnitTestAppender")).getMessages().contains("Error in sending the message to the exchange.name = "
                                                                   + "headersTest in RabbitMQ broker"));
         executionPlanRuntime.shutdown();
+        logger.removeAppender(appender);
     }
 }

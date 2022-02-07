@@ -28,7 +28,8 @@ import io.siddhi.core.stream.input.source.Source;
 import io.siddhi.core.stream.output.StreamCallback;
 import io.siddhi.core.util.SiddhiTestHelper;
 import io.siddhi.query.api.exception.SiddhiAppValidationException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.testng.AssertJUnit;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -41,7 +42,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 ;
 
 public class RabbitMQExchangeTestCase {
-    private static final Logger log = Logger.getLogger(RabbitMQExchangeTestCase.class);
+    private static final Logger log = LogManager.getLogger(RabbitMQExchangeTestCase.class);
     private AtomicInteger eventCount = new AtomicInteger(0);
     private List<String> receivedEventNameList;
     private int waitTime = 50;

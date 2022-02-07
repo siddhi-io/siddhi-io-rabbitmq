@@ -31,7 +31,8 @@ import io.siddhi.core.exception.ConnectionUnavailableException;
 import io.siddhi.core.stream.input.source.Source;
 import io.siddhi.core.stream.input.source.SourceEventListener;
 import io.siddhi.extension.io.rabbitmq.util.RabbitMQSinkUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class RabbitMQConsumer {
 
-    private static final Logger log = Logger.getLogger(RabbitMQConsumer.class);
+    private static final Logger log = LogManager.getLogger(RabbitMQConsumer.class);
 
     private Channel channel = null;
     private boolean isPaused;

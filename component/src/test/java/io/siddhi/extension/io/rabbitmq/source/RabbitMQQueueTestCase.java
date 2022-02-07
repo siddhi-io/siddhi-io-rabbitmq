@@ -25,7 +25,8 @@ import io.siddhi.core.event.Event;
 import io.siddhi.core.stream.input.InputHandler;
 import io.siddhi.core.stream.output.StreamCallback;
 import io.siddhi.core.util.SiddhiTestHelper;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.testng.AssertJUnit;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -37,7 +38,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 ;
 
 public class RabbitMQQueueTestCase {
-    private static final Logger log = Logger.getLogger(RabbitMQQueueTestCase.class);
+    private static final Logger log = LogManager.getLogger(RabbitMQQueueTestCase.class);
     private AtomicInteger eventCount1 = new AtomicInteger(0);
     private AtomicInteger eventCount2 = new AtomicInteger(0);
     private int waitTime = 50;
