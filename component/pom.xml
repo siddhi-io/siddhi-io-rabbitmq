@@ -20,7 +20,7 @@
     <parent>
         <artifactId>siddhi-io-rabbitmq-parent</artifactId>
         <groupId>io.siddhi.extension.io.rabbitmq</groupId>
-        <version>3.0.7-SNAPSHOT</version>
+        <version>3.0.7</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
