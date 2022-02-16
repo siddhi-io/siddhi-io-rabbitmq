@@ -22,7 +22,8 @@ package io.siddhi.extension.io.rabbitmq.util;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import io.siddhi.core.util.config.ConfigReader;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ import java.util.concurrent.TimeoutException;
  */
 
 public class RabbitMQSinkUtil {
-    private static final Logger log = Logger.getLogger(RabbitMQSinkUtil.class);
+    private static final Logger log = LogManager.getLogger(RabbitMQSinkUtil.class);
 
 
     public static void declareExchange(Connection connection, Channel channel, String exchangeName,

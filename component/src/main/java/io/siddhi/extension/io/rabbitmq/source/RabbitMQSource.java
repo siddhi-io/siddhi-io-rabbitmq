@@ -37,7 +37,8 @@ import io.siddhi.core.util.snapshot.state.StateFactory;
 import io.siddhi.core.util.transport.OptionHolder;
 import io.siddhi.extension.io.rabbitmq.util.RabbitMQConstants;
 import io.siddhi.extension.io.rabbitmq.util.RabbitMQSinkUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -206,7 +207,7 @@ import javax.net.ssl.TrustManagerFactory;
                                 "exchange type, and the `directTest` routing key.")
         })
 public class RabbitMQSource extends Source {
-    private static final Logger log = Logger.getLogger(RabbitMQSource.class);
+    private static final Logger log = LogManager.getLogger(RabbitMQSource.class);
     private SourceEventListener sourceEventListener;
     private Connection connection = null;
     private int heartbeat;

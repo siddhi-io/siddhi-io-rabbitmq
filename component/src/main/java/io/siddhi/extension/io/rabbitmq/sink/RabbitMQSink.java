@@ -40,7 +40,8 @@ import io.siddhi.core.util.transport.OptionHolder;
 import io.siddhi.extension.io.rabbitmq.util.RabbitMQConstants;
 import io.siddhi.extension.io.rabbitmq.util.RabbitMQSinkUtil;
 import io.siddhi.query.api.definition.StreamDefinition;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -262,7 +263,7 @@ import javax.net.ssl.TrustManagerFactory;
                                 "the `direct` exchange type and the `directTest` routing key.")
         })
 public class RabbitMQSink extends Sink {
-    private static final Logger log = Logger.getLogger(RabbitMQSink.class);
+    private static final Logger log = LogManager.getLogger(RabbitMQSink.class);
 
     private String publisherURI;
     private Connection connection = null;

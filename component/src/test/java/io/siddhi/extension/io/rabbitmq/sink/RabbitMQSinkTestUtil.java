@@ -26,7 +26,8 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URI;
@@ -35,7 +36,7 @@ import java.util.Map;
 
 
 public class RabbitMQSinkTestUtil {
-    private static final Logger log = Logger.getLogger(RabbitMQSinkTestUtil.class);
+    private static final Logger log = LogManager.getLogger(RabbitMQSinkTestUtil.class);
     private static Connection connection = null;
     private static Channel channel = null;
     private static String queueName;
