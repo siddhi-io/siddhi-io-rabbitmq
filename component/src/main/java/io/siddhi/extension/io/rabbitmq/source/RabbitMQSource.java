@@ -430,16 +430,20 @@ public class RabbitMQSource extends Source {
 
     @Override
     public void destroy() {
-
+        rabbitMQConsumer = null;
     }
 
     @Override
     public void pause() {
-       rabbitMQConsumer.pause();
+        if (rabbitMQConsumer != null) {
+            rabbitMQConsumer.pause();
+        }
     }
 
     @Override
     public void resume() {
-        rabbitMQConsumer.resume();
+        if (rabbitMQConsumer != null) {
+            rabbitMQConsumer.resume();
+        }
     }
 }
