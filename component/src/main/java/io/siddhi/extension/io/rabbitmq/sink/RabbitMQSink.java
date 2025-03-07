@@ -520,7 +520,7 @@ public class RabbitMQSink extends Sink {
                     "dropping the event", e);
         } catch (IOException e) {
             log.error("Error in sending the message to the " + RabbitMQConstants.RABBITMQ_EXCHANGE_NAME +
-                    " = " + exchangeNameOption.getValue() + " in RabbitMQ broker at " + streamDefinition, e);
+                    " = {} in RabbitMQ broker at {}", exchangeNameOption.getValue(), streamDefinition, e);
         }
     }
 
@@ -549,15 +549,12 @@ public class RabbitMQSink extends Sink {
                 channel.close();
                 connection.close();
                 if (log.isDebugEnabled()) {
-                    log.debug("Server connector for uri = " + publisherURI + " is disconnected in " +
-                            "" + streamDefinition + ".");
+                    log.debug("Server connector for uri = {} is disconnected in {}.", publisherURI, streamDefinition);
                 }
             } catch (TimeoutException e) {
-                log.error("Timeout while disconnecting the uri = " + publisherURI + " in " +
-                        "" + streamDefinition + ".");
+                log.error("Timeout while disconnecting the uri = {} in {}.", publisherURI, streamDefinition);
             } catch (IOException e) {
-                log.error("Error in disconnecting the uri = " + publisherURI + " in " +
-                        "" + streamDefinition + ".");
+                log.error("Error in disconnecting the uri = {} in {}.", publisherURI, streamDefinition);
             }
         }
     }

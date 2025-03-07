@@ -410,20 +410,18 @@ public class RabbitMQSource extends Source {
                     rabbitMQConsumer.closeChannel();
                     connection.close();
                     if (log.isDebugEnabled()) {
-                        log.debug("Server connector for uri = " + listenerUri + " is disconnected in " +
-                                "" + sourceEventListener + ".");
+                        log.debug("Server connector for uri = {} is disconnected in {}.", listenerUri,
+                                sourceEventListener);
                     }
                 }
             } catch (TimeoutException e) {
-                log.error("Timeout while disconnecting the uri = " + listenerUri + " in " +
-                        "" + sourceEventListener + ".");
+                log.error("Timeout while disconnecting the uri = {} in {}.", listenerUri, sourceEventListener);
             } catch (IOException e) {
-                log.error("Error in disconnecting the uri = " + listenerUri + " in " +
-                        "" + sourceEventListener + ".");
+                log.error("Error in disconnecting the uri = {} in {}.", listenerUri, sourceEventListener);
             } catch (Exception e) {
-                log.error("Error occurred while closing the RabbitMQ consumer for the queue: "
-                        + queueName + ". Respective Siddhi App name : " + siddhiAppName + " and stream ID : " +
-                        sourceEventListener.getStreamDefinition().getId() + ".", e);
+                log.error("Error occurred while closing the RabbitMQ consumer for the queue: {}. " +
+                                "Respective Siddhi App name : {} and stream ID : {}.",
+                        queueName, siddhiAppName, sourceEventListener.getStreamDefinition().getId(), e);
             }
         }
     }
