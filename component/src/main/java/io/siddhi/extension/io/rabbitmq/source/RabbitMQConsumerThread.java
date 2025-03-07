@@ -60,11 +60,11 @@ public class RabbitMQConsumerThread implements Runnable {
                     channel.basicAck(rabbitMQMessage.getEnvelope().getDeliveryTag(), false);
                 }
             } catch (InterruptedException e) {
-                log.error("Error when reading message from blocking queue at RabbitMQ receiver " +
-                        listenerUri + " and exchange name " + exchangeName, e);
+                log.error("Error when reading message from blocking queue at RabbitMQ receiver {} and exchange name {}",
+                        listenerUri, exchangeName, e);
             } catch (Exception e) {
-                log.error("Error in processing the message received from RabbitMQ broker in "
-                        + listenerUri + " and exchange name " + exchangeName, e);
+                log.error("Error in processing the message received from RabbitMQ broker in {} and exchange name {}",
+                        listenerUri, exchangeName, e);
             }
         }
     }

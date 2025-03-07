@@ -26,4 +26,12 @@
         <Class name="io.siddhi.extension.io.rabbitmq.source.RabbitMQConsumer"/>
         <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
     </Match>
+    <Match>
+        <Class name="io.siddhi.extension.io.rabbitmq.sink.RabbitMQSink" />
+        <Bug pattern="PATH_TRAVERSAL_IN" />
+    </Match>
+    <Match>
+        <Class name="io.siddhi.extension.io.rabbitmq.source.RabbitMQSource" />
+        <Bug pattern="PATH_TRAVERSAL_IN" />
+    </Match>
 </FindBugsFilter>

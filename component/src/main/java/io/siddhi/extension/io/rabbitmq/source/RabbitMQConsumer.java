@@ -111,13 +111,13 @@ public class RabbitMQConsumer {
             rabbitMQConsumerThreads.add(rabbitMQConsumerThread);
 
             if (log.isDebugEnabled()) {
-                log.debug("RabbitMQ consumer worker thread '" + i + "' starting to listen the RabbitMQ broker in '" +
-                        listenerUri + "' and exchange '" + exchangeName + "'");
+                log.debug("RabbitMQ consumer worker thread '{}' starting to listen the RabbitMQ broker in '{}' and " +
+                        "exchange '{}'", i, listenerUri, exchangeName);
             }
         }
 
-        log.info("RabbitMQ consumer worker threads of count '" + consumerThreadPoolSize + "' started to " +
-                "listen the RabbitMQ broker in '" + listenerUri + "' and exchange '" + exchangeName + "'");
+        log.info("RabbitMQ consumer worker threads of count '{}' started to listen the RabbitMQ broker in '{}' and " +
+                "exchange '{}'", consumerThreadPoolSize, listenerUri, exchangeName);
 
         for (RabbitMQConsumerThread consumerThread : rabbitMQConsumerThreads) {
             executorService.submit(consumerThread);
@@ -143,8 +143,8 @@ public class RabbitMQConsumer {
 
                     blockingQueue.put(new RabbitMQMessage(body, envelope));
                 } catch (Exception e) {
-                    log.error("Error in receiving the message from the RabbitMQ broker in "
-                            + listenerUri + " and exchange name " + exchangeName, e);
+                    log.error("Error in receiving the message from the RabbitMQ broker in {} and exchange name {}",
+                            listenerUri, exchangeName, e);
                 }
             }
         };
@@ -175,7 +175,7 @@ public class RabbitMQConsumer {
 
         @Override
         public void shutdownCompleted(ShutdownSignalException e) {
-            log.error("Exception occurred when consuming messages: " + e.getMessage(), e);
+            log.error("Exception occurred when consuming messages: {}", e.getMessage(), e);
             Thread thread = new Thread() {
                 public void run() {
                     connectionCallback.onError(new ConnectionUnavailableException(e));
