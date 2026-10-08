@@ -175,6 +175,9 @@ public class RabbitMQConsumer {
 
         @Override
         public void shutdownCompleted(ShutdownSignalException e) {
+            if (e.isInitiatedByApplication()) {
+                return;
+            }
             log.error("Exception occurred when consuming messages: {}", e.getMessage(), e);
             Thread thread = new Thread() {
                 public void run() {
