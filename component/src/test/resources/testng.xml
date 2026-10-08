@@ -25,6 +25,7 @@
             <class name="io.siddhi.extension.io.rabbitmq.sink.RabbitMQSinkTestCase" />
             <class name="io.siddhi.extension.io.rabbitmq.source.RabbitMQExchangeTestCase" />
             <class name="io.siddhi.extension.io.rabbitmq.source.RabbitMQSourceTestCase" />
+            <class name="io.siddhi.extension.io.rabbitmq.source.RabbitMQConsumerShutdownListenerTest" />
             <class name="io.siddhi.extension.io.rabbitmq.source.RabbitMQQueueTestCase" />
             <class name="io.siddhi.extension.io.rabbitmq.source.RabbitMQUriTestCase" />
            <!-- <class name="RabbitMQTlsTestCase" />-->
